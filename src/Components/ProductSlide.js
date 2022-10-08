@@ -27,7 +27,7 @@ const ProductSlide = () => {
     const changeWidth = () => {
         let newWidth = ref.current.clientWidth;
         
-        offset = 0;
+        setPage(1);
         // if(newWidth > cardSize * 5) setLimit(5);
         // else if(newWidth > cardSize * 4) setLimit(4);
         if(newWidth > cardSize * 3) setLimit(3);
@@ -37,11 +37,11 @@ const ProductSlide = () => {
 
     useEffect(() => {
         changeWidth();
-    })
+    }, [])
 
     useEffect(() => {
         window.addEventListener("resize", changeWidth)
-    })
+    }, [])
 
     return (
         <div className="product-slide">
