@@ -1,0 +1,6 @@
+### node_modules 폴더 제외
+node_modules/
+
+.DS_Store
+
+test.js
