@@ -5,10 +5,10 @@ import ProductCard from "./ProductCard";
 
 import './ProductList.css'
 
-const ProductList = () => {
+const ProductList = ({products}) => {
     return (
         <ul className="product-list">
-            {dummySool.map((sool) => <li key={sool.id}><ProductCard sool={sool}/></li>)}
+            {products.map((product) => <li key={product.id}><ProductCard sool={product}/></li>)}
         </ul>
     )
 }

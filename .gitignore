@@ -1,0 +1,4 @@
+### node_modules 폴더 모두 제외
+node_modules/
+
+.DS_Store
