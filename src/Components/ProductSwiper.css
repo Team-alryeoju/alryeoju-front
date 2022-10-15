@@ -4,4 +4,9 @@
 .swiper {
     width: 100%;
     height: 22rem;
+    padding: 10px;
+}
+
+.swiper-title{
+    padding-left: 12px;
 }

@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 // Import Swiper React components
 import { Swiper, SwiperSlide } from "swiper/react";
 
@@ -29,7 +29,7 @@ export default function ProductSwiper() {
         const handleResize = () => {
             const windowWidth = getWindowSize().width
 
-            if(windowWidth <= 450) setSlide(1);
+            if(windowWidth <= 500) setSlide(1);
             else if(windowWidth <= 900) setSlide(2);
             else setSlide(3);
         }
@@ -45,9 +45,10 @@ export default function ProductSwiper() {
 
     return (
         <div className="swiper-container">
+            <p className="swiper-title h2">예린 님께 추천하는 술</p>
             <Swiper
                 slidesPerView={slide}
-                spaceBetween={10}
+                spaceBetween={15}
                 slidesPerGroup={slide}
                 loop={true}
                 loopFillGroupWithBlank={true}
