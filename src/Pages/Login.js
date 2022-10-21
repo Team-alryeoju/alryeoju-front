@@ -2,6 +2,10 @@ import React, { useContext, useEffect, useRef, useState } from 'react';
 
 import AuthContext from '../context/AuthProvider';
 
+// 1. 로그인 시 서버 쪽에서 session_id (쿠키) 를 설정
+// 2. 클라이언트 요청 시에 session_id를 서버 족에서 받는다.
+// 3. 서버 쪽에서 session_id를 검증
+
 function Login(props) {
     /** context value 
      * 이를 통해 컴포넌트 모두에서 페이지를 이용하는 동안 acces token 받을 수 있다.

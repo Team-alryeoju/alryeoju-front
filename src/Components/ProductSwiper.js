@@ -45,7 +45,6 @@ export default function ProductSwiper() {
 
     return (
         <div className="swiper-container">
-            <p className="swiper-title h2">예린 님께 추천하는 술</p>
             <Swiper
                 slidesPerView={slide}
                 spaceBetween={15}

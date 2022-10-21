@@ -19,26 +19,26 @@ const Home = () => {
 
     // 검색 조건을 보내서 fetch 해오는 방식으로!!
     const showAll = () => setCategory('')
-    const showTakju = () => setCategory('탁주')
-    const showYackju = () => setCategory('약주')
-    const showWine = () => setCategory('과실주')
-    const showSoju = () => setCategory('일반증류주')
+    const showTakju = () => setCategory('takju')
+    const showYackju = () => setCategory('chungju')
+    const showWine = () => setCategory('wine')
+    const showSoju = () => setCategory('soju')
 
     // category가 변할 때마다 알맞은 조건의 데이터를 가져온다.
     useEffect(() =>{
         let url = ''
         // sool List URL is random
         if(category === ''){
-            url = `/random`
+            url = `/alcohol`
         }else{
-            url = `/random?category=${category}`
+            url = `/alcohol?category=${category}`
         }
 
         const getAlcoholList = async () => {
             try {
                 setIsLoading(true)
                 const response = await axios.get(url)
-                setAlList(response.data)
+                setAlList(Object.values(response.data))
             } catch (e){
                 setError(e);
             }
