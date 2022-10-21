@@ -1,0 +1,28 @@
+.detail__main{
+    width: 100vw;
+}
+
+.product__detail{
+    width: 90%;
+    height: 30%;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+.product--image{
+    flex: 1 0 200px;
+    height: 100%;
+}
+
+.product--image > img{
+    max-width: 100%;
+    height: auto;
+
+    object-position: 50% 50%;
+    object-fit: cover;
+}
+
+.product__content{
+    flex: 2 0 200px;
+}

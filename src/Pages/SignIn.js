@@ -6,7 +6,7 @@ import AuthContext from '../context/AuthProvider';
 // 2. 클라이언트 요청 시에 session_id를 서버 족에서 받는다.
 // 3. 서버 쪽에서 session_id를 검증
 
-function Login(props) {
+function SignIn(props) {
     /** context value 
      * 이를 통해 컴포넌트 모두에서 페이지를 이용하는 동안 acces token 받을 수 있다.
     */
@@ -49,10 +49,10 @@ function Login(props) {
 
     // form
     return (
-        <section className='Login'>
+        <section className='SignIn'>
             <p ref={errRef} className={errMsg ? "errmsg" : "offscreen"} aria-live="assertive">{errMsg}</p>
             <h1>Sign in</h1>
-            <form onSubmit={handleSubmit}>
+            <form className="col-center" onSubmit={handleSubmit}>
                 {/* 아이디 입력 */}
                 <input 
                     type="text" 
@@ -72,13 +72,13 @@ function Login(props) {
                     placeholder="비밀번호"
                     value={pwd}
                     onChange={(e) => setPwd(e.target.value)} 
-                    required></input>
+                    required
+                ></input>
                 <button type="submit" className="submit__button">로그인</button>
             </form>
-            
         </section>
     );
 }
 
 
-export default Login;
+export default SignIn;
