@@ -18,7 +18,7 @@ function App() {
           <Route path='/' element={<Home />}></Route>
           <Route path='/mypage' element={<MyPage />}></Route>
           <Route path="/detail/:id" element={<Detail />}></Route>
-          <Route path="/auth" element={<Authentication />}></Route>
+          <Route path="/auth/*" element={<Authentication />}></Route>
         </Routes>
       </div>
     </>

@@ -18,18 +18,27 @@ const Detail = () => {
 
     return (
         <div className="Detail">
-            <p>현재 가짜 데이터로 작업중</p>
-            <h1>{id}의 상세 페이지 입니다.</h1>
-            <main className="detail__main col-center">
+            <main className="product__main col">
                 <div className="product__detail row">
-                    <div className="product--image">
+                    <div className="detail_left col-center">
                         <img src={dummyData.img} alt={dummyData.name}></img>
                     </div>
-                    <div className="product__content">
-                        <div className="product--name">{dummyData.name}</div>
-                        <div className="product--price">가격</div>
-                        <div className="product--degree">도수</div>
-                        <div className="product--star">평점</div>
+                    <div className="detail_right col">
+                        <div className="product__content">
+                            <div className="product--name">{dummyData.name}</div>
+                            <div className="product--price">가격</div>
+                            <div className="product--degree">도수</div>
+                            <div className="product--star">평점</div>
+                        </div>
+                        <div className="product__purchase">
+                            <div className="product--count row">
+                                <button>minus</button>
+                                <p>1</p>
+                                <button>plus</button>
+                            </div>
+                            <p>총 가격</p>
+                            <button>구매</button>
+                        </div>
                     </div>
                 </div>
                 <p>비슷한 술</p>

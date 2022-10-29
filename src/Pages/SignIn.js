@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useRef, useState } from 'react';
-
+import axios from '../api/axios'
 import AuthContext from '../context/AuthProvider';
 
 // 1. 로그인 시 서버 쪽에서 session_id (쿠키) 를 설정
@@ -35,12 +35,26 @@ function SignIn(props) {
     }, [user, pwd])
 
     // login submit
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-
         // post 작업 필요
+        try{
+            const response = await axios.post("/signin",
+            JSON.stringify({id : user, pw : pwd}),
+            {
+                headers: { 'Content-Type': 'application/json'},
+                withCredentials: true
+            });
+            
+            console.log(response.data)
+            alert("로그인 성공")
+            
+        }catch(error){
+            if(error.response.status === 401){
+                alert("아이디나 비밀번호가 맞지 않습니다.")
+            }
+        }
 
-        console.log(user, pwd);
         setUser('');
         setPwd('');    
     }
