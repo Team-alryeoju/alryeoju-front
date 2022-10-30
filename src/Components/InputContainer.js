@@ -10,7 +10,8 @@ export const InputContainer = styled.div`
     width: 250px;
 
     > input {
-        border: solid 1px black;
+        border: solid 1px #f3f3f4;
+        background-color: #f3f3f4;
         border-radius: 3px;
         width: 100%;
         height: 2.5rem;
@@ -19,6 +20,7 @@ export const InputContainer = styled.div`
         &:focus{
             border: none;
             outline: solid 2px #9F8772;
+            background-color: white;
         }
     }
 
