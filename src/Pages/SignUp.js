@@ -1,9 +1,10 @@
 import React, { useContext, useEffect, useRef, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import axios from '../api/axios'
 
 import AuthContext from '../context/AuthProvider';
-
+import { InputContainer } from '../Components/InputContainer';
+import { SubmitButton } from '../Components/SubmitButton';
 /** css */
 import './SignUp.css'
 
@@ -49,7 +50,7 @@ function SignUp(props) {
         if(auth?.accesToken && auth?.accesToken !== "" && auth?.accesToken !== undefined){
             navigate("/")
         }
-    }, [navigate])
+    }, [auth, navigate])
 
     // 처음에 ID 부분으로 focusing 됨
     useEffect(() => {
@@ -71,11 +72,11 @@ function SignUp(props) {
         }else if(pwd === matchPwd){
             setPwdMsg("");
             setIsPwdConfirm(true);
-            setPwdConfirmError("비밀번호가 일치합니다! :)");
+            setPwdConfirmError("비밀번호가 일치합니다!");
         }else{
             setPwdMsg("");
             setIsPwdConfirm(false);
-            setPwdConfirmError("비밀번호가 일치하지 않습니다! :(");
+            setPwdConfirmError("비밀번호가 일치하지 않습니다:(");
         }
     }, [pwd, matchPwd])
 
@@ -167,61 +168,72 @@ function SignUp(props) {
 
     // form
     return (
-        <section className='SignUp'>
-            <h1>Sign up</h1>
-            <form className='col-center' onSubmit={handleSubmit}>
-                {/* 아이디 입력 */}
-                <input 
-                    type="text" 
-                    id="id"
-                    ref={userRef}
-                    className="input-field" 
-                    autoComplete="off"
-                    placeholder="아이디"
-                    value={user}
-                    onChange={(e) => setUser(e.target.value)}
-                ></input>
-                <p className={`${isUserConfirm ? "valid" : "invalid"} ${userMsg !== "" ? "show" : "hide"}`}
-                >{userMsg}</p>
-                {/* 닉네임 입력 */}
-                <input 
-                    type="text" 
-                    id="username"
-                    className="input-field" 
-                    autoComplete="off"
-                    placeholder="닉네임"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                ></input>
-                {/* 비밀번호 입력 */}
-                <input 
-                    type="password" 
-                    id="pwd" 
-                    className="input-field" 
-                    placeholder="비밀번호"
-                    value={pwd}
-                    onChange={(e) => setPwd(e.target.value)} 
-                ></input>
-                <p className={`invalid ${pwdMsg !== "" ? "show" : "hide"}`}
-                >{pwdMsg}</p>
-                <input 
-                    type="password" 
-                    name="confirm_pwd" 
-                    className="input-field" 
-                    placeholder="비밀번호 확인"
-                    value={matchPwd}
-                    aria-invalid={isPwdConfirm ? "false" : "true"}
-                    aria-describedby="confirm-note"
-                    onChange={(e) => setMatchPwd(e.target.value)} 
-                    onFocus={() => setMatchFocus(true)}
-                ></input>
-                <p 
-                    id="confirm-note" 
-                    className={`${isPwdConfirm ? "valid" : "invalid"} ${matchFocus ? "show" : "hide"}`}
-                    >{pwdConfirmError}</p>
-                <button type="submit" className="submit__button">회원가입</button>
-            </form>
-        </section>
+        <div className='SignUp'>
+            <header>
+                <Link className='home__link' to="/">Home</Link>
+            </header>
+            <div className='sign-up__container'>
+                <h1>Sign up</h1>
+                <form className='col-center' onSubmit={handleSubmit}>
+                    {/* 아이디 */}
+                    <InputContainer>
+                        <input 
+                            type="text" 
+                            id="id"
+                            ref={userRef}
+                            className="input-field" 
+                            autoComplete="off"
+                            placeholder="아이디"
+                            value={user}
+                            onChange={(e) => setUser(e.target.value)}
+                        ></input>
+                        <p className={`${isUserConfirm ? "valid" : "invalid"} ${userMsg !== "" ? "show" : "hide"}`}
+                        >{userMsg}</p>
+                    </InputContainer>
+                    {/* 닉네임 */}
+                    <InputContainer>
+                        <input 
+                            type="text" 
+                            id="username"
+                            className="input-field" 
+                            autoComplete="off"
+                            placeholder="닉네임"
+                            value={name}
+                            onChange={(e) => setName(e.target.value)}
+                        ></input>
+                    </InputContainer>
+                        {/* 비밀번호 입력 */}
+                    <InputContainer>
+                        <input 
+                            type="password" 
+                            id="pwd" 
+                            className="input-field" 
+                            placeholder="비밀번호"
+                            value={pwd}
+                            onChange={(e) => setPwd(e.target.value)} 
+                        ></input>
+                        <p className={`invalid ${pwdMsg !== "" ? "show" : "hide"}`}
+                        >{pwdMsg}</p>
+                    </InputContainer>
+                    <InputContainer>
+                        <input 
+                            type="password" 
+                            name="confirm_pwd" 
+                            className="input-field" 
+                            placeholder="비밀번호 확인"
+                            value={matchPwd}
+                            onChange={(e) => setMatchPwd(e.target.value)} 
+                            onFocus={() => setMatchFocus(true)}
+                        ></input>
+                        <p
+                            className={`${isPwdConfirm ? "valid" : "invalid"} ${matchFocus ? "show" : "hide"}`}
+                        >{pwdConfirmError}</p>
+                    </InputContainer>
+                    <SubmitButton type="submit" className="submit__button">회원가입</SubmitButton>
+                    <Link className="sign-in__link" to="/login">로그인</Link>
+                </form>
+            </div>
+        </div>
     );
 }
 

@@ -4,6 +4,8 @@ import axios from '../api/axios'
 import AuthContext from '../context/AuthProvider';
 
 import "./SignIn.css"
+import { InputContainer } from '../Components/InputContainer';
+import { SubmitButton } from '../Components/SubmitButton';
 // 1. 로그인 시 서버 쪽에서 session_id (쿠키) 를 설정
 // 2. 클라이언트 요청 시에 session_id를 서버 족에서 받는다.
 // 3. 서버 쪽에서 session_id를 검증
@@ -28,10 +30,6 @@ function SignIn(props) {
     const [errMsg, setErrMsg] = useState("")
     const [success, setSuccess] = useState(false)
 
-    const textDecoNone = {
-        textDecoration: 'none'
-    };
-
     // useEffect
     useEffect(() => {
         // 로그인 정보가 존재한다면
@@ -39,7 +37,7 @@ function SignIn(props) {
             navigate("/")
         }
         userRef.current.focus();
-    }, [navigate])
+    }, [auth, navigate])
     
     useEffect(() => {
         setErrMsg('');
@@ -103,35 +101,44 @@ function SignIn(props) {
 
     // form
     return (
-        <section className='SignIn'>
-            <h1>Sign in</h1>
-            <form className="col-center" onSubmit={handleSubmit}>
-                {/* 아이디 입력 */}
-                <input 
-                    type="text" 
-                    ref={userRef}
-                    className="input-field" 
-                    autoComplete="off"
-                    placeholder="아이디"
-                    value={user}
-                    onChange={(e) => setUser(e.target.value)} 
-                    required
-                ></input>
-                {/* 비밀번호 입력 */}
-                <input 
-                    type="password" 
-                    name="pw" 
-                    className="input-field" 
-                    placeholder="비밀번호"
-                    value={pwd}
-                    onChange={(e) => setPwd(e.target.value)} 
-                    required
-                ></input>
-                <p ref={errRef} className={errMsg ? "errmsg" : "hide"}>{errMsg}</p>
-                <Link to="/signup" style={textDecoNone}><div className="signUp__link">Sign Up</div></Link>
-                <button type="submit" className="submit__button">로그인</button>
-            </form>
-        </section>
+        <div className='SignIn'>
+            <header>
+                <Link className='home__link' to="/">Home</Link>
+            </header>
+            <div className='sign-in__container'>
+                <h1>Sign in</h1>
+                <form className="col-center" onSubmit={handleSubmit}>
+                    {/* 아이디 입력 */}
+                    <InputContainer>
+                        <input 
+                            type="text" 
+                            ref={userRef}
+                            className="input-field" 
+                            autoComplete="off"
+                            placeholder="아이디"
+                            value={user}
+                            onChange={(e) => setUser(e.target.value)} 
+                            required
+                        ></input>
+                    </InputContainer>
+                    {/* 비밀번호 입력 */}
+                    <InputContainer>
+                        <input 
+                            type="password" 
+                            name="pw" 
+                            className="input-field" 
+                            placeholder="비밀번호"
+                            value={pwd}
+                            onChange={(e) => setPwd(e.target.value)} 
+                            required
+                        ></input>
+                    </InputContainer>
+                    <p ref={errRef} className={errMsg ? "errmsg" : "hide"}>{errMsg}</p>
+                    <SubmitButton type="submit" className="submit__button">로그인</SubmitButton>
+                    <Link className="sign-up__link" to="/signup">회원가입</Link>
+                </form>
+            </div>
+        </div>
     );
 }
 
