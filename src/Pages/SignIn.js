@@ -35,7 +35,7 @@ function SignIn(props) {
     // useEffect
     useEffect(() => {
         // 로그인 정보가 존재한다면
-        if(auth?.accesToken && auth?.accesToken != "" && auth?.accesToken != undefined){
+        if(auth?.accesToken && auth?.accesToken !== "" && auth?.accesToken !== undefined){
             navigate("/")
         }
         userRef.current.focus();
@@ -48,7 +48,7 @@ function SignIn(props) {
     useEffect(() => {
         if(success){
             // 회원가입 성공 시
-            alert('회원가입이 성공하였습니다')
+            alert('로그인이 성공하였습니다')
 
             // 메인 화면으로 redirect
             navigate("/")
