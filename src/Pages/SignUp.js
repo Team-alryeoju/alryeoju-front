@@ -15,71 +15,136 @@ function SignUp(props) {
     /** context value 
      * 이를 통해 컴포넌트 모두에서 페이지를 이용하는 동안 acces token 받을 수 있다.
     */
-    const { setAuth } = useContext(AuthContext);
+    const { auth } = useContext(AuthContext);
     // Ref
-    const userRef = useRef();
     const errRef = useRef();
 
     /** 사용자 ID state */
+    const userRef = useRef();
     const [user, setUser] = useState("");
-
+    const [userMsg, setUserMsg] = useState("");
+    const [isUserConfirm, setIsUserConfirm] = useState(false)
     /** 사용자 닉네임 state */
     const [name, setName] = useState("");
+    const [nameMsg, setNameMsg] = useState("")
     /** 사용자 PW state */
     const [pwd, setPwd] = useState("");
-
+    const [pwdMsg, setPwdMsg] = useState("");
     /** 비밀번호 확인 state**/
+    // 확인용 비밀번호
     const [matchPwd, setMatchPwd] = useState("");
     const [matchFocus, setMatchFocus] = useState(false)
     const [isPwdConfirm, setIsPwdConfirm] = useState(false);
-    const [confirmError, setConfirmError] = useState("");
+    const [pwdConfirmError, setPwdConfirmError] = useState("");
 
     /** 에러 메시지 state */
     const [errMsg, setErrMsg] = useState("")
     const [success, setSuccess] = useState(false)
 
     const navigate = useNavigate();
-    // fetch
-
+    
+    // 로그인 상태라면 메인화면으로!
+    useEffect(() => {
+        // 로그인 정보가 존재한다면
+        if(auth?.accesToken && auth?.accesToken !== "" && auth?.accesToken !== undefined){
+            navigate("/")
+        }
+    }, [navigate])
 
     // 처음에 ID 부분으로 focusing 됨
     useEffect(() => {
         userRef.current.focus();
     }, [])
 
-    // 아이디랑 비밀번호 유효성검사 할 때 활용하려면 정규식 검사 추가 필요
-    
-    // 에러 메시지 관리
-    useEffect(() => {
-        setErrMsg('');
-    }, [user, pwd, matchPwd])
-
     useEffect(() => {
         if(success){
             // 회원가입 성공 시
             alert('회원가입이 성공하였습니다')
-            navigate("/auth/signin")
+            navigate("/signin")
         }
     }, [navigate, success])
-
 
     // 비밀번호나 확인 비밀번호가 바뀔 때 -> 두 비밀번호가 일치하는지 확인
     useEffect(() => {
         if(pwd.length < 1 && matchPwd.length < 1){
-            setConfirmError("")
+            setPwdConfirmError("");
         }else if(pwd === matchPwd){
-            setIsPwdConfirm(true)
-            setConfirmError("비밀번호가 일치합니다! :)")
+            setPwdMsg("");
+            setIsPwdConfirm(true);
+            setPwdConfirmError("비밀번호가 일치합니다! :)");
         }else{
-            setIsPwdConfirm(false)
-            setConfirmError("비밀번호가 일치하지 않습니다! :(")
+            setPwdMsg("");
+            setIsPwdConfirm(false);
+            setPwdConfirmError("비밀번호가 일치하지 않습니다! :(");
         }
     }, [pwd, matchPwd])
+
+    useEffect(() => {
+        // 실시간 ID 중복 확인 함수
+        const checkIdDuplicate = async () => {
+        // ID 칸 비어있으면 아무 동작X
+            if(user === ""){
+                setIsUserConfirm(false)
+                setUserMsg("")
+                return
+            }
+            try{
+                const response = await axios.post("/duplicate_check",
+                    JSON.stringify({id : user}),
+                    {
+                        headers: { 'Content-Type': 'application/json'},
+                        withCredentials: true
+                    }
+                );
+                setIsUserConfirm(true)
+                setUserMsg(response.data.msg)
+                
+            } catch(err) {
+                // 에러 처리
+                if(!err?.response){
+                    setUserMsg("No Server Response")
+                }else if(err.response?.status === 400){
+                    // 서버에서 필요한 정보가 요청에 없을 때
+                    setUserMsg("Missing id")
+                }else if(err.response.status === 409){
+                    setUserMsg(err.response.data.msg)
+                }else{
+                    setUserMsg("Failed")
+                }
+
+                setIsUserConfirm(false)
+            }
+        }
+
+        
+        checkIdDuplicate();
+    },[user])
 
     // login submit
     const handleSubmit = async (e) => {
         // 해당 이벤트에 대한 기본 동작을 실행하지 않도록 지정한다.
         e.preventDefault();
+
+        // 입력값 단 하나라도 비어있으면 submit X
+        if(user === "" || user === "" || pwd === "" || matchPwd === "" ){
+            if(user === "") setUserMsg("아이디를 입력해주세요")
+            if(name === "") setNameMsg("닉네임을 입력해주세요")
+            if(pwd === "") setPwdMsg("비밀번호를 입력해주세요")
+            if(matchPwd === "") setPwdConfirmError("비밀번호 확인을 위해 비밀번호를 다시 입력해주세요")
+
+            return
+        }
+
+        // 아이디 중복 확인X
+        if(!isUserConfirm){
+            alert(userMsg)
+            return
+        }
+        // 비밀번호 확인X
+        if(!isPwdConfirm){
+            alert(pwdConfirmError)
+            return
+        }
 
         // post 작업 필요
         try{
@@ -88,19 +153,16 @@ function SignUp(props) {
                 {
                     headers: { 'Content-Type': 'application/json'},
                     withCredentials: true
-                });
+                }  
+            );
+
+            // 처리 성공
+            setSuccess(true);
+
         } catch(err) {
             // 에러 처리
+            setSuccess(false)
         }
-        
-
-        // 처리 성공
-        setSuccess(true);
-    }
-
-    // ID 중복 확인
-    const checkIdDuplicate = async () => {
-    
     }
 
     // form
@@ -118,9 +180,9 @@ function SignUp(props) {
                     placeholder="아이디"
                     value={user}
                     onChange={(e) => setUser(e.target.value)}
-                    onBlur={checkIdDuplicate} 
-                    required
                 ></input>
+                <p className={`${isUserConfirm ? "valid" : "invalid"} ${userMsg !== "" ? "show" : "hide"}`}
+                >{userMsg}</p>
                 {/* 닉네임 입력 */}
                 <input 
                     type="text" 
@@ -130,8 +192,6 @@ function SignUp(props) {
                     placeholder="닉네임"
                     value={name}
                     onChange={(e) => setName(e.target.value)}
-                    onBlur={checkIdDuplicate} 
-                    required
                 ></input>
                 {/* 비밀번호 입력 */}
                 <input 
@@ -141,8 +201,9 @@ function SignUp(props) {
                     placeholder="비밀번호"
                     value={pwd}
                     onChange={(e) => setPwd(e.target.value)} 
-                    required
                 ></input>
+                <p className={`invalid ${pwdMsg !== "" ? "show" : "hide"}`}
+                >{pwdMsg}</p>
                 <input 
                     type="password" 
                     name="confirm_pwd" 
@@ -153,13 +214,12 @@ function SignUp(props) {
                     aria-describedby="confirm-note"
                     onChange={(e) => setMatchPwd(e.target.value)} 
                     onFocus={() => setMatchFocus(true)}
-                    required
                 ></input>
                 <p 
                     id="confirm-note" 
                     className={`${isPwdConfirm ? "valid" : "invalid"} ${matchFocus ? "show" : "hide"}`}
-                    >{confirmError}</p>
-                <button type="submit" className="submit__button" disabled={!isPwdConfirm ? true : false}>회원가입</button>
+                    >{pwdConfirmError}</p>
+                <button type="submit" className="submit__button">회원가입</button>
             </form>
         </section>
     );
