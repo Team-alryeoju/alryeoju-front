@@ -4,6 +4,7 @@ import axios from "../api/axios";
 /** Components import */
 import ProductList from "../Components/ProductList"
 import ProductSwiper from "../Components/ProductSwiper";
+import Header from "../Header";
 import Footer from '../Footer'
 
 import '../default.css'
@@ -48,7 +49,8 @@ const Home = () => {
     }, [category])
 
     return (
-        <div className="home-main">
+        <div className="Home">
+            <Header />
             <section className="product__slide-container col-center">
                 <ProductSwiper />
             </section>

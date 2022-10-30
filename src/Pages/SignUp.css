@@ -1,7 +1,40 @@
-.valid{
-    color: green;
+.SignUp{
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    width: 100vw;
+    align-items: center;
 }
 
-.invalid{
-    color: red;
+.SignUp > header{
+    height: 30%;
+    display: flex;
+    flex-direction: column;
+    justify-content: end;
+    padding-bottom: 2rem;
+}
+
+.home__link, .home__link:visited{
+    text-decoration: none;
+    color: black;
+    font-weight: 600;
+    font-size: 3rem;
+    height: 30%;
+}
+
+.sign-up__container{
+    height: 70%;
+}
+
+.sign-up__container > h1{
+    font-size: 1.5rem;
+    padding-bottom: 0.5rem;
+}
+
+.sign-in__link, .sign-in__link:visited{
+    color: rgb(163, 154, 154);
+    font-size: 0.8rem;
+    text-decoration: underline;
+    text-align: center;
+    padding-top: 0.3rem;
 }

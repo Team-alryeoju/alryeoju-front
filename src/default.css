@@ -22,10 +22,19 @@
     justify-content: center;
 }
 
-.h2{
+h2{
     font-size: 1.1rem;
 }
 
 .hide {
     display: none;
+}
+
+a{
+    text-decoration: none;
+    cursor: pointer;
+}
+
+button{
+    cursor: pointer;
 }
