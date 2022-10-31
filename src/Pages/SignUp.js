@@ -61,7 +61,7 @@ function SignUp(props) {
         if(success){
             // 회원가입 성공 시
             alert('회원가입이 성공하였습니다')
-            navigate("/signin")
+            navigate("/login")
         }
     }, [navigate, success])
 
@@ -90,7 +90,7 @@ function SignUp(props) {
                 return
             }
             try{
-                const response = await axios.post("/duplicate_check",
+                const response = await axios.post("/duplicate_id_check",
                     JSON.stringify({id : user}),
                     {
                         headers: { 'Content-Type': 'application/json'},
