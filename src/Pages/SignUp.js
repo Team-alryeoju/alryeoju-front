@@ -28,6 +28,8 @@ function SignUp(props) {
     /** 사용자 닉네임 state */
     const [name, setName] = useState("");
     const [nameMsg, setNameMsg] = useState("")
+    const [isNameConfirm, setIsNameConfirm] = useState(false)
+
     /** 사용자 PW state */
     const [pwd, setPwd] = useState("");
     const [pwdMsg, setPwdMsg] = useState("");
@@ -67,7 +69,7 @@ function SignUp(props) {
 
     // 비밀번호나 확인 비밀번호가 바뀔 때 -> 두 비밀번호가 일치하는지 확인
     useEffect(() => {
-        if(pwd.length < 1 && matchPwd.length < 1){
+        if(pwd.length < 1 || matchPwd.length < 1){
             setPwdConfirmError("");
         }else if(pwd === matchPwd){
             setPwdMsg("");
@@ -80,8 +82,9 @@ function SignUp(props) {
         }
     }, [pwd, matchPwd])
 
+    /** ID 중복 확인 */
     useEffect(() => {
-        // 실시간 ID 중복 확인 함수
+        /** ID 중복 확인 */
         const checkIdDuplicate = async () => {
         // ID 칸 비어있으면 아무 동작X
             if(user === ""){
@@ -117,9 +120,49 @@ function SignUp(props) {
             }
         }
 
-        
         checkIdDuplicate();
     },[user])
+    
+     /** 닉네임 중복 확인 */
+     useEffect(() => {
+        /** 닉네임 중복 확인 */
+        const checkNameDuplicate = async () => {
+        // 닉네임 칸 비어있으면 아무 동작X
+            if(name === ""){
+                setIsNameConfirm(false)
+                setNameMsg("")
+                return
+            }
+            try{
+                const response = await axios.post("/duplicate_name_check",
+                    JSON.stringify({u_name : name}),
+                    {
+                        headers: { 'Content-Type': 'application/json'},
+                        withCredentials: true
+                    }
+                );
+                setIsNameConfirm(true)
+                setNameMsg(response.data.msg)
+                
+            } catch(err) {
+                // 에러 처리
+                if(!err?.response){
+                    setNameMsg("No Server Response")
+                }else if(err.response?.status === 400){
+                    // 서버에서 필요한 정보가 요청에 없을 때
+                    setNameMsg("Missing id")
+                }else if(err.response.status === 409){
+                    setNameMsg(err.response.data.msg)
+                }else{
+                    setNameMsg("Failed")
+                }
+
+                setIsNameConfirm(false)
+            }
+        }
+
+        checkNameDuplicate();
+    },[name])
 
     // login submit
     const handleSubmit = async (e) => {
@@ -201,6 +244,8 @@ function SignUp(props) {
                             value={name}
                             onChange={(e) => setName(e.target.value)}
                         ></input>
+                        <p className={`${isNameConfirm ? "valid" : "invalid"} ${nameMsg !== "" ? "show" : "hide"}`}
+                        >{nameMsg}</p>
                     </InputContainer>
                         {/* 비밀번호 입력 */}
                     <InputContainer>
@@ -226,7 +271,7 @@ function SignUp(props) {
                             onFocus={() => setMatchFocus(true)}
                         ></input>
                         <p
-                            className={`${isPwdConfirm ? "valid" : "invalid"} ${matchFocus ? "show" : "hide"}`}
+                            className={`${isPwdConfirm ? "valid" : "invalid"}`}
                         >{pwdConfirmError}</p>
                     </InputContainer>
                     <SubmitButton type="submit" className="submit__button">회원가입</SubmitButton>
