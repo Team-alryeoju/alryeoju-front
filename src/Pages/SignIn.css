@@ -7,7 +7,7 @@
 }
 
 .SignIn > header{
-    height: 30%;
+    height: 25%;
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
@@ -23,7 +23,7 @@
 }
 
 .sign-in__container{
-    height: 70%;
+    height: 75%;
 }
 
 .sign-in__container > h1{

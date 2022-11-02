@@ -47,7 +47,6 @@ function SignIn(props) {
         if(success){
             // 회원가입 성공 시
             alert('로그인이 성공하였습니다')
-
             // 메인 화면으로 redirect
             navigate("/")
         }
@@ -69,12 +68,13 @@ function SignIn(props) {
             
             // 응답의 데이터 중 access_token 으로 발급받음
             const accesToken = response.data.access_token;
-
+            const userName = response.data.name
+            const id = response.data.id
             // Auth Context
-            setAuth({ user, accesToken})
+            setAuth({id, userName, accesToken})
 
             // 받은 토큰을 도메인의 Session Storage나 Local Storage 로 저장한다.
-            sessionStorage.setItem("user", JSON.stringify({ user, accesToken }))
+            sessionStorage.setItem("user", JSON.stringify({ id, userName, accesToken }))
             setSuccess(true)
             setUser('');
             setPwd('');  
@@ -131,8 +131,8 @@ function SignIn(props) {
                             onChange={(e) => setPwd(e.target.value)} 
                             required
                         ></input>
+                        <p ref={errRef} className={errMsg ? "invalid" : "hide"}>{errMsg}</p>
                     </InputContainer>
-                    <p ref={errRef} className={errMsg ? "errmsg" : "hide"}>{errMsg}</p>
                     <SubmitButton type="submit" className="submit__button">로그인</SubmitButton>
                     <Link className="sign-up__link" to="/signup">회원가입</Link>
                 </form>
