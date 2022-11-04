@@ -26,7 +26,7 @@ const HeaderContainer = styled.header`
         font-size: 1.5rem;
         font-weight: 700;
         padding-left: 10px;
-        color: #9F8772;
+        color: #7D6767;
     }
 
     .user-link{

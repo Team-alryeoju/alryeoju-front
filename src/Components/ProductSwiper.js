@@ -40,7 +40,7 @@ function getWindowSize() {
     return {width, height};
 }
 
-function ProductSwiper({ title, products }) {
+function ProductSwiper({ products }) {
     const [slide, setSlide] = useState(3);
     const [swiperSetting, setSwiperSetting] = useState(null);
 

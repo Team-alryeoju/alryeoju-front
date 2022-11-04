@@ -39,7 +39,7 @@ const Home = () => {
             // swiper 제목
             setTitle(`${auth.userName}님에게 추천하는 술`)
             // *고칠것*id를 auth id로 바꿔야함!
-            setRecommUrl(`/recomm?id=20`)
+            setRecommUrl(`/recomm?id=43`)
         }
         else {
             setTitle(`Top 15`)
