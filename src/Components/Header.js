@@ -1,7 +1,8 @@
 import React, { useContext, useEffect } from "react";
 import { Link } from "react-router-dom";
 import styled from 'styled-components';
-
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCircleUser } from "@fortawesome/free-solid-svg-icons"
 import AuthContext from '../context/AuthProvider';
 
 
@@ -9,19 +10,37 @@ const HeaderContainer = styled.header`
     display: flex;
     justify-content: space-between;
     align-items: center;
-
     background-color: white;
+
     width: 100vw;
     height: 56px;
     padding: 0 10px 0 10px;
     box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.2);
+
+    a, div{
+        color: #737373;
+        cursor: pointer;
+    }
+
+    .home-link{
+        font-size: 1.5rem;
+        font-weight: 700;
+        padding-left: 10px;
+        color: #9F8772;
+    }
+
+    .user-link{
+        font-size: 1rem;
+        font-weight: 500;
+        & > div, & > a{
+            margin-right: 10px;
+        }
+    }
+
 `
 
 const Header = () => {
     const { auth, setAuth } = useContext(AuthContext)
-    const textDecoNone = {
-        textDecoration: 'none'
-    };
 
     const logOut = () => {
         // 로그인 정보 session스토리지에서 remove
@@ -34,12 +53,13 @@ const Header = () => {
 
     return (
         <HeaderContainer>
-            <Link to="/" style={textDecoNone}><div className="home-link">Home</div></Link>
-            <div className="row">
-                <Link to="/mypage" style={textDecoNone}><div className="mypage-link">MyPage</div></Link>
+            <Link to="/" className="home-link">Home</Link>
+            <div className="user-link row">
+                <Link to="/mypage">구매내역</Link>
+                {/* <FontAwesomeIcon className="mypage-icon" icon={faCircleUser} /> */}
                 { auth ?
-                    (<button onClick={logOut}>logout</button>) 
-                    : (<Link to="/login" style={textDecoNone}><div className="login-link">login</div></Link>) 
+                    (<div onClick={logOut}>로그아웃</div>) 
+                    : (<Link to="/login">로그인</Link>) 
                 }
             </div>
         </HeaderContainer>

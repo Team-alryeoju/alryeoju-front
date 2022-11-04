@@ -1,49 +1,93 @@
-import React from "react";
+import React, { useContext } from "react";
 import { useEffect, useState } from "react";
 import axios from "../api/axios";
+import AuthContext from "../context/AuthProvider";
 /** Components import */
 import ProductList from "../Components/ProductList"
 import ProductSwiper from "../Components/ProductSwiper";
 import Header from "../Components/Header";
 import Footer from '../Components/Footer'
 
-import '../default.css'
 import './Home.css'
 
 const Home = () => {
+    const {auth} = useContext(AuthContext);
     // 화면에 보여줄 알코올 리스트
     const [alList, setAlList] = useState([]);
+    const [recommList, setRecommList] = useState([]);
+    /** auth 마다 달라질 state */
+    // API 요청 URL
+    const [recommUrl , setRecommUrl] = useState('')
+    // title
+    const [title, setTitle] = useState('')
     // api에 넘겨줄 데이터 조건 -> 카테고리 누를 때마다 변한다.
-    const [category, setCategory] = useState('');
+    const [category, setCategory] = useState(0);
     const [isloading, setIsLoading] = useState(true);
     const [error, setError] = useState(null);
 
     // 검색 조건을 보내서 fetch 해오는 방식으로!!
-    const showAll = () => setCategory('')
-    const showTakju = () => setCategory('takju')
-    const showYackju = () => setCategory('chungju')
-    const showWine = () => setCategory('wine')
-    const showSoju = () => setCategory('soju')
+    const categoryArr = [
+        { name: '전체' , url: `/alcohol`},
+        { name: '탁주' , url: `/alcohol?category=takju`},
+        { name: '약주' , url: `/alcohol?category=chungju`},
+        { name: '과실주' , url: `/alcohol?category=wine`},
+        { name: '일반증류주' , url: `/alcohol?category=soju`}
+    ]
+
+    useEffect(() => {
+        if(auth?.accesToken && auth?.accesToken !== "" && auth?.accesToken !== undefined){
+            // swiper 제목
+            setTitle(`${auth.userName}님에게 추천하는 술`)
+            // *고칠것*id를 auth id로 바꿔야함!
+            setRecommUrl(`/recomm?id=20`)
+        }
+        else {
+            setTitle(`Top 15`)
+            setRecommUrl(`/recomm`)
+        }
+    }, [auth])
+
+    useEffect(() => {
+        // URL : detail/:id
+
+        // 로그인 상태에 따라 다른 url로 GET 요청
+        
+        // -> auth 정보로 url을 만들어야 하는데
+        // 위의 if문에 해당하는 조건이 의도대로 되지 않음 -> 맞지 않는 url을 받아옴
+        // 그래서 url 정확히 받아오기 전까지는 요청하지 않도록 수정
+        if(recommUrl === ''){
+            return
+        }
+
+        /** GET 요청 */
+        const getSoolDetail = async () => {
+            try {
+                setIsLoading(true)
+                const response = await axios.get(recommUrl,{
+                    withCredentials: true
+                })
+                setRecommList(Object.values(response.data))
+            } catch (e){
+                setError(e);
+            }
+        };
+
+        getSoolDetail()
+        
+    }, [recommUrl])
 
     // category가 변할 때마다 알맞은 조건의 데이터를 가져온다.
     useEffect(() =>{
-        let url = ''
-        // sool List URL is random
-        if(category === ''){
-            url = `/alcohol`
-        }else{
-            url = `/alcohol?category=${category}`
-        }
-
         const getAlcoholList = async () => {
             try {
                 setIsLoading(true)
-                const response = await axios.get(url)
+                const response = await axios.get(categoryArr[category].url)
                 setAlList(Object.values(response.data))
             } catch (e){
                 setError(e);
             }
         }
+
         setIsLoading(false);
         getAlcoholList();
     }, [category])
@@ -52,18 +96,19 @@ const Home = () => {
         <div className="Home">
             <Header />
             <section className="product__slide-container col-center">
-                <ProductSwiper />
+                <h2 className="home-title product__slide-title">{title}</h2>
+                <ProductSwiper title={title}products={recommList}/>
             </section>
-            <section className="product__list-container col-center">
-                <p className="list-title h2">전체 술</p>
-                <div>
-                    <button onClick={showAll}>전체</button>
-                    <button onClick={showTakju}>탁주</button>
-                    <button onClick={showYackju}>약주</button>
-                    <button onClick={showWine}>과실주</button>
-                    <button onClick={showSoju}>일반증류주</button>
+            <section className="product__list-container col">
+                <h2 className="home-title product__list-title">전통주 찾아보기</h2>
+                <div className="category__button-container">
+                    {categoryArr.map((el, idx) => {
+                        return (<button key={idx} className="button--category" onClick={() => setCategory(idx)}>{el.name}</button>)
+                    })}
                 </div>
-                <ProductList products={alList}/>
+                <div className="col-center">
+                    <ProductList products={alList}/>
+                </div>
                 {/* {isloading ? <LoadingIndicator /> :<ProductList products={alList}/>} */}
             </section>
             <Footer />

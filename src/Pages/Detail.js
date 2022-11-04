@@ -7,7 +7,6 @@ import AuthContext from "../context/AuthProvider";
 
 import Header from "../Components/Header"
 import Footer from "../Components/Footer";
-import dummySool from "../static/dummyData";
 import ProductSwiper from "../Components/ProductSwiper";
 
 import "./Detail.css"
@@ -27,6 +26,7 @@ const Detail = () => {
     /** 에러 */
     const [error, setError] = useState('');
     const [sool, setSool] = useState({})
+    const [token, setToken] = useState([])
 
     useEffect(() => {
         if(auth?.accesToken && auth?.accesToken !== "" && auth?.accesToken !== undefined){
@@ -58,13 +58,15 @@ const Detail = () => {
                 const response = await axios.get(detailUrl,{
                     withCredentials: true
                 })
-                setSool(response.data)
+                setSool(response.data.al_data)
+                setToken(response.data.token_rank)
+                console.log(response.data)
+                // img_link, token_rank
             } catch (e){
                 setError(e);
             }
         }
         getSoolDetail()
-        
     }, [detailUrl])
 
     return (
@@ -73,13 +75,13 @@ const Detail = () => {
             <main className="product__main col">
                 <div className="product__detail row">
                     <div className="detail_left col-center">
-                        <img src={sool.img_link} alt={'이름'}></img>
+                        <img src={sool.img_link} alt={sool.al_name}></img>
                     </div>
                     <div className="detail_right col">
                         <div className="product__content">
-                            {/* <div className="product--name">{dummyData.name}</div> */}
+                            <div className="product--name">이름: {sool.al_name}</div>
                             <div className="product--price">가격</div>
-                            <div className="product--degree">도수</div>
+                            <div className="product--degree">도수: {sool.degree}</div>
                             <div className="product--star">평점</div>
                         </div>
                         <div className="product__purchase">
@@ -93,8 +95,8 @@ const Detail = () => {
                         </div>
                     </div>
                 </div>
-                <p>비슷한 술</p>
-                <ProductSwiper />
+                {/* <p>비슷한 술</p> */}
+                {/* <ProductSwiper /> */}
             </main>
             <Footer/>
         </div>

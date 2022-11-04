@@ -1,6 +1,4 @@
 import React from "react";
-
-import dummySool from "../static/dummyData";
 import ProductCard from "./ProductCard";
 
 import './ProductList.css'

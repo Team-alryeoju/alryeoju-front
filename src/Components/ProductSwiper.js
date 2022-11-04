@@ -1,4 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
+import styled from "styled-components";
+
+
+/** Swiper */
 // Import Swiper React components
 import { Swiper, SwiperSlide } from "swiper/react";
 
@@ -6,26 +10,70 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
-
-import "./ProductSwiper.css"
-import dummySool from "../static/dummyData";
-import ProductCard from "./ProductCard";
-
 // import required modules
 import { Pagination, Navigation } from "swiper";
 
+/** FontAwesome */
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { faAngleRight, faAngleLeft } from "@fortawesome/free-solid-svg-icons"
+
+import "./ProductSwiper.css"
+import ProductCard from "./ProductCard";
+
+
+const NavigationButton = styled.button`
+    width: 2rem;
+    height: 2rem;
+    border-radius: 1rem;
+    background-color: white;
+    border: 2px solid #9F8772;
+    color: #9F8772;
+
+    svg{
+        width: 1rem;
+        height: 1rem;
+    }
+`
 
 function getWindowSize() {
     const {innerWidth : width, innerHeight: height} = window;
     return {width, height};
 }
 
-export default function ProductSwiper() {
-
+function ProductSwiper({ title, products }) {
     const [slide, setSlide] = useState(3);
+    const [swiperSetting, setSwiperSetting] = useState(null);
+
+    const navigationPrevRef = useRef(null);
+    const navigationNextRef = useRef(null);
 
     useEffect(() => {
-
+        if(!swiperSetting){
+            const settings = {
+                slidesPerView: 3,
+                spaceBetween: 15,
+                slidesPerGroup: 3,
+                loop: true,
+                loopFillGroupWithBlank: true,
+                // pagination: {
+                //     clickable: true,
+                // },
+                navigation: {
+                    prevEl: navigationPrevRef.current,
+                    nextEl: navigationNextRef.current
+                },
+                onBeforeInit: (swiper) => {
+                    swiper.params.navigation.prevEl = navigationPrevRef.current;
+                    swiper.params.navigation.nextEl = navigationNextRef.current;
+                    swiper.navigation.update();
+                },
+                modules: [Navigation],
+                className: "mySwiper"
+            }
+            setSwiperSetting(settings)
+        }
+    },[swiperSetting])
+    useEffect(() => {
         const handleResize = () => {
             const windowWidth = getWindowSize().width
 
@@ -44,22 +92,15 @@ export default function ProductSwiper() {
     }, [])
 
     return (
-        <div className="swiper-container">
-            <Swiper
-                slidesPerView={slide}
-                spaceBetween={15}
-                slidesPerGroup={slide}
-                loop={true}
-                loopFillGroupWithBlank={true}
-                pagination={{
-                    clickable: true,
-                }}
-                navigation={true}
-                modules={[Pagination, Navigation]}
-                className="mySwiper"
-            >
-                {dummySool.map((sool) => <SwiperSlide key={sool.id}><ProductCard sool={sool}/></SwiperSlide>)}
-            </Swiper>
+        <div className="swiper-container row-center">
+            <NavigationButton ref={navigationPrevRef}><FontAwesomeIcon icon={faAngleLeft} /></NavigationButton>
+            { swiperSetting ? (<Swiper {...swiperSetting}>
+                {products.map((sool) => <SwiperSlide key={sool.al_id}><ProductCard sool={sool}/></SwiperSlide>)}
+            </Swiper>) : null}
+            <NavigationButton ref={navigationNextRef}><FontAwesomeIcon icon={faAngleRight} /></NavigationButton>
         </div>
   );
 }
+
+
+export default ProductSwiper
