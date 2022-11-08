@@ -55,7 +55,7 @@ function SignIn(props) {
     // login submit
     const handleSubmit = async (e) => {
         e.preventDefault();
-
+        
         try{
             // 서버에 POST 요청으로 토큰을 발급받는다.
             const response = await axios.post("/signin",
@@ -115,6 +115,7 @@ function SignIn(props) {
                             className="input-field" 
                             autoComplete="off"
                             placeholder="아이디"
+                            title="아이디"
                             value={user}
                             onChange={(e) => setUser(e.target.value)} 
                             required
@@ -127,6 +128,7 @@ function SignIn(props) {
                             name="pw" 
                             className="input-field" 
                             placeholder="비밀번호"
+                            title="비밀번호"
                             value={pwd}
                             onChange={(e) => setPwd(e.target.value)} 
                             required
