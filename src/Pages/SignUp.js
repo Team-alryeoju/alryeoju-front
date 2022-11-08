@@ -36,7 +36,6 @@ function SignUp(props) {
     /** 비밀번호 확인 state**/
     // 확인용 비밀번호
     const [matchPwd, setMatchPwd] = useState("");
-    const [matchFocus, setMatchFocus] = useState(false)
     const [isPwdConfirm, setIsPwdConfirm] = useState(false);
     const [pwdConfirmError, setPwdConfirmError] = useState("");
 
@@ -227,6 +226,7 @@ function SignUp(props) {
                             className="input-field" 
                             autoComplete="off"
                             placeholder="아이디"
+                            title="아이디"
                             value={user}
                             onChange={(e) => setUser(e.target.value)}
                         ></input>
@@ -241,6 +241,7 @@ function SignUp(props) {
                             className="input-field" 
                             autoComplete="off"
                             placeholder="닉네임"
+                            title="닉네임"
                             value={name}
                             onChange={(e) => setName(e.target.value)}
                         ></input>
@@ -254,6 +255,7 @@ function SignUp(props) {
                             id="pwd" 
                             className="input-field" 
                             placeholder="비밀번호"
+                            title="비밀번호"
                             value={pwd}
                             onChange={(e) => setPwd(e.target.value)} 
                         ></input>
@@ -266,9 +268,9 @@ function SignUp(props) {
                             name="confirm_pwd" 
                             className="input-field" 
                             placeholder="비밀번호 확인"
+                            title="비밀번호 확인"
                             value={matchPwd}
-                            onChange={(e) => setMatchPwd(e.target.value)} 
-                            onFocus={() => setMatchFocus(true)}
+                            onChange={(e) => setMatchPwd(e.target.value)}
                         ></input>
                         <p
                             className={`${isPwdConfirm ? "valid" : "invalid"}`}

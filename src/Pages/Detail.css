@@ -7,7 +7,7 @@
 
 .product__main {
     width: 80vw;
-    height: 60vh;
+    height: 70vh;
     margin-top: 20px;
     margin-bottom: 20px;
 }
@@ -33,19 +33,18 @@
 .detail_right{
     height: 100%;
     flex: 3 0 60%;
-    justify-content: space-between;
+    justify-content: flex-start;
     padding-left: 15px;
     padding-top: 15px;
 }
 
 .product__content{
-    flex: 3 0 75%;
+    height: 75%;
     justify-content: space-between;
-    padding-bottom: 50px;
 }
 
 .product__purchase{
-    flex: 1 0 25%;
+    height: 25%;
     justify-content: flex-end;
 }
 

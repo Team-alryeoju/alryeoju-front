@@ -17,7 +17,7 @@ const HeaderContainer = styled.header`
     padding: 0 10px 0 10px;
     box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.2);
 
-    a, div{
+    a, button{
         color: #737373;
         cursor: pointer;
     }
@@ -32,7 +32,7 @@ const HeaderContainer = styled.header`
     .user-link{
         font-size: 1rem;
         font-weight: 500;
-        & > div, & > a{
+        & > button, & > a{
             margin-right: 10px;
         }
     }
@@ -55,10 +55,11 @@ const Header = () => {
         <HeaderContainer>
             <Link to="/" className="home-link">Home</Link>
             <div className="user-link row">
+                <Link to="/test">취향 테스트</Link>
                 <Link to="/mypage">구매내역</Link>
                 {/* <FontAwesomeIcon className="mypage-icon" icon={faCircleUser} /> */}
                 { auth ?
-                    (<div onClick={logOut}>로그아웃</div>) 
+                    (<button onClick={logOut}>로그아웃</button>) 
                     : (<Link to="/login">로그인</Link>) 
                 }
             </div>

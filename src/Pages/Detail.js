@@ -1,6 +1,6 @@
 import React from "react";
 import axios from "../api/axios";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { useState, useEffect, useContext } from "react";
 
 import AuthContext from "../context/AuthProvider";
@@ -41,8 +41,10 @@ const Detail = () => {
     const [isloading, setIsLoading] = useState(true);
     /** 에러 */
     const [error, setError] = useState('');
-    const [sool, setSool] = useState({})
-    const [tokens, setTokens] = useState([])
+    const [sool, setSool] = useState({});
+    const [tokens, setTokens] = useState([]);
+
+    const navigate = useNavigate();
 
     useEffect(() => {
         if(auth?.accesToken && auth?.accesToken !== "" && auth?.accesToken !== undefined){
@@ -107,6 +109,19 @@ const Detail = () => {
         getSoolDetail()
     }, [detailUrl])
 
+    const handlePurchaseBtn = () => {
+        // 로그인이 안 된 상태라면
+        if(!auth?.accesToken || auth?.accesToken === "" || auth?.accesToken === undefined){
+            // 로그인 화면으로 전환시킴
+            alert("로그인 후 구매 가능합니다.")
+            navigate("/login")
+            return
+        }
+
+        alert("구매 완료")
+
+    }
+
     return (
         <div className="Detail">
             <Header />
@@ -131,7 +146,9 @@ const Detail = () => {
                                 </div>
                             </div>
                             <div className="product--token col">
-                                <div className="token--title"><span>{userName}</span>님께 추천하는 토큰 랭킹</div>
+                                {userName !== ''? 
+                                    <div className="token--title"><span>{userName}</span>님께 추천하는 토큰 랭킹</div>
+                                    : <div className="token--title">이 술의 토큰 랭킹</div>}
                                 <ul className="row product--tokenList">
                                     {tokens.map((token) => {
                                         return (<li className="product--tokenList">#{token}</li>)
@@ -147,7 +164,7 @@ const Detail = () => {
                                 <button>plus</button>
                             </div>
                             <p>총 가격</p> */}
-                            <PurchaseButton>바로구매 <FontAwesomeIcon icon={faAngleRight} /></PurchaseButton>
+                            <PurchaseButton onClick={handlePurchaseBtn}>바로구매 <FontAwesomeIcon icon={faAngleRight} /></PurchaseButton>
                         </div>
                     </div>
                 </div>
