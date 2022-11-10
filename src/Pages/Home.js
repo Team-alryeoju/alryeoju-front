@@ -39,7 +39,7 @@ const Home = () => {
             // swiper 제목
             setTitle(`${auth.userName}님에게 추천하는 술`)
             // *고칠것*id를 auth id로 바꿔야함!
-            setRecommUrl(`/recomm?id=43`)
+            setRecommUrl(`/recomm?id=${auth.id}`)
         }
         else {
             setTitle(`Top 15`)
@@ -63,7 +63,7 @@ const Home = () => {
         const getSoolDetail = async () => {
             try {
                 setIsLoading(true)
-                const response = await axios.get(recommUrl,{
+                const response = await axios.get(recommUrl, {
                     withCredentials: true
                 })
                 setRecommList(Object.values(response.data))
@@ -95,22 +95,24 @@ const Home = () => {
     return (
         <div className="Home">
             <Header />
-            <section className="product__slide-container col-center">
-                <h2 className="home-title product__slide-title">{title}</h2>
-                <ProductSwiper title={title}products={recommList}/>
-            </section>
-            <section className="product__list-container col">
-                <h2 className="home-title product__list-title">전통주 찾아보기</h2>
-                <div className="category__button-container">
-                    {categoryArr.map((el, idx) => {
-                        return (<button key={idx} className="button--category" onClick={() => setCategory(idx)}>{el.name}</button>)
-                    })}
-                </div>
-                <div className="col-center">
-                    <ProductList products={alList}/>
-                </div>
-                {/* {isloading ? <LoadingIndicator /> :<ProductList products={alList}/>} */}
-            </section>
+            <div className="container">
+                <section className="product__slide-container col-center">
+                    <h2 className="home-title product__slide-title">{title}</h2>
+                    <ProductSwiper title={title}products={recommList}/>
+                </section>
+                <section className="product__list-container col">
+                    <h2 className="home-title product__list-title">전통주 찾아보기</h2>
+                    <div className="category__button-container">
+                        {categoryArr.map((el, idx) => {
+                            return (<button key={idx} className="button--category" onClick={() => setCategory(idx)}>{el.name}</button>)
+                        })}
+                    </div>
+                    <div className="col-center">
+                        <ProductList products={alList}/>
+                    </div>
+                    {/* {isloading ? <LoadingIndicator /> :<ProductList products={alList}/>} */}
+                </section>
+            </div>
             <Footer />
         </div>
     )

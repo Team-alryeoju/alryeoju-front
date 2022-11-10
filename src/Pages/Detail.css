@@ -62,7 +62,7 @@
 }
 
 .product--star{
-    color: #7D6767;
+    color: var(--main-color);
 }
 
 .token--title{
@@ -72,7 +72,7 @@
 }
 
 .token--title > span{
-    color: #7D6767;
+    color: var(--main-color);
 }
 
 .product--tokenList{
@@ -92,5 +92,5 @@
 }
 
 .detail-bottom > h2{
-    color: #7D6767;
+    color: var(--main-color);
 }

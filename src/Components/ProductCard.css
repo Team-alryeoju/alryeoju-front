@@ -45,5 +45,5 @@
 }
 
 .productCard--name:hover{
-    color: #9F8772;
+    color: var(--main-color);
 }

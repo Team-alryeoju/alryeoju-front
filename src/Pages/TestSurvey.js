@@ -1,7 +1,8 @@
 import React, { useEffect } from 'react';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Header from '../Components/Header';
+
+import { questions } from '../static/questions';
 import Question from '../Components/Question';
 
 const TestSurvey = ({answers, setAnswers}) => {
@@ -10,6 +11,7 @@ const TestSurvey = ({answers, setAnswers}) => {
     /** navigate */ 
     // 결과 페이지로 가기 위한 navigate
     const navigate = useNavigate()
+    
     /** state */
     // 현재 질문에 대한 인덱스
     const [curQuestion, setCurQuestion] = useState(0)
@@ -17,34 +19,6 @@ const TestSurvey = ({answers, setAnswers}) => {
     const [curAnswer, setCurAnswer] = useState([])
     // 전체 답변 저장 배열로 저장 (서버에 보내줄 것)
     // const [answers, setAnswers] = useState([])
-
-    // 질문 생김새가 이래야 함
-    const questions = [
-        {   
-            type: 'radio',
-            max: 1,
-            title: '1. 둘 중에 하나를 고르세요!',
-            options : ['고소한', '달달한']
-        },
-        {   
-            type: 'check',
-            max: 2,
-            title: '2. 여러 개를 고르세요!',
-            options : ['사과', '배', '바나나']
-        },
-        {   
-            type: 'check',
-            max: 3,
-            title: '3. 여러 개를 고르세요!',
-            options : ['커피', '초콜릿', '어쩌구']
-        },
-        {   
-            type: 'radio',
-            max: 1,
-            title: '4. 둘 중에 하나를 고르세요!',
-            options : ['탄산', '노 탄산']
-        },
-    ]
 
     useEffect(()=>{
         console.log("최종 답변 :")
@@ -55,31 +29,44 @@ const TestSurvey = ({answers, setAnswers}) => {
         console.log(curQuestion)
     },[answers, curAnswer,curQuestion])
 
+    /** 주어진 질문에 대한 답변이 존재하는지 확인하여 현재 답변을 설정하는 함수*/
+    const handleCurAnswer = (questionIdx) => {
+        const findAnswer = answers[questionIdx]
+
+        // 이미 답변이 존재하는 경우
+        if(findAnswer){
+            setCurAnswer(findAnswer)
+        }else{
+            // 답변 초기화
+            setCurAnswer([])
+        }
+    }
+
     const handleNextBtn = () => {
         // 다음 질문으로 가는데...
         // 선택된 옵션이 없거나 현재 질문이 원하는 답변의 개수보다 모자르다면
         if(curAnswer.length === 0 || curAnswer.length < questions[curQuestion].max) {
-            alert('선택지를 모두 골라주세요')
+            alert('아직 선택이 완료되지 않았습니다!')
             return
         }
 
-        // 선택된 옵션이 올바르게 있는 경우 있는 경우
-        // 선택된 옵션 최종 답변 모음에 추가
-        setAnswers([...answers, curAnswer])
+        // 옵션이 개수에 맞게 잘 선택되었다면
+        const newAnswers = answers.slice()
+
+        newAnswers[curQuestion] = curAnswer
+        // 선택된 옵션 최종 답변에 업데이트
+        setAnswers(newAnswers)
+
         // 다음 문제로 넘어가기
         setCurQuestion(curQuestion + 1);
-        // 현재 답변 저장되었던 것 초기화
-        setCurAnswer([])
+        // 다음 문제에 대한 답변 해결
+        handleCurAnswer(curQuestion + 1);
     }
 
     const handlePrevBtn = () => {
         // 이전 페이지로 돌아감
-
-        // 이전 페이지의 답변을 현재 답변 state에 다시 저장 -> 다시 이전 상태로 돌아가기 위함임
-        setCurAnswer(answers.slice(-1)[0])
-        // 선택되었던 옵션 답변에서 제거 (pop)
-        setAnswers(answers.slice(0, -1))
         setCurQuestion(curQuestion - 1);
+        handleCurAnswer(curQuestion - 1);
     }
 
     const selectAnswer = (selectedIdx) => {
@@ -97,7 +84,6 @@ const TestSurvey = ({answers, setAnswers}) => {
             // 추가 작업은 하지 않는다.
         }else if(questions[curQuestion].type === 'check'){
         /**  check : 요구하는 답변이 여러개인 문제 */ 
-
             // 이미 추가된 옵션을 다시 선택하는 경우라면
             if(curAnswer.includes(selectedIdx)){
                 setCurAnswer(curAnswer.filter((el) => el !== selectedIdx))
@@ -114,7 +100,7 @@ const TestSurvey = ({answers, setAnswers}) => {
             }
 
             //  선택이 완료되었다면
-            alert('선택이 모두 완료되었습니다.')
+            alert('더 이상 선택할 수 없습니다.')
         }
     }
 
@@ -132,17 +118,19 @@ const TestSurvey = ({answers, setAnswers}) => {
     }
 
     return (
-        <div className='Survey'>
+        <main className='Survey'>
                 <Question 
                         question={questions[curQuestion]}
-                        answer={curAnswer}
+                        curAnswer={curAnswer}
                         selectAnswer={selectAnswer}
                 />
-                <button className={curQuestion === 0 ? 'hide': ''} onClick={handlePrevBtn}>prev</button>
-                <button className={curQuestion === questions.length-1 ? 'hide': ''} onClick={handleNextBtn}>next</button>
-                {curQuestion === questions.length-1 ? <button onClick={answerSubmit}>결과보기</button> : null}
+                <div>
+                    <button className={curQuestion === 0 ? 'hide': ''} onClick={handlePrevBtn}>prev</button>
+                    <button className={curQuestion === questions.length-1 ? 'hide': ''} onClick={handleNextBtn}>next</button>
+                    {curQuestion === questions.length-1 ? <button onClick={answerSubmit}>결과보기</button> : null}
+                </div>
 
-        </div>
+        </main>
     );
 };
 

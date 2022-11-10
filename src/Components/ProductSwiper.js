@@ -26,8 +26,8 @@ const NavigationButton = styled.button`
     height: 2rem;
     border-radius: 1rem;
     background-color: white;
-    border: 2px solid #9F8772;
-    color: #9F8772;
+    border: 2px solid var(--main-color);
+    color: var(--main-color);
 
     svg{
         width: 1rem;

@@ -1,28 +1,45 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
-const Option = styled.button`
+const QuestionContainer = styled.div`
+    width: 80%;
+    height: 80%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: red;
+    margin-top: 20px;
 
+`
+const OptionContainer = styled.div`
+    width: 60%;
+    height: 70%;
+    background-color: aliceblue;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+`
+const Option = styled.button`
+    flex: 0 1 200px;
+    margin: 10px;
     &.selected{
-        background-color: red;
+        background-color: var(--emphasize-color);
     }
 `
 
-const Question = ({question, answer, selectAnswer}) => {
-
+const Question = ({question, curAnswer, selectAnswer}) => {
+    
     return (
-        <div className="Question">
+        <QuestionContainer>
             <h2>{question.title}</h2>
             <span>{`최대 선택 개수 : ${question.max}`}</span>
-            <ul>
+            <OptionContainer>
                 {question.options.map((el, idx) => (
-                    <li>
-                       <Option className={answer.includes(idx)? "selected" : ""} onClick={()=>{selectAnswer(idx)}}>{el}</Option>
-                    </li>
+                    <Option key={idx} className={curAnswer.includes(idx)? "selected" : ""} onClick={()=>{selectAnswer(idx)}}>{el}</Option>
                 ))
                 }
-            </ul>
-        </div>
+            </OptionContainer>
+        </QuestionContainer>
     );
 };
 

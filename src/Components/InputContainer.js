@@ -19,7 +19,7 @@ export const InputContainer = styled.div`
 
         &:focus{
             border: none;
-            outline: solid 2px #9F8772;
+            outline: solid 2px var(--main-color);
             background-color: white;
         }
     }

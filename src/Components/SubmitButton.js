@@ -6,12 +6,12 @@ export const SubmitButton = styled.button`
     border-radius: 2.5rem;
     background-color: white;
     font-weight: 800;
-    border: solid 2px #9F8772;
-    color: #9F8772;
+    border: solid 2px var(--main-color);
+    color: var(--main-color);
     font-size: large;
 
     &:hover{
-        background-color: #9F8772;
+        background-color: var(--main-color);
         color: white
     }
 `

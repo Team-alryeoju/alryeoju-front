@@ -1,4 +1,4 @@
-.Home{
+.Home > .container{
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -8,7 +8,7 @@
 .home-title{
     width: 100%;
     margin-bottom: 3px;
-    color: #7D6767;
+    color: var(--main-color);
     font-weight: 600;
     font-size: 1.2rem;
 }
@@ -43,6 +43,6 @@
 }
 
 .button--category:focus{
-    background-color: #9F8772;
+    background-color: var(--main-color);
     color: white;
 }
