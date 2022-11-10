@@ -20,7 +20,7 @@ const TestResult = ({answers}) => {
     return (
         <div>
             <h2>결과 페이지~</h2>
-            {answers.map((el) => <div key={el.question}>{`${el.question}의 답은 ${el.answer}`}</div>)}
+            {answers.map((el,idx) => <div key={idx}>{`${idx+1}의 답은 ${el}`}</div>)}
         </div>
     );
 };

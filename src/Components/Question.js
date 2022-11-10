@@ -35,7 +35,7 @@ const Question = ({question, curAnswer, selectAnswer}) => {
             <span>{`최대 선택 개수 : ${question.max}`}</span>
             <OptionContainer>
                 {question.options.map((el, idx) => (
-                    <Option key={idx} className={curAnswer.answer.includes(idx)? "selected" : ""} onClick={()=>{selectAnswer(idx)}}>{el}</Option>
+                    <Option key={idx} className={curAnswer.includes(idx)? "selected" : ""} onClick={()=>{selectAnswer(idx)}}>{el}</Option>
                 ))
                 }
             </OptionContainer>
