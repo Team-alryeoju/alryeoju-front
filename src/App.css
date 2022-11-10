@@ -29,6 +29,10 @@
   justify-content: center;
 }
 
+.container{
+  padding-top: var(--header-height);
+}
+
 h2{
   font-size: 1.1rem;
 }
@@ -50,4 +54,12 @@ a:visited{
 
 button{
   cursor: pointer;
+}
+
+:root{
+  --header-height: 60px;
+
+  /** color **/
+  --main-color: #7D6767; /** #7D6767 or var(--main-color) **/
+  --emphasize-color: #9999D8;
 }

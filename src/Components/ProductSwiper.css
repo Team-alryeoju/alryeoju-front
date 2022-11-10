@@ -9,5 +9,5 @@
 }
 
 .swiper-pagination-bullet-active{
-    background-color: #9F8772;
+    background-color: var(--main-color);
 }

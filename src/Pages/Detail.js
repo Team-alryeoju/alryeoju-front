@@ -19,7 +19,7 @@ import { faAngleRight, faStar } from "@fortawesome/free-solid-svg-icons"
 import dummySool from "../static/dummyData"
 
 const PurchaseButton = styled.button`
-    background-color: #9999D8;
+    background-color: var(--emphasize-color);
     width: 200px;
     height: 50px;
     border-radius: 10px;
@@ -70,43 +70,13 @@ const Detail = () => {
             return
         }
 
-        /** GET 요청 */
-        const getSoolDetail = async () => {
+        fetch('http://127.0.0.1:5000' + detailUrl, { method: 'GET' })
+        .then((response) => {
+            return response.json()
+        })
+        .then((json) => console.log(json))
+        .catch((error) => console.log(error));
 
-            try {
-                setIsLoading(true)
-                const response = await axios.get(detailUrl,{
-                    withCredentials: true
-                })
-
-                const soolData = response.data.al_data
-
-                // 영어로 들어온 카테고리 한글로 바꿔줌!
-                switch(soolData.category){
-                    case 'takju':
-                        soolData.category = '탁주';
-                        break
-                    case 'chungju':
-                        soolData.category = '약주';
-                        break
-                    case 'wine':
-                        soolData.category = '과실주';
-                        break
-                    case 'soju':
-                        soolData.category = '일반증류주';
-                        break
-                    default:
-                        break
-                }
-
-                setSool(soolData)
-                setTokens(response.data.token_rank)
-                // img_link, token_rank
-            } catch (e){
-                setError(e);
-            }
-        }
-        getSoolDetail()
     }, [detailUrl])
 
     const handlePurchaseBtn = () => {
@@ -125,53 +95,56 @@ const Detail = () => {
     return (
         <div className="Detail">
             <Header />
-            <main className="product__main col">
-                <div className="product__detail row">
-                    <div className="detail_left col-center">
-                        <img src={dummySool[0].img} alt={sool.al_name}></img>
-                        {/* <img src={sool.img_link} alt={sool.al_name}></img> */}
-                    </div>
-                    <div className="detail_right col">
-                        <div className="product__content col">
-                            <div className="product--detail col">
-                                <div className="product--name">{sool.al_name}</div>
-                                <div className="product--category">주종 : {sool.category}</div>
-                                <div className="product--degree">도수: {sool.degree}%</div>
-                                <div className="product--star">
-                                    <FontAwesomeIcon icon={faStar}/>
-                                    <FontAwesomeIcon icon={faStar}/>
-                                    <FontAwesomeIcon icon={faStar}/>
-                                    <FontAwesomeIcon icon={faStar}/>
-                                    <FontAwesomeIcon icon={faStar}/>
+            <div className="container">
+                <main className="product__main col">
+                    <div className="product__detail row">
+                        <div className="detail_left col-center">
+                            <img src={sool.img_link} alt={sool.al_name}></img>
+                            {/* <img src={sool.img_link} alt={sool.al_name}></img> */}
+                        </div>
+                        <div className="detail_right col">
+                            <div className="product__content col">
+                                <div className="product--detail col">
+                                    <div className="product--name">{sool.al_name}</div>
+                                    <div className="product--category">주종 : {sool.category}</div>
+                                    <div className="product--degree">도수: {sool.degree}%</div>
+                                    <div className="product--star">
+                                        <FontAwesomeIcon icon={faStar}/>
+                                        <FontAwesomeIcon icon={faStar}/>
+                                        <FontAwesomeIcon icon={faStar}/>
+                                        <FontAwesomeIcon icon={faStar}/>
+                                        <FontAwesomeIcon icon={faStar}/>
+                                    </div>
                                 </div>
+                                <div className="product--token col">
+                                    {userName !== ''? 
+                                        <div className="token--title"><span>{userName}</span>님께 추천하는 토큰 랭킹</div>
+                                        : <div className="token--title">이 술의 토큰 랭킹</div>}
+                                    <ul className="row product--tokenList">
+                                        {tokens.map((token, idx) => {
+                                            return (<li key={idx} className="product--tokenList">#{token}</li>)
+                                        })}
+                                    </ul>
+                                </div>
+                                {/* <div className="product--price">가격</div> */}
                             </div>
-                            <div className="product--token col">
-                                {userName !== ''? 
-                                    <div className="token--title"><span>{userName}</span>님께 추천하는 토큰 랭킹</div>
-                                    : <div className="token--title">이 술의 토큰 랭킹</div>}
-                                <ul className="row product--tokenList">
-                                    {tokens.map((token) => {
-                                        return (<li className="product--tokenList">#{token}</li>)
-                                    })}
-                                </ul>
+                            <div className="product__purchase col">
+                                {/* <div className="product--count row">
+                                    <button>minus</button>
+                                    <p>1</p>
+                                    <button>plus</button>
+                                </div>
+                                <p>총 가격</p> */}
+                                <PurchaseButton onClick={handlePurchaseBtn}>바로구매 <FontAwesomeIcon icon={faAngleRight} /></PurchaseButton>
                             </div>
-                            {/* <div className="product--price">가격</div> */}
-                        </div>
-                        <div className="product__purchase col">
-                            {/* <div className="product--count row">
-                                <button>minus</button>
-                                <p>1</p>
-                                <button>plus</button>
-                            </div>
-                            <p>총 가격</p> */}
-                            <PurchaseButton onClick={handlePurchaseBtn}>바로구매 <FontAwesomeIcon icon={faAngleRight} /></PurchaseButton>
                         </div>
                     </div>
+                </main>
+                <div className="col-center detail-bottom">
+                    <h2>비슷한 술</h2>
+                    <ProductSwiper products={dummySool}/>
                 </div>
-            </main>
-            <div className="col-center detail-bottom">
-                <h2>비슷한 술</h2>
-                <ProductSwiper products={dummySool}/>
+
             </div>
         </div>
     )
