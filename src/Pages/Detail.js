@@ -49,7 +49,7 @@ const Detail = () => {
     useEffect(() => {
         if(auth?.accesToken && auth?.accesToken !== "" && auth?.accesToken !== undefined){
             // detailUrl = `/detail/?al_id=${soolId}&id=${auth.id}`
-            setDetailUrl(`/detail?al_id=${soolId}&id=16`)
+            setDetailUrl(`/detail?al_id=${soolId}&id=${auth.id}`)
             setUserName(auth.userName);
         }
         else {
@@ -70,12 +70,37 @@ const Detail = () => {
             return
         }
 
-        fetch('http://127.0.0.1:5000' + detailUrl, { method: 'GET' })
-        .then((response) => {
-            return response.json()
-        })
-        .then((json) => console.log(json))
-        .catch((error) => console.log(error));
+        const getSoolDetail = async () => {
+
+            try {
+                setIsLoading(true)
+                const response = await axios.get(detailUrl, {
+                    withCredentials: true
+                })
+                const soolData = response.data.al_data
+
+                setSool(soolData)
+                setTokens(response.data.token_rank)
+                // img_link, token_rank
+            } catch (e){
+                setError(e);
+            }
+        }
+        getSoolDetail()
+
+        // fetch('http://127.0.0.1:5000' + detailUrl, { method: 'GET' })
+        // .then((response) => {
+        //     console.log(response.json)
+        //     return response.json()
+        // })
+        // .then((data) => {
+        //     // sool 정보는 al_data
+        //     // 토큰은 token_rank로 들어옴
+        //     setSool(data.al_data)
+        //     setTokens(data.token_rank)
+        //     console.log(data)
+        // })
+        // .catch((error) => console.log(error));
 
     }, [detailUrl])
 
@@ -114,6 +139,7 @@ const Detail = () => {
                                         <FontAwesomeIcon icon={faStar}/>
                                         <FontAwesomeIcon icon={faStar}/>
                                         <FontAwesomeIcon icon={faStar}/>
+                                        <p>{sool.score}</p>
                                     </div>
                                 </div>
                                 <div className="product--token col">

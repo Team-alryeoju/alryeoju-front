@@ -7,14 +7,14 @@ import AuthContext from '../context/AuthProvider';
 
 
 const HeaderContainer = styled.header`
-    position: fixed;
+    position: sticky;
     display: flex;
     justify-content: space-between;
     align-items: center;
     background-color: white;
 
     width: 100vw;
-    height: 60px;
+    height: var(--header-height);
     padding: 0 10px 0 10px;
     box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.2);
 
@@ -22,6 +22,20 @@ const HeaderContainer = styled.header`
     a, button{
         color: #737373;
         cursor: pointer;
+
+    }
+
+    & > a > div{
+        width: 100px;
+        height: 60px;
+        
+        & > img{
+            object-position: 50% 50%;
+            object-fit: contain;
+
+            width: 100%;
+            height: 100%;
+        }
     }
 
     .home-link{
@@ -55,7 +69,7 @@ const Header = () => {
 
     return (
         <HeaderContainer>
-            <Link to="/" className="home-link">Home</Link>
+            <Link to="/" className="home-link"><div><img src="/logo.jpeg" /></div></Link>
             <div className="user-link row">
                 <Link to="/test">취향 테스트</Link>
                 <Link to="/mypage">구매내역</Link>

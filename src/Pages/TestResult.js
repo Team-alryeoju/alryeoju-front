@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+import ProductSwiper from "../Components/ProductSwiper"
 const TestResult = ({answers}) => {
     // answers가 정답임 -> 서버로 post 하는 작업 필요
     // loading 화면 일부로 추가하면 좋을듯 (연산하는 느낌이 들게)
@@ -14,13 +15,15 @@ const TestResult = ({answers}) => {
             navigate('/test')
         }
 
-
+        
+        // post 작업 하고 answers 초기화 해야함!
     },[])
 
     return (
         <div>
             <h2>결과 페이지~</h2>
             {answers.map((el,idx) => <div key={idx}>{`${idx+1}의 답은 ${el}`}</div>)}
+            <ProductSwiper products={answers}></ProductSwiper>
         </div>
     );
 };

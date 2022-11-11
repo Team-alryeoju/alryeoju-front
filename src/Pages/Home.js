@@ -26,12 +26,13 @@ const Home = () => {
     const [error, setError] = useState(null);
 
     // 검색 조건을 보내서 fetch 해오는 방식으로!!
+
     const categoryArr = [
         { name: '전체' , url: `/alcohol`},
-        { name: '탁주' , url: `/alcohol?category=takju`},
-        { name: '약주' , url: `/alcohol?category=chungju`},
-        { name: '과실주' , url: `/alcohol?category=wine`},
-        { name: '일반증류주' , url: `/alcohol?category=soju`}
+        { name: '탁주' , url: `/alcohol?category=탁주`},
+        { name: '약주' , url: `/alcohol?category=약주`},
+        { name: '과실주' , url: `/alcohol?category=과실주`},
+        { name: '증류식소주' , url: `/alcohol?category=증류식소주`}
     ]
 
     useEffect(() => {
@@ -67,6 +68,7 @@ const Home = () => {
                     withCredentials: true
                 })
                 setRecommList(Object.values(response.data))
+
             } catch (e){
                 setError(e);
             }
@@ -98,7 +100,7 @@ const Home = () => {
             <div className="container">
                 <section className="product__slide-container col-center">
                     <h2 className="home-title product__slide-title">{title}</h2>
-                    <ProductSwiper title={title}products={recommList}/>
+                    <ProductSwiper title={title} products={recommList}/>
                 </section>
                 <section className="product__list-container col">
                     <h2 className="home-title product__list-title">전통주 찾아보기</h2>

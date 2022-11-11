@@ -30,7 +30,7 @@
 }
 
 .container{
-  padding-top: var(--header-height);
+  /* padding-top: var(--header-height); */
 }
 
 h2{
@@ -57,7 +57,7 @@ button{
 }
 
 :root{
-  --header-height: 60px;
+  --header-height: 70px;
 
   /** color **/
   --main-color: #7D6767; /** #7D6767 or var(--main-color) **/

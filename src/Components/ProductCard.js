@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 
 
@@ -14,10 +14,11 @@ const ProductCard = ({ sool }) => {
               </div>
               <div className="productCard__content col">
                 <span className="productCard--name">{sool.al_name}</span>
-                <span className="productCard--price">{sool.price}</span>
-                <span className="productCard--degree">{sool.degree}%</span>
+                <span className="productCard--price">{sool.category}</span>
+                <span className="productCard--price">{sool.price}원</span>
                 <div className="row">
-                  <span className="productCard--rating">{sool.score}</span>
+                <span className="productCard--degree">{sool.degree}%</span>
+                  {/* {sool.token_rank.map((token) => <span>{token}</span>)} */}
                 </div>
               </div>
         </div>

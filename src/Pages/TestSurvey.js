@@ -4,6 +4,18 @@ import { useNavigate } from 'react-router-dom';
 
 import { questions } from '../static/questions';
 import Question from '../Components/Question';
+import styled from 'styled-components';
+
+const SurveySubmitBtn = styled.button`
+    background-color: var(--emphasize-color);
+    height: 50px;
+    width: 150px;
+    border: none;
+    color: white;
+    font-size: 1.2rem;
+    font-weight: 600;
+    border-radius: 10px;
+`
 
 const TestSurvey = ({answers, setAnswers}) => {
     // 설문지를 받는다. or 내 쪽에서 갖고 있는다.
@@ -113,22 +125,22 @@ const TestSurvey = ({answers, setAnswers}) => {
         // 선택된 옵션이 올바르게 있는 경우 있는 경우
         // 선택된 옵션 최종 답변 모음에 추가
         setAnswers([...answers, curAnswer])
-
+        setCurAnswer([])
+        setCurQuestion(0)
         navigate('/test/result')
     }
 
     return (
         <main className='Survey'>
                 <Question 
-                        question={questions[curQuestion]}
+                        questions={questions}
+                        questionIdx={curQuestion}
                         curAnswer={curAnswer}
                         selectAnswer={selectAnswer}
+                        handleNextBtn={handleNextBtn}
+                        handlePrevBtn={handlePrevBtn}
                 />
-                <div>
-                    <button className={curQuestion === 0 ? 'hide': ''} onClick={handlePrevBtn}>prev</button>
-                    <button className={curQuestion === questions.length-1 ? 'hide': ''} onClick={handleNextBtn}>next</button>
-                    {curQuestion === questions.length-1 ? <button onClick={answerSubmit}>결과보기</button> : null}
-                </div>
+                {curQuestion === questions.length-1 ? <SurveySubmitBtn onClick={answerSubmit}>결과보기</SurveySubmitBtn> : null}
 
         </main>
     );
