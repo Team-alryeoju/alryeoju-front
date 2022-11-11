@@ -9,7 +9,7 @@
     width: 80vw;
     height: 70vh;
     margin-top: 20px;
-    margin-bottom: 20px;
+    margin-bottom: 40px;
 }
 
 .product__detail {
@@ -91,6 +91,9 @@
     margin: 2px;
 }
 
+.detail-bottom{
+    margin-bottom: 20px;
+}
 .detail-bottom > h2{
     color: var(--main-color);
 }

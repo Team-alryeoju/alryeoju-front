@@ -32,14 +32,18 @@ const TestSurvey = ({answers, setAnswers}) => {
     // 전체 답변 저장 배열로 저장 (서버에 보내줄 것)
     // const [answers, setAnswers] = useState([])
 
-    useEffect(()=>{
-        console.log("최종 답변 :")
-        console.log(answers)
-        console.log("현재 답변 :")
-        console.log(curAnswer)
-        console.log("현재 문제 :")
-        console.log(curQuestion)
-    },[answers, curAnswer,curQuestion])
+    // useEffect(()=>{
+    //     console.log("최종 답변 :")
+    //     console.log(answers)
+    //     console.log("현재 답변 :")
+    //     console.log(curAnswer)
+    //     console.log("현재 문제 :")
+    //     console.log(curQuestion)
+    // },[answers, curAnswer,curQuestion])
+
+    useEffect(() => {
+        setAnswers([])
+    }, [])
 
     /** 주어진 질문에 대한 답변이 존재하는지 확인하여 현재 답변을 설정하는 함수*/
     const handleCurAnswer = (questionIdx) => {
@@ -132,6 +136,7 @@ const TestSurvey = ({answers, setAnswers}) => {
 
     return (
         <main className='Survey'>
+            <h1>나의 취향에 맞는 전통주 찾기</h1>
                 <Question 
                         questions={questions}
                         questionIdx={curQuestion}

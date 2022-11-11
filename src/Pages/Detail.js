@@ -39,11 +39,16 @@ const Detail = () => {
     const [detailUrl, setDetailUrl] = useState('');
     const [userName , setUserName] = useState('');
     const [isloading, setIsLoading] = useState(true);
+    
     /** 에러 */
     const [error, setError] = useState('');
+
+    // 술에 대한 정보
     const [sool, setSool] = useState({});
     const [tokens, setTokens] = useState([]);
 
+    // 비슷한 술 리스트
+    const [similarSool, setSimilarSool] = useState([]);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -57,6 +62,8 @@ const Detail = () => {
             setUserName('');
         }
     }, [auth])
+
+    
 
     useEffect(() => {
         // URL : detail/:id
@@ -88,21 +95,26 @@ const Detail = () => {
         }
         getSoolDetail()
 
-        // fetch('http://127.0.0.1:5000' + detailUrl, { method: 'GET' })
-        // .then((response) => {
-        //     console.log(response.json)
-        //     return response.json()
-        // })
-        // .then((data) => {
-        //     // sool 정보는 al_data
-        //     // 토큰은 token_rank로 들어옴
-        //     setSool(data.al_data)
-        //     setTokens(data.token_rank)
-        //     console.log(data)
-        // })
-        // .catch((error) => console.log(error));
-
     }, [detailUrl])
+
+    useEffect(() => {
+        // URL : /simitems
+        const simItemsUrl = `/simitems?al_id=${soolId}`
+        const getSimilarSool = async () => {
+
+            try {
+                setIsLoading(true)
+                const response = await axios.get(simItemsUrl, {
+                    withCredentials: true
+                })
+                setSimilarSool(Object.values(response.data))
+            } catch (e){
+                setError(e);
+            }
+        }
+        getSimilarSool()
+
+    }, [])
 
     const handlePurchaseBtn = () => {
         // 로그인이 안 된 상태라면
@@ -168,7 +180,7 @@ const Detail = () => {
                 </main>
                 <div className="col-center detail-bottom">
                     <h2>비슷한 술</h2>
-                    <ProductSwiper products={dummySool}/>
+                    <ProductSwiper products={similarSool}/>
                 </div>
 
             </div>

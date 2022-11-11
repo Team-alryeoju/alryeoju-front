@@ -102,7 +102,7 @@ function SignIn(props) {
     return (
         <div className='SignIn'>
             <header>
-                <Link className='home__link' to="/">Home</Link>
+                <Link className='home__link' to="/"><div className="home-image__container"><img src="/logo.jpeg" /></div></Link>
             </header>
             <div className='sign-in__container'>
                 <h1>Sign in</h1>

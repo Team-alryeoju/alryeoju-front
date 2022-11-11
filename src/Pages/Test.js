@@ -17,7 +17,6 @@ const Test = () => {
         <div className="Test">
             <Header />
             <div className="container col">
-                <h1>나의 취향에 맞는 전통주 찾기</h1>
                 <Routes>
                     {/* /test 에서 이어지는 주소 */}
                     <Route path='result' element={<TestResult answers={answers}/>}></Route>

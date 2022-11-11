@@ -7,7 +7,7 @@ import AuthContext from '../context/AuthProvider';
 
 
 const HeaderContainer = styled.header`
-    position: sticky;
+    /* position: sticky; */
     display: flex;
     justify-content: space-between;
     align-items: center;
