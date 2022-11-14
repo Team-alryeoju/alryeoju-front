@@ -1,24 +1,63 @@
 import { createContext, useEffect, useState } from "react";
+import axios from "../api/axios.js";
 
+/** api */
+import { userInfo } from "../api/api.js"
 // Context 생성 
 const AuthContext = createContext({}); // 기본값은 {}
 
 export const AuthProvider = ({children}) => {
     const [auth, setAuth] = useState({});
-
+    const [isLogin, setIsLogin] = useState(false);
+    
     // refresh 할 때마다 실행됨.
     useEffect(() => {
         // Session Storage 에 저장된 User 정보를 가져온다.
-        const user = JSON.parse(sessionStorage.getItem("user"))
-        setAuth(user)
+        // const accessToken = JSON.parse(sessionStorage.getItem("access_token"))
+        // 새로 고침할 때마다 auth 업데이트 해준다.
+        userInfo()
+            .then((res) => {
+                setAuth({
+                    id: res.data["id"],
+                    userName: res.data["user_name"]
+                })
+                setIsLogin(true);
+            }).catch((err) =>{
+                console.log(err)
+                setIsLogin(false)
+                sessionStorage.removeItem("access_token")
+            })
+        // setAuth(user)
     },[])
 
     return (
-        <AuthContext.Provider value={{ auth, setAuth }}>
+        <AuthContext.Provider value={{ auth, setAuth, isLogin, setIsLogin }}>
             {children}
         </AuthContext.Provider>
     )
 }
 
+/** 예시 */
+// async function login() {
+//     const response = await fetch('/login_without_cookies', {method: 'post'});
+//     const result = await response.json();
+//     localStorage.setItem('jwt', result.access_token);
+//   }
+  
+//   function logout() {
+//     localStorage.removeItem('jwt');
+//   }
+  
+//   async function makeRequestWithJWT() {
+//     const options = {
+//       method: 'post',
+//       headers: {
+//         Authorization: `Bearer ${localStorage.getItem('jwt')}`,
+//       }
+//     };
+//     const response = await fetch('/protected', options);
+//     const result = await response.json();
+//     return result;
+// }
 
 export default AuthContext;

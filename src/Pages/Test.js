@@ -3,9 +3,9 @@ import { useState } from 'react';
 import { Route, Routes } from 'react-router-dom';
 
 
-import Header from '../Components/Header';
-import TestResult from './TestResult';
-import TestSurvey from './TestSurvey'
+import Header from '../Components/Header.js';
+import TestResult from './TestResult.js';
+import TestSurvey from './TestSurvey.js'
 
 import "./Test.css"
 
@@ -17,7 +17,6 @@ const Test = () => {
         <div className="Test">
             <Header />
             <div className="container col">
-                <h1>나의 취향에 맞는 전통주 찾기</h1>
                 <Routes>
                     {/* /test 에서 이어지는 주소 */}
                     <Route path='result' element={<TestResult answers={answers}/>}></Route>

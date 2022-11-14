@@ -2,8 +2,20 @@ import React, { useEffect } from 'react';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { questions } from '../static/questions';
-import Question from '../Components/Question';
+import { questions } from '../static/questions.js';
+import Question from '../Components/Question.js';
+import styled from 'styled-components';
+
+const SurveySubmitBtn = styled.button`
+    background-color: var(--emphasize-color);
+    height: 50px;
+    width: 150px;
+    border: none;
+    color: white;
+    font-size: 1.2rem;
+    font-weight: 600;
+    border-radius: 10px;
+`
 
 const TestSurvey = ({answers, setAnswers}) => {
     // 설문지를 받는다. or 내 쪽에서 갖고 있는다.
@@ -20,14 +32,18 @@ const TestSurvey = ({answers, setAnswers}) => {
     // 전체 답변 저장 배열로 저장 (서버에 보내줄 것)
     // const [answers, setAnswers] = useState([])
 
-    useEffect(()=>{
-        console.log("최종 답변 :")
-        console.log(answers)
-        console.log("현재 답변 :")
-        console.log(curAnswer)
-        console.log("현재 문제 :")
-        console.log(curQuestion)
-    },[answers, curAnswer,curQuestion])
+    // useEffect(()=>{
+    //     console.log("최종 답변 :")
+    //     console.log(answers)
+    //     console.log("현재 답변 :")
+    //     console.log(curAnswer)
+    //     console.log("현재 문제 :")
+    //     console.log(curQuestion)
+    // },[answers, curAnswer,curQuestion])
+
+    useEffect(() => {
+        setAnswers([])
+    }, [])
 
     /** 주어진 질문에 대한 답변이 존재하는지 확인하여 현재 답변을 설정하는 함수*/
     const handleCurAnswer = (questionIdx) => {
@@ -113,22 +129,23 @@ const TestSurvey = ({answers, setAnswers}) => {
         // 선택된 옵션이 올바르게 있는 경우 있는 경우
         // 선택된 옵션 최종 답변 모음에 추가
         setAnswers([...answers, curAnswer])
-
+        setCurAnswer([])
+        setCurQuestion(0)
         navigate('/test/result')
     }
 
     return (
         <main className='Survey'>
+            <h1>나의 취향에 맞는 전통주 찾기</h1>
                 <Question 
-                        question={questions[curQuestion]}
+                        questions={questions}
+                        questionIdx={curQuestion}
                         curAnswer={curAnswer}
                         selectAnswer={selectAnswer}
+                        handleNextBtn={handleNextBtn}
+                        handlePrevBtn={handlePrevBtn}
                 />
-                <div>
-                    <button className={curQuestion === 0 ? 'hide': ''} onClick={handlePrevBtn}>prev</button>
-                    <button className={curQuestion === questions.length-1 ? 'hide': ''} onClick={handleNextBtn}>next</button>
-                    {curQuestion === questions.length-1 ? <button onClick={answerSubmit}>결과보기</button> : null}
-                </div>
+                {curQuestion === questions.length-1 ? <SurveySubmitBtn onClick={answerSubmit}>결과보기</SurveySubmitBtn> : null}
 
         </main>
     );

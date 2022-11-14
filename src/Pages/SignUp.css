@@ -7,7 +7,7 @@
 }
 
 .SignUp > header{
-    height: 25%;
+    height: 30%;
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
@@ -17,13 +17,37 @@
 .home__link, .home__link:visited{
     text-decoration: none;
     color: black;
+    height: 100%;
+    width: 100%;
     font-weight: 600;
     font-size: 3rem;
-    height: 30%;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.home-image__container{
+    width: 200px;
+    height: 100px;
+}
+
+.home-image__container > img{
+    /* position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%); */
+    /* vertical-align: top; */
+    object-position: 50% 50%;
+    object-fit: contain;
+
+    width: 100%;
+    height: 100%;
 }
 
 .sign-up__container{
-    height: 75%;
+    height: 70%;
 }
 
 .sign-up__container > h1{
@@ -31,10 +55,11 @@
     padding-bottom: 0.5rem;
 }
 
+
 .sign-in__link, .sign-in__link:visited{
     color: rgb(163, 154, 154);
     font-size: 0.8rem;
     text-decoration: underline;
     text-align: center;
     padding-top: 0.3rem;
-}
+} 

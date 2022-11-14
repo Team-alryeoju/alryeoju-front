@@ -1,11 +1,11 @@
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import axios from '../api/axios'
-import AuthContext from '../context/AuthProvider';
+import axios from '../api/axios.js'
+import AuthContext from '../context/AuthProvider.js';
 
 import "./SignIn.css"
-import { InputContainer } from '../Components/InputContainer';
-import { SubmitButton } from '../Components/SubmitButton';
+import { InputContainer } from '../Components/InputContainer.js';
+import { SubmitButton } from '../Components/SubmitButton.js';
 // 1. 로그인 시 서버 쪽에서 session_id (쿠키) 를 설정
 // 2. 클라이언트 요청 시에 session_id를 서버 족에서 받는다.
 // 3. 서버 쪽에서 session_id를 검증
@@ -15,7 +15,7 @@ function SignIn(props) {
      * 이를 통해 컴포넌트 모두에서 페이지를 이용하는 동안 acces token 받을 수 있다.
     */
    // AuthContext이 제공하는 auth state를 변경하는 함수를 받는다.
-    const { auth, setAuth } = useContext(AuthContext);
+    const { setAuth, isLogin, setIsLogin } = useContext(AuthContext);
 
     // navigate
     const navigate = useNavigate();
@@ -30,27 +30,21 @@ function SignIn(props) {
     const [errMsg, setErrMsg] = useState("")
     const [success, setSuccess] = useState(false)
 
+    useEffect(()=> {
+        userRef.current.focus();
+    }, [])
+
     // useEffect
     useEffect(() => {
         // 로그인 정보가 존재한다면
-        if(auth?.accesToken && auth?.accesToken !== "" && auth?.accesToken !== undefined){
-            navigate("/")
+        if(isLogin){
+            navigate(-1)
         }
-        userRef.current.focus();
-    }, [auth, navigate])
+    }, [isLogin, navigate])
     
     useEffect(() => {
         setErrMsg('');
     }, [user, pwd])
-
-    useEffect(() => {
-        if(success){
-            // 회원가입 성공 시
-            alert('로그인이 성공하였습니다')
-            // 메인 화면으로 redirect
-            navigate("/")
-        }
-    }, [navigate, success])
 
     // login submit
     const handleSubmit = async (e) => {
@@ -67,17 +61,22 @@ function SignIn(props) {
             );
             
             // 응답의 데이터 중 access_token 으로 발급받음
-            const accesToken = response.data.access_token;
-            const userName = response.data.name
-            const id = response.data.id
-            // Auth Context
-            setAuth({id, userName, accesToken})
+            const accessToken = response.data.access_token;
 
             // 받은 토큰을 도메인의 Session Storage나 Local Storage 로 저장한다.
-            sessionStorage.setItem("user", JSON.stringify({ id, userName, accesToken }))
-            setSuccess(true)
+            sessionStorage.setItem("access_token", JSON.stringify(accessToken))
+            setAuth({
+                userName: response.data.user_name,
+                accessToken
+            })
+            setIsLogin(true)
             setUser('');
             setPwd('');  
+
+            alert('로그인이 성공하였습니다')
+            // 이전 화면으로 redirect
+            // 하고 싶은데 안감..
+            navigate('/')
             
         }catch(error){
             // 에러 처리
@@ -102,7 +101,8 @@ function SignIn(props) {
     return (
         <div className='SignIn'>
             <header>
-                <Link className='home__link' to="/">Home</Link>
+                {/* <Link className='home__link' to="/">Home</Link> */}
+                <Link className='home__link' to="/"><div className="home-image__container"><img src="/logo.jpeg" alt='logo'/></div></Link>
             </header>
             <div className='sign-in__container'>
                 <h1>Sign in</h1>
