@@ -13,6 +13,7 @@
 .productCard--img{
     height: 280px;
     width: 100%;
+    /* flex: auto */
 }
 
 .productCard--img:hover{
@@ -25,7 +26,8 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%); */
-    object-position: 50% 50%;
+    /* object-position: 50% 50%;*/
+    vertical-align: top;
     object-fit: cover;
 
     width: 100%;
@@ -36,14 +38,22 @@
 .productCard__content{
     width: 100%;
     padding: 0.3rem;
-    color: #2d2d2d;
+    color: #737373;
 }
 
 .productCard--name{
+    color: #2d2d2d;
     font-weight: 600;
-    padding-bottom: 1rem;
+    font-size: 1rem;
+    margin-bottom: 1.5rem;
 }
 
 .productCard--name:hover{
     color: var(--main-color);
+}
+
+.productCard--price{
+    text-align: right;
+    font-weight: 500;
+    color: #2d2d2d;
 }

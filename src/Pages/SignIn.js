@@ -30,13 +30,15 @@ function SignIn(props) {
     const [errMsg, setErrMsg] = useState("")
     const [success, setSuccess] = useState(false)
 
+    useEffect(()=> {
+        userRef.current.focus();
+    }, [])
     // useEffect
     useEffect(() => {
         // 로그인 정보가 존재한다면
         if(auth?.accesToken && auth?.accesToken !== "" && auth?.accesToken !== undefined){
-            navigate("/")
+            navigate(-1)
         }
-        userRef.current.focus();
     }, [auth, navigate])
     
     useEffect(() => {
@@ -47,8 +49,9 @@ function SignIn(props) {
         if(success){
             // 회원가입 성공 시
             alert('로그인이 성공하였습니다')
-            // 메인 화면으로 redirect
-            navigate("/")
+            // 이전 화면으로 redirect
+            // 하고 싶은데 안감..
+            navigate('/')
         }
     }, [navigate, success])
 
@@ -102,7 +105,8 @@ function SignIn(props) {
     return (
         <div className='SignIn'>
             <header>
-                <Link className='home__link' to="/"><div className="home-image__container"><img src="/logo.jpeg" /></div></Link>
+                {/* <Link className='home__link' to="/">Home</Link> */}
+                <Link className='home__link' to="/"><div className="home-image__container"><img src="/logo.jpeg" alt='logo'/></div></Link>
             </header>
             <div className='sign-in__container'>
                 <h1>Sign in</h1>

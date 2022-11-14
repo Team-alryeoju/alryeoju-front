@@ -18,15 +18,19 @@
     text-decoration: none;
     color: black;
     height: 100%;
-    width: 500px;
-    /* font-weight: 600;
-    font-size: 3rem; */
-    /* height: 30%; */
+    width: 100%;
+    font-weight: 600;
+    font-size: 3rem;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
 }
 
 .home-image__container{
-    width: 100%;
-    height: 100%;
+    width: 200px;
+    height: 100px;
 }
 
 .home-image__container > img{
@@ -34,6 +38,7 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%); */
+    /* vertical-align: top; */
     object-position: 50% 50%;
     object-fit: contain;
 

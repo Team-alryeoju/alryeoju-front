@@ -18,6 +18,10 @@ const TestResultContainer = styled.div`
         color: #2d2d2d;
     }
 
+    & h2{
+        margin: 0.2rem;
+    }
+
     & > .loading__container{
         height: 80%;
     }
@@ -57,13 +61,13 @@ const TestResult = ({answers}) => {
 
         getResult()
 
-    },[])
+    },[navigate])
 
     return (
         <TestResultContainer>
             {isLoading? <div className='loading__container'><img className="loadingImg" src="/loading.gif" alt='loading'/></div> : 
                 <div className='col-center'>
-                    <h2>당신은 이런 전통주를 좋아할지도 몰라요</h2>
+                    <h2>당신은 이런 전통주를 좋아할지도 몰라요!</h2>
                     <ProductSwiper products={dummySool}/>
                 </div>
             }        

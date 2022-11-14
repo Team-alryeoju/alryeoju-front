@@ -212,7 +212,8 @@ function SignUp(props) {
     return (
         <div className='SignUp'>
             <header>
-                <Link className='home__link' to="/">Home</Link>
+                {/* <Link className='home__link' to="/">Home</Link> */}
+                <Link className='home__link' to="/"><div className="home-image__container"><img src="/logo.jpeg" alt='logo'/></div></Link>
             </header>
             <div className='sign-up__container'>
                 <h1>Sign up</h1>

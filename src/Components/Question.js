@@ -76,7 +76,7 @@ const Question = ({questions, questionIdx, curAnswer, selectAnswer, handleNextBt
     return (
         <QuestionContainer>
             <h2>{questions[questionIdx].title}</h2>
-            <span>{`최대 선택 개수 : ${questions[questionIdx].max}`}</span>
+            {/* <span>{`최대 선택 개수 : ${questions[questionIdx].max}`}</span> */}
             <OptionContainer>
                 {questions[questionIdx].options.map((el, idx) => (
                     <Option key={idx} className={curAnswer.includes(idx)? "selected" : ""} onClick={()=>{selectAnswer(idx)}}>{el}</Option>

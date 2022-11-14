@@ -9,14 +9,18 @@ import AuthContext from "../context/AuthProvider";
 import Header from "../Components/Header"
 import ProductSwiper from "../Components/ProductSwiper";
 
+/** CSS */
 import styled from "styled-components";
 import "./Detail.css"
+
+/** MUI */
+import { Rating } from '@mui/material';
+import { CircularProgress } from '@mui/material';
 
 /** FontAwesome */
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faAngleRight, faStar } from "@fortawesome/free-solid-svg-icons"
 
-import dummySool from "../static/dummyData"
 
 const PurchaseButton = styled.button`
     background-color: var(--emphasize-color);
@@ -38,10 +42,10 @@ const Detail = () => {
     // url, userName - Auth 에 따라 달라질 부분
     const [detailUrl, setDetailUrl] = useState('');
     const [userName , setUserName] = useState('');
-    const [isloading, setIsLoading] = useState(true);
     
-    /** 에러 */
+    /** 에러, 로딩 */
     const [error, setError] = useState('');
+    const [isLoading, setIsLoading] = useState(true)
 
     // 술에 대한 정보
     const [sool, setSool] = useState({});
@@ -50,6 +54,10 @@ const Detail = () => {
     // 비슷한 술 리스트
     const [similarSool, setSimilarSool] = useState([]);
     const navigate = useNavigate();
+
+    // 구매 loading
+    const [purchaseLoading, setPurchaseLoading] = useState(false)
+    const [purchaseSuccess, setPurchasSuccess] = useState(false)
 
     useEffect(() => {
         if(auth?.accesToken && auth?.accesToken !== "" && auth?.accesToken !== undefined){
@@ -61,7 +69,7 @@ const Detail = () => {
             setDetailUrl(`/detail?al_id=${soolId}`)
             setUserName('');
         }
-    }, [auth])
+    }, [auth, soolId])
 
     
 
@@ -85,7 +93,6 @@ const Detail = () => {
                     withCredentials: true
                 })
                 const soolData = response.data.al_data
-
                 setSool(soolData)
                 setTokens(response.data.token_rank)
                 // img_link, token_rank
@@ -114,7 +121,7 @@ const Detail = () => {
         }
         getSimilarSool()
 
-    }, [])
+    }, [soolId])
 
     const handlePurchaseBtn = () => {
         // 로그인이 안 된 상태라면
@@ -125,7 +132,36 @@ const Detail = () => {
             return
         }
 
-        alert("구매 완료")
+        const wait = (timeToDelay) => new Promise((resolve) => setTimeout(resolve, timeToDelay))
+        const purchase = async () =>{
+            setPurchaseLoading(true)
+            setPurchasSuccess(false)
+            // post 작업 실행
+            // post 작업 필요
+            try{
+                const response = await axios.post("/purchase",
+                    JSON.stringify({id : auth.id, al_id : soolId}),
+                    {
+                        headers: { 'Content-Type': 'application/json'},
+                        withCredentials: true
+                    }  
+                );
+                
+                await wait(1000)
+                alert("구매 완료")
+                // 처리 성공
+                setPurchasSuccess(true);
+                setPurchaseLoading(false);
+
+            } catch(err) {
+                // 에러 처리
+                setError(err.response.data)
+                setPurchasSuccess(false)
+            }
+
+        }
+
+        purchase()
 
     }
 
@@ -143,15 +179,17 @@ const Detail = () => {
                             <div className="product__content col">
                                 <div className="product--detail col">
                                     <div className="product--name">{sool.al_name}</div>
-                                    <div className="product--category">주종 : {sool.category}</div>
-                                    <div className="product--degree">도수: {sool.degree}%</div>
+                                    <div className="product--category">
+                                        <lable>주종: </lable>
+                                        <span>{sool.category}</span>
+                                    </div>
+                                    <div className="product--degree">
+                                        <lable>도수: </lable>
+                                        <span>{sool.degree}%</span>    
+                                    </div>
                                     <div className="product--star">
-                                        <FontAwesomeIcon icon={faStar}/>
-                                        <FontAwesomeIcon icon={faStar}/>
-                                        <FontAwesomeIcon icon={faStar}/>
-                                        <FontAwesomeIcon icon={faStar}/>
-                                        <FontAwesomeIcon icon={faStar}/>
-                                        <p>{sool.score}</p>
+                                        <Rating className="rating" name="read-only" value={Math.round(sool.score * 10) / 10} precision={0.25} readOnly />
+                                        <span className="score">{Math.round(sool.score * 10) / 10}</span>
                                     </div>
                                 </div>
                                 <div className="product--token col">
@@ -173,7 +211,13 @@ const Detail = () => {
                                     <button>plus</button>
                                 </div>
                                 <p>총 가격</p> */}
-                                <PurchaseButton onClick={handlePurchaseBtn}>바로구매 <FontAwesomeIcon icon={faAngleRight} /></PurchaseButton>
+                                <span className="product--price">{(sool.price)}원</span>
+                                <PurchaseButton disabled={purchaseLoading} onClick={handlePurchaseBtn}>
+                                    {purchaseLoading ?
+                                        (<div className="col-center"><CircularProgress size={30} color="inherit"/></div>)
+                                        : <div>바로구매 <FontAwesomeIcon icon={faAngleRight} /></div>}
+                                </PurchaseButton>
+                                <p>{error}</p>
                             </div>
                         </div>
                     </div>
