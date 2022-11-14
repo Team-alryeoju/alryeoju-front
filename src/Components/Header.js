@@ -1,9 +1,7 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import styled from 'styled-components';
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCircleUser } from "@fortawesome/free-solid-svg-icons"
-import AuthContext from '../context/AuthProvider';
+import AuthContext from '../context/AuthProvider.js';
 
 
 const HeaderContainer = styled.header`
@@ -69,20 +67,21 @@ const SignButton = styled.button`
 `
 
 const Header = () => {
-    const { auth, setAuth } = useContext(AuthContext)
+    const { setAuth, isLogin, setIsLogin } = useContext(AuthContext)
     const navigate = useNavigate()
 
     const logOut = () => {
         // 로그인 정보 session스토리지에서 remove
-        sessionStorage.removeItem("user")
+        sessionStorage.removeItem("access_token")
         // Context 정보에서도 제거
         setAuth({})
+        setIsLogin(false)
         // 새로고침
         window.location.replace("/")
     }
 
     const toMyPage = () => {
-        if(!auth?.accesToken || auth?.accesToken === "" || auth?.accesToken === undefined){
+        if(!isLogin){
             // 로그인 화면으로 전환시킴
             alert("로그인이 필요합니다.")
             navigate("/login")
@@ -99,7 +98,7 @@ const Header = () => {
                 <Link className="test-link" to="/test">취향 테스트</Link>
                 <button className="mypage-link" onClick={toMyPage}>구매내역</button>
                 {/* <FontAwesomeIcon className="mypage-icon" icon={faCircleUser} /> */}
-                { auth ?
+                { isLogin ?
                     (<SignButton onClick={logOut}>로그아웃</SignButton>) 
                     : (<Link to="/login"><SignButton>로그인</SignButton></Link>) 
                 }

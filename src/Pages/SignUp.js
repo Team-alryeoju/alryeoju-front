@@ -1,10 +1,10 @@
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import axios from '../api/axios'
+import axios from '../api/axios.js'
 
-import AuthContext from '../context/AuthProvider';
-import { InputContainer } from '../Components/InputContainer';
-import { SubmitButton } from '../Components/SubmitButton';
+import AuthContext from '../context/AuthProvider.js';
+import { InputContainer } from '../Components/InputContainer.js';
+import { SubmitButton } from '../Components/SubmitButton.js';
 /** css */
 import './SignUp.css'
 
@@ -16,7 +16,7 @@ function SignUp(props) {
     /** context value 
      * 이를 통해 컴포넌트 모두에서 페이지를 이용하는 동안 acces token 받을 수 있다.
     */
-    const { auth } = useContext(AuthContext);
+    const { isLogin } = useContext(AuthContext);
     // Ref
     const errRef = useRef();
 
@@ -48,23 +48,15 @@ function SignUp(props) {
     // 로그인 상태라면 메인화면으로!
     useEffect(() => {
         // 로그인 정보가 존재한다면
-        if(auth?.accesToken && auth?.accesToken !== "" && auth?.accesToken !== undefined){
+        if(isLogin){
             navigate("/")
         }
-    }, [auth, navigate])
+    }, [isLogin, navigate])
 
     // 처음에 ID 부분으로 focusing 됨
     useEffect(() => {
         userRef.current.focus();
     }, [])
-
-    useEffect(() => {
-        if(success){
-            // 회원가입 성공 시
-            alert('회원가입이 성공하였습니다')
-            navigate("/login")
-        }
-    }, [navigate, success])
 
     // 비밀번호나 확인 비밀번호가 바뀔 때 -> 두 비밀번호가 일치하는지 확인
     useEffect(() => {
@@ -200,6 +192,8 @@ function SignUp(props) {
             );
 
             // 처리 성공
+            alert('회원가입이 성공하였습니다')
+            navigate("/login")
             setSuccess(true);
 
         } catch(err) {

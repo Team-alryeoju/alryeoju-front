@@ -3,9 +3,9 @@ import { useState } from 'react';
 import { Route, Routes } from 'react-router-dom';
 
 
-import Header from '../Components/Header';
-import TestResult from './TestResult';
-import TestSurvey from './TestSurvey'
+import Header from '../Components/Header.js';
+import TestResult from './TestResult.js';
+import TestSurvey from './TestSurvey.js'
 
 import "./Test.css"
 

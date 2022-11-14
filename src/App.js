@@ -1,12 +1,12 @@
 import { Routes, Route } from 'react-router-dom';
 
 import './App.css';
-import Home from './Pages/Home';
-import MyPage from './Pages/MyPage';
-import Detail from './Pages/Detail';
-import SignIn from './Pages/SignIn';
-import SignUp from './Pages/SignUp';
-import Test from './Pages/Test';
+import Home from './Pages/Home.js';
+import MyPage from './Pages/MyPage.js';
+import Detail from './Pages/Detail.js';
+import SignIn from './Pages/SignIn.js';
+import SignUp from './Pages/SignUp.js';
+import Test from './Pages/Test.js';
 
 
 function App() {

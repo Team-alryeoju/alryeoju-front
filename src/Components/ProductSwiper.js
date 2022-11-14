@@ -18,7 +18,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faAngleRight, faAngleLeft } from "@fortawesome/free-solid-svg-icons"
 
 import "./ProductSwiper.css"
-import ProductCard from "./ProductCard";
+import ProductCard from "./ProductCard.js";
 
 
 const NavigationButton = styled.button`

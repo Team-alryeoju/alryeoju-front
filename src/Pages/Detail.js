@@ -1,13 +1,15 @@
 import React from "react";
-import axios from "../api/axios";
 import { useParams, useNavigate } from "react-router-dom";
 import { useState, useEffect, useContext } from "react";
 
-import AuthContext from "../context/AuthProvider";
+/** api */
+import { getSoolDetail, getSimilarSool, purchase } from "../api/api.js"
+/** Context */
+import AuthContext from "../context/AuthProvider.js";
 
 /**Component */
-import Header from "../Components/Header"
-import ProductSwiper from "../Components/ProductSwiper";
+import Header from "../Components/Header.js"
+import ProductSwiper from "../Components/ProductSwiper.js";
 
 /** CSS */
 import styled from "styled-components";
@@ -19,7 +21,7 @@ import { CircularProgress } from '@mui/material';
 
 /** FontAwesome */
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faAngleRight, faStar } from "@fortawesome/free-solid-svg-icons"
+import { faAngleRight } from "@fortawesome/free-solid-svg-icons"
 
 
 const PurchaseButton = styled.button`
@@ -35,13 +37,9 @@ const PurchaseButton = styled.button`
 
 const Detail = () => {
     // 로그인 정보
-    const { auth } = useContext(AuthContext)
+    const { auth, isLogin } = useContext(AuthContext)
     // url에 sool id 같이 들어옴
     const { soolId } = useParams();
-
-    // url, userName - Auth 에 따라 달라질 부분
-    const [detailUrl, setDetailUrl] = useState('');
-    const [userName , setUserName] = useState('');
     
     /** 에러, 로딩 */
     const [error, setError] = useState('');
@@ -53,26 +51,13 @@ const Detail = () => {
 
     // 비슷한 술 리스트
     const [similarSool, setSimilarSool] = useState([]);
-    const navigate = useNavigate();
-
+    
     // 구매 loading
     const [purchaseLoading, setPurchaseLoading] = useState(false)
     const [purchaseSuccess, setPurchasSuccess] = useState(false)
-
-    useEffect(() => {
-        if(auth?.accesToken && auth?.accesToken !== "" && auth?.accesToken !== undefined){
-            // detailUrl = `/detail/?al_id=${soolId}&id=${auth.id}`
-            setDetailUrl(`/detail?al_id=${soolId}&id=${auth.id}`)
-            setUserName(auth.userName);
-        }
-        else {
-            setDetailUrl(`/detail?al_id=${soolId}`)
-            setUserName('');
-        }
-    }, [auth, soolId])
-
     
-
+    const navigate = useNavigate();
+    
     useEffect(() => {
         // URL : detail/:id
 
@@ -81,51 +66,31 @@ const Detail = () => {
         // -> auth 정보로 url을 만들어야 하는데
         // 위의 if문에 해당하는 조건이 의도대로 되지 않음 -> 맞지 않는 url을 받아옴
         // 그래서 url 정확히 받아오기 전까지는 요청하지 않도록 수정
-        if(detailUrl === ''){
-            return
-        }
 
-        const getSoolDetail = async () => {
+        setIsLoading(true)
 
-            try {
-                setIsLoading(true)
-                const response = await axios.get(detailUrl, {
-                    withCredentials: true
-                })
-                const soolData = response.data.al_data
-                setSool(soolData)
-                setTokens(response.data.token_rank)
-                // img_link, token_rank
-            } catch (e){
-                setError(e);
-            }
-        }
-        getSoolDetail()
+        // 술 정보 가져오기
+        getSoolDetail(soolId)
+            .then((res)=>{
+                setSool(res.data.al_data)
+                setTokens(res.data.token_rank)
+                setIsLoading(false)
 
-    }, [detailUrl])
+            }).catch((e)=>{
+                setError(e.response.data);
+            })
+        
+        // 비슷한 술 리스트 가져오기
+        getSimilarSool(soolId)
+            .then((res) => {
+                setSimilarSool(Object.values(res.data))
+            }).catch((e) => setError(e.response.data))
 
-    useEffect(() => {
-        // URL : /simitems
-        const simItemsUrl = `/simitems?al_id=${soolId}`
-        const getSimilarSool = async () => {
-
-            try {
-                setIsLoading(true)
-                const response = await axios.get(simItemsUrl, {
-                    withCredentials: true
-                })
-                setSimilarSool(Object.values(response.data))
-            } catch (e){
-                setError(e);
-            }
-        }
-        getSimilarSool()
-
-    }, [soolId])
+    }, [])
 
     const handlePurchaseBtn = () => {
         // 로그인이 안 된 상태라면
-        if(!auth?.accesToken || auth?.accesToken === "" || auth?.accesToken === undefined){
+        if(!isLogin){
             // 로그인 화면으로 전환시킴
             alert("로그인 후 구매 가능합니다.")
             navigate("/login")
@@ -133,35 +98,24 @@ const Detail = () => {
         }
 
         const wait = (timeToDelay) => new Promise((resolve) => setTimeout(resolve, timeToDelay))
-        const purchase = async () =>{
+        const buySool = async () =>{
             setPurchaseLoading(true)
             setPurchasSuccess(false)
             // post 작업 실행
-            // post 작업 필요
             try{
-                const response = await axios.post("/purchase",
-                    JSON.stringify({id : auth.id, al_id : soolId}),
-                    {
-                        headers: { 'Content-Type': 'application/json'},
-                        withCredentials: true
-                    }  
-                );
-                
-                await wait(1000)
-                alert("구매 완료")
-                // 처리 성공
+                const res = await purchase(soolId);
+                console.log(res.msg)
+                await wait(500)
+                alert("구매 완료!")
                 setPurchasSuccess(true);
                 setPurchaseLoading(false);
-
-            } catch(err) {
-                // 에러 처리
-                setError(err.response.data)
+            }catch(e){
+                console.log(e)
                 setPurchasSuccess(false)
             }
-
         }
 
-        purchase()
+        buySool()
 
     }
 
@@ -193,8 +147,8 @@ const Detail = () => {
                                     </div>
                                 </div>
                                 <div className="product--token col">
-                                    {userName !== ''? 
-                                        <div className="token--title"><span>{userName}</span>님께 추천하는 토큰 랭킹</div>
+                                    {isLogin? 
+                                        <div className="token--title"><span>{auth.userName}</span>님께 추천하는 토큰 랭킹</div>
                                         : <div className="token--title">이 술의 토큰 랭킹</div>}
                                     <ul className="row product--tokenList">
                                         {tokens.map((token, idx) => {

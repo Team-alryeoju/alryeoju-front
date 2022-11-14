@@ -2,8 +2,8 @@ import React, { useEffect } from 'react';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { questions } from '../static/questions';
-import Question from '../Components/Question';
+import { questions } from '../static/questions.js';
+import Question from '../Components/Question.js';
 import styled from 'styled-components';
 
 const SurveySubmitBtn = styled.button`

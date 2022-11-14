@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import ProductSwiper from "../Components/ProductSwiper"
+import ProductSwiper from "../Components/ProductSwiper.js"
 
 // 
-import dummySool from '../static/dummyData';
+import dummySool from '../static/dummyData.js';
 
 import styled from 'styled-components';
 

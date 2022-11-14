@@ -1,11 +1,13 @@
 import React, { useContext, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "../api/axios";
-import AuthContext from "../context/AuthProvider";
+
+/** api */
+import { getPurchasedItems } from "../api/api.js"
+import AuthContext from "../context/AuthProvider.js";
 
 /** Component */
-import Header from "../Components/Header";
-import PurchasedList from "../Components/PurchasedList";
+import Header from "../Components/Header.js";
+import PurchasedList from "../Components/PurchasedList.js";
 
 import styled from "styled-components";
 
@@ -34,29 +36,34 @@ const MyPageContainer = styled.div`
 `
 
 const MyPage = () => {
-    const { auth } = useContext(AuthContext)
+    const { auth, isLogin } = useContext(AuthContext)
     const [alList, setAlList] = useState([])
-    const [myPageUrl, setMyPageUrl] = useState('')
     const [error, setError] = useState('')
 
+    const navigate = useNavigate()
+
     useEffect(() => {
+
+        if(!isLogin){
+            // 로그인 화면으로 전환시킴
+            alert("로그인이 필요합니다.")
+            navigate("/login")
+            return
+        }
+
         const getPurchasedList = async () => {
 
             try {
-                const response = await axios.post(`/purchased_items`, 
-                JSON.stringify({id : auth.id}),
-                {
-                    headers: { 'Content-Type': 'application/json'},
-                    withCredentials: true
-                })
+                const response = await getPurchasedItems();
                 setAlList(Object.values(response.data))
             } catch (e){
                 setError(e.response.data);
             }
         }
+
         getPurchasedList()
         
-    }, [auth])
+    }, [isLogin])
 
     return (
         <>
