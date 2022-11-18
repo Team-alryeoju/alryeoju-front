@@ -17,7 +17,7 @@ import Footer from '../Components/Footer.js'
 import './Home.css'
 
 const Home = () => {
-    const {auth} = useContext(AuthContext);
+    const {authName} = useContext(AuthContext);
     // 화면에 보여줄 알코올 리스트
     const [alList, setAlList] = useState([]);
     const [recommList, setRecommList] = useState([]);
@@ -76,8 +76,8 @@ const Home = () => {
             <Header />
             <div className="container">
                 <section className="product__slide-container col-center">
-                    {auth?.userName? 
-                        <h2 className="home-title product__slide-title"><span>{auth.userName}</span>님께 추천하는 토큰 랭킹</h2>
+                    {authName? 
+                        <h2 className="home-title product__slide-title"><span>{authName}</span>님께 추천하는 토큰 랭킹</h2>
                         : <h2 className="home-title product__slide-title">이 술의 토큰 랭킹</h2>}
                     <ProductSwiper products={recommList}/>
                 </section>

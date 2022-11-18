@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import styled from 'styled-components';
 import AuthContext from '../context/AuthProvider.js';
 
@@ -67,14 +67,13 @@ const SignButton = styled.button`
 `
 
 const Header = () => {
-    const { setAuth, isLogin, setIsLogin } = useContext(AuthContext)
-    const navigate = useNavigate()
+    const { setAuthName, isLogin, setIsLogin } = useContext(AuthContext)
 
     const logOut = () => {
         // 로그인 정보 session스토리지에서 remove
         sessionStorage.removeItem("access_token")
         // Context 정보에서도 제거
-        setAuth({})
+        setAuthName('')
         setIsLogin(false)
         // 새로고침
         window.location.replace("/")

@@ -6,9 +6,7 @@ import { getUserInfo } from "../api/api.js"
 const AuthContext = createContext({}); // 기본값은 {}
 
 export const AuthProvider = ({children}) => {
-    const [auth, setAuth] = useState({
-        userName: "",
-    });
+    const [authName, setAuthName] = useState('')
     const [isLogin, setIsLogin] = useState(false);
     
     // refresh 할 때마다 실행됨.
@@ -27,10 +25,7 @@ export const AuthProvider = ({children}) => {
         // 새로 고침할 때마다 auth 업데이트 해준다.
         getUserInfo(accessToken)
             .then((res) => {
-                setAuth({
-                    ...auth,
-                    userName: res.data["user_name"]
-                })
+                setAuthName(res.data["user_name"])
             }).catch((err) =>{
                 console.log(err)
             })
@@ -38,7 +33,7 @@ export const AuthProvider = ({children}) => {
     },[])
 
     return (
-        <AuthContext.Provider value={{ auth, setAuth, isLogin, setIsLogin }}>
+        <AuthContext.Provider value={{ authName, setAuthName, isLogin, setIsLogin }}>
             {children}
         </AuthContext.Provider>
     )
