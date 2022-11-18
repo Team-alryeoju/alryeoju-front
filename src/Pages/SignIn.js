@@ -1,6 +1,5 @@
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import axios from '../api/axios.js'
 import AuthContext from '../context/AuthProvider.js';
 
 import { signIn, getUserInfo } from "../api/api.js"
@@ -30,7 +29,7 @@ function SignIn() {
     const [pwd, setPwd] = useState("")
     /** 에러 메시지 state */
     const [errMsg, setErrMsg] = useState("")
-    const [success, setSuccess] = useState(false)
+    // const [success, setSuccess] = useState(false)
 
     useEffect(()=> {
         userRef.current.focus();
@@ -42,7 +41,7 @@ function SignIn() {
         if(isLogin){
             navigate(-1)
         }
-    }, [navigate])
+    }, [navigate, isLogin])
     
     useEffect(() => {
         setErrMsg('');

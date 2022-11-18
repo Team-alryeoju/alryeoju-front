@@ -43,7 +43,7 @@ const TestSurvey = ({answers, setAnswers}) => {
 
     useEffect(() => {
         setAnswers([])
-    }, [])
+    }, [setAnswers])
 
     /** 주어진 질문에 대한 답변이 존재하는지 확인하여 현재 답변을 설정하는 함수*/
     const handleCurAnswer = (questionIdx) => {

@@ -1,5 +1,4 @@
 import { createContext, useEffect, useState } from "react";
-import axios from "../api/axios.js";
 
 /** api */
 import { getUserInfo } from "../api/api.js"

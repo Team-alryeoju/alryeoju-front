@@ -1,5 +1,4 @@
 import React, { useContext, useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 
 /** api */
 import { getPurchasedItems } from "../api/api.js"
@@ -57,7 +56,7 @@ const MyPage = () => {
 
         getPurchasedList()
         
-    }, [auth])
+    }, [isLogin])
 
     return (
         <>

@@ -86,7 +86,7 @@ const Detail = () => {
     
     /** 에러, 로딩 */
     const [error, setError] = useState('');
-    const [isLoading, setIsLoading] = useState(true)
+    // const [isLoading, setIsLoading] = useState(true)
 
     // 술에 대한 정보
     const [sool, setSool] = useState({});
@@ -100,7 +100,7 @@ const Detail = () => {
     
     // 구매 loading
     const [purchaseLoading, setPurchaseLoading] = useState(false)
-    const [purchaseSuccess, setPurchasSuccess] = useState(false)
+    // const [purchaseSuccess, setPurchasSuccess] = useState(false)
     
     const navigate = useNavigate();
     
@@ -113,7 +113,7 @@ const Detail = () => {
         // 위의 if문에 해당하는 조건이 의도대로 되지 않음 -> 맞지 않는 url을 받아옴
         // 그래서 url 정확히 받아오기 전까지는 요청하지 않도록 수정
 
-        setIsLoading(true)
+        // setIsLoading(true)
         setShowReviews(false)
 
         // 술 정보 가져오기
@@ -121,7 +121,7 @@ const Detail = () => {
             .then((res)=>{
                 setSool(res.data.al_data)
                 setTokens(res.data.token_rank)
-                setIsLoading(false)
+                // setIsLoading(false)
 
             }).catch((e)=>{
                 setError(e.response.data.msg);
@@ -156,18 +156,18 @@ const Detail = () => {
         const wait = (timeToDelay) => new Promise((resolve) => setTimeout(resolve, timeToDelay))
         const buySool = async () =>{
             setPurchaseLoading(true)
-            setPurchasSuccess(false)
+            // setPurchasSuccess(false)
             // post 작업 실행
             try{
                 const res = await purchase(soolId);
                 console.log(res.msg)
                 await wait(500)
                 alert("구매 완료!")
-                setPurchasSuccess(true);
+                // setPurchasSuccess(true);
                 setPurchaseLoading(false);
             }catch(e){
                 console.log(e)
-                setPurchasSuccess(false)
+                // setPurchasSuccess(false)
             }
         }
 
