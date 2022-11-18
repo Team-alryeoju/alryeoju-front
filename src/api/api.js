@@ -12,7 +12,7 @@ const test = () => {
 /** GET 요청 */
 // User 정보 가져오기
 const getUserInfo = (accessToken) => {
-    return axios.get('/user_info',{
+    return axios.get('/api/user_info',{
         headers: {
             // 헤더에 토큰 추가!
             Authorization: `Bearer ${accessToken}`,
@@ -27,7 +27,7 @@ const getSoolRank = () => {
     // accessToken이 존재한다면
     // user 정보에 맞는 술 추천 랭킹
     if(accessToken){
-        return axios.get('/recomm_user',{
+        return axios.get('/api/recomm_user',{
             headers: {
                 // 헤더에 토큰 추가!
                 Authorization: `Bearer ${accessToken}`,
@@ -53,7 +53,7 @@ const getSoolDetail = (soolId) => {
     // accessToken이 존재한다면
     // user 정보에 해당하는 술 detail 가져오기
     if(accessToken){
-        return axios.get('/detail_user',{
+        return axios.get('/api/detail_user',{
             params: { al_id: soolId },
             headers: {
                 // 헤더에 토큰 추가!
@@ -62,7 +62,7 @@ const getSoolDetail = (soolId) => {
         })
     // 아니면 일반 정보 가져오기
     }else{
-        return axios.get('/detail',{
+        return axios.get('/api/detail',{
             params: { al_id: soolId }
         })
     }
@@ -70,14 +70,14 @@ const getSoolDetail = (soolId) => {
 
 /** Detail 페이지 - 술의 비슷한 술 정보 */
 const getSimilarSool = (soolId) => {
-    return axios.get('/simitems', {
+    return axios.get('/api/simitems', {
         params: {al_id: soolId}
     })
 }
 
 /** 술의 리뷰 데이터 */
 const getReviewList = (soolId) => {
-    return axios.get('/readreviews', {
+    return axios.get('/api/readreviews', {
         params: {al_id: soolId}
     })
 }
@@ -86,7 +86,7 @@ const getReviewList = (soolId) => {
 const purchase = (soolId) => {
     const accessToken = getAccessToken()
 
-    return axios.post("/purchase",
+    return axios.post("/api/purchase",
         JSON.stringify({al_id : soolId}),
         {
             headers: { 
@@ -101,7 +101,7 @@ const purchase = (soolId) => {
 const getPurchasedItems = () => {
     const accessToken = getAccessToken()
     
-    return axios.get(`/purchased_items`, 
+    return axios.get(`/api/purchased_items`, 
         {
             headers: { 
                 Authorization: `Bearer ${accessToken}`,
@@ -112,7 +112,7 @@ const getPurchasedItems = () => {
 
 /** 로그인 */
 const signIn = (id, pw) => {
-    return axios.post("/signin",
+    return axios.post("/api/signin",
         JSON.stringify({id, pw}),
         {
             headers: { 'Content-Type': 'application/json'},

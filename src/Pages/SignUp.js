@@ -82,7 +82,7 @@ function SignUp(props) {
                 return
             }
             try{
-                const response = await axios.post("/duplicate_id_check",
+                const response = await axios.post("/api/duplicate_id_check",
                     JSON.stringify({id : user}),
                     {
                         headers: { 'Content-Type': 'application/json'},
@@ -123,7 +123,7 @@ function SignUp(props) {
                 return
             }
             try{
-                const response = await axios.post("/duplicate_name_check",
+                const response = await axios.post("/api/duplicate_name_check",
                     JSON.stringify({u_name : name}),
                     {
                         headers: { 'Content-Type': 'application/json'},
@@ -181,7 +181,7 @@ function SignUp(props) {
 
         // post 작업 필요
         try{
-            const response = await axios.post("/signup",
+            const response = await axios.post("/api/signup",
                 JSON.stringify({id : user, pw : pwd, u_name: name}),
                 {
                     headers: { 'Content-Type': 'application/json'},
