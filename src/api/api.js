@@ -1,7 +1,9 @@
 import axios from "./axios.js";
 
 
-const accessToken = JSON.parse(sessionStorage.getItem("access_token"))
+const getAccessToken = () =>{
+    return JSON.parse(sessionStorage.getItem("access_token"))
+}
 
 const test = () => {
     console.log('Hi! This is API')
@@ -9,7 +11,7 @@ const test = () => {
 
 /** GET 요청 */
 // User 정보 가져오기
-const userInfo = () => {
+const getUserInfo = (accessToken) => {
     return axios.get('/user_info',{
         headers: {
             // 헤더에 토큰 추가!
@@ -20,6 +22,8 @@ const userInfo = () => {
 
 // 1. Home 페이지
 const getSoolRank = () => {
+    const accessToken = getAccessToken()
+
     // accessToken이 존재한다면
     // user 정보에 맞는 술 추천 랭킹
     if(accessToken){
@@ -45,6 +49,7 @@ const getSoolRank = () => {
  * 기본 정보를 가져온다.
 */
 const getSoolDetail = (soolId) => {
+    const accessToken = getAccessToken()
     // accessToken이 존재한다면
     // user 정보에 해당하는 술 detail 가져오기
     if(accessToken){
@@ -64,14 +69,23 @@ const getSoolDetail = (soolId) => {
 }
 
 /** Detail 페이지 - 술의 비슷한 술 정보 */
-const getSimilarSool = (sooId) => {
+const getSimilarSool = (soolId) => {
     return axios.get('/simitems', {
-        params: {al_id: sooId}
+        params: {al_id: soolId}
+    })
+}
+
+/** 술의 리뷰 데이터 */
+const getReviewList = (soolId) => {
+    return axios.get('/readreviews', {
+        params: {al_id: soolId}
     })
 }
 
 /** 구매하기 */
 const purchase = (soolId) => {
+    const accessToken = getAccessToken()
+
     return axios.post("/purchase",
         JSON.stringify({al_id : soolId}),
         {
@@ -85,6 +99,8 @@ const purchase = (soolId) => {
 
 /** 구매 내역 */
 const getPurchasedItems = () => {
+    const accessToken = getAccessToken()
+    
     return axios.get(`/purchased_items`, 
         {
             headers: { 
@@ -94,12 +110,25 @@ const getPurchasedItems = () => {
         })
 }
 
+/** 로그인 */
+const signIn = (id, pw) => {
+    return axios.post("/signin",
+        JSON.stringify({id, pw}),
+        {
+            headers: { 'Content-Type': 'application/json'},
+            withCredentials: true
+        }
+    );
+}
+
 export{
     test, 
-    userInfo, 
+    getUserInfo, 
     getSoolRank, 
     getSoolDetail, 
+    getReviewList,
     getSimilarSool, 
     purchase,
-    getPurchasedItems
+    getPurchasedItems,
+    signIn
 }

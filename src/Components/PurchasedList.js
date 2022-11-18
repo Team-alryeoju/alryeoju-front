@@ -4,7 +4,6 @@ import styled from "styled-components";
 
 const PurchasedListContainer = styled.ul`
     width: 100%;
-    padding: 50px;
     display: flex;
     flex-direction: row;
     justify-content: center;
@@ -68,6 +67,10 @@ const ReviewButton = styled.button`
 `
 
 const PurchasedList = ({ products }) => {
+
+    const handleReview = () => {
+
+    }
     
     //"c_id": 16,
     // "al_id": 257,
@@ -80,7 +83,7 @@ const PurchasedList = ({ products }) => {
                 <Link to={`/detail/${al.al_id}`}>{al.al_name}</Link>
                 <div>
                     <span className='purchased--date'>구매 날짜 : {al.date}</span>
-                    {al.review_O ? <ReviewButton className='purchased--review'>리뷰 남기기</ReviewButton> : <span className='purchased--review'>리뷰 작성 완료</span>}
+                    {al.review_O ? <ReviewButton className='purchased--review' onClick={handleReview}>리뷰 남기기</ReviewButton> : <span className='purchased--review'>리뷰 작성 완료</span>}
                 </div>
             </PurchasedCard>)}
             {/* <PurchasedCard className='invisble'></PurchasedCard> */}

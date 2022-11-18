@@ -75,7 +75,7 @@ const Home = () => {
             <Header />
             <div className="container">
                 <section className="product__slide-container col-center">
-                    {isLogin? 
+                    {auth?.userName? 
                         <h2 className="home-title product__slide-title"><span>{auth.userName}</span>님께 추천하는 토큰 랭킹</h2>
                         : <h2 className="home-title product__slide-title">이 술의 토큰 랭킹</h2>}
                     <ProductSwiper products={recommList}/>

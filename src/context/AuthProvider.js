@@ -2,32 +2,40 @@ import { createContext, useEffect, useState } from "react";
 import axios from "../api/axios.js";
 
 /** api */
-import { userInfo } from "../api/api.js"
+import { getUserInfo } from "../api/api.js"
 // Context 생성 
 const AuthContext = createContext({}); // 기본값은 {}
 
 export const AuthProvider = ({children}) => {
-    const [auth, setAuth] = useState({});
+    const [auth, setAuth] = useState({
+        userName: "",
+    });
     const [isLogin, setIsLogin] = useState(false);
     
     // refresh 할 때마다 실행됨.
     useEffect(() => {
         // Session Storage 에 저장된 User 정보를 가져온다.
-        // const accessToken = JSON.parse(sessionStorage.getItem("access_token"))
+        const accessToken = JSON.parse(sessionStorage.getItem("access_token"))
+
+        if(accessToken) {
+            setIsLogin(true)
+        }
+        else {
+            setIsLogin(false)
+            return
+        }
+
         // 새로 고침할 때마다 auth 업데이트 해준다.
-        userInfo()
+        getUserInfo(accessToken)
             .then((res) => {
                 setAuth({
-                    id: res.data["id"],
+                    ...auth,
                     userName: res.data["user_name"]
                 })
-                setIsLogin(true);
             }).catch((err) =>{
                 console.log(err)
-                setIsLogin(false)
-                sessionStorage.removeItem("access_token")
             })
-        // setAuth(user)
+
     },[])
 
     return (
