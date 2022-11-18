@@ -1,0 +1,8 @@
+[[redirects]]
+  from = “/*”
+  to = “http://127.0.0.1:5000:splat"
+  status = 200
+[[redirects]]
+  from = “/*”
+  to = “/index.html”
+  status = 200
