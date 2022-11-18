@@ -35,7 +35,7 @@ const getSoolRank = () => {
         })
     // 아니면 일반 베스트 랭킹 가져오기
     }else{
-        return axios.get('/recomm')
+        return axios.get('/api/recomm')
     }
 }
 
