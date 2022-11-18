@@ -35,7 +35,7 @@ const MyPageContainer = styled.div`
 `
 
 const MyPage = () => {
-    const { auth, isLogin } = useContext(AuthContext)
+    const { authName, isLogin } = useContext(AuthContext)
     const [alList, setAlList] = useState([])
     const [error, setError] = useState('')
 
@@ -65,7 +65,7 @@ const MyPage = () => {
                 <h1>구매 내역</h1>
                 {isLogin? (
                     <div>
-                        <h2>{auth.userName}님 안녕하세요!</h2>
+                        <h2>{authName}님 안녕하세요!</h2>
                         <main>
                             {alList.length === 0 ? 
                                 <div>구매 내역이 없습니다.</div> 

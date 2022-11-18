@@ -16,7 +16,7 @@ function SignIn() {
      * 이를 통해 컴포넌트 모두에서 페이지를 이용하는 동안 acces token 받을 수 있다.
     */
    // AuthContext이 제공하는 auth state를 변경하는 함수를 받는다.
-    const { setAuth, isLogin, setIsLogin } = useContext(AuthContext);
+    const { setAuthName, isLogin, setIsLogin } = useContext(AuthContext);
 
     // navigate
     const navigate = useNavigate();
@@ -63,9 +63,7 @@ function SignIn() {
 
             const userInfo = await getUserInfo(accessToken);
             
-            setAuth({
-                userName: userInfo.data.user_name
-            })
+            setAuthName(userInfo.data.user_name)
             setIsLogin(true)
             setUser('');
             setPwd('');  

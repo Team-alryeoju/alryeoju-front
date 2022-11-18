@@ -80,7 +80,7 @@ const Review = styled.li`
 
 const Detail = () => {
     // 로그인 정보
-    const { auth, isLogin } = useContext(AuthContext)
+    const { authName, isLogin } = useContext(AuthContext)
     // url에 sool id 같이 들어옴
     const { soolId } = useParams();
     
@@ -207,8 +207,8 @@ const Detail = () => {
                                     </div>
                                 </div>
                                 <div className="product--token col">
-                                    {auth.userName? 
-                                        <div className="token--title"><span>{auth.userName}</span>님께 추천하는 토큰 랭킹</div>
+                                    {authName? 
+                                        <div className="token--title"><span>{authName}</span>님께 추천하는 토큰 랭킹</div>
                                         : <div className="token--title">이 술의 토큰 랭킹</div>}
                                     <ul className="row product--tokenList">
                                         {tokens.map((token, idx) => {
