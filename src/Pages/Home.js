@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useMemo } from "react";
 import { useEffect, useState } from "react";
 
 /** api */
@@ -17,36 +17,38 @@ import Footer from '../Components/Footer.js'
 import './Home.css'
 
 const Home = () => {
-    const {auth, isLogin} = useContext(AuthContext);
+    const {auth} = useContext(AuthContext);
     // 화면에 보여줄 알코올 리스트
     const [alList, setAlList] = useState([]);
     const [recommList, setRecommList] = useState([]);
     
     // api에 넘겨줄 데이터 조건 -> 카테고리 누를 때마다 변한다.
     const [category, setCategory] = useState(0);
-    const [isloading, setIsLoading] = useState(true);
-    const [error, setError] = useState(null);
+    // const [isloading, setIsLoading] = useState(true);
+    // const [error, setError] = useState(null);
 
     // 검색 조건을 보내서 fetch 해오는 방식으로!!
 
-    const categoryArr = [
-        { name: '전체' , url: `/alcohol`},
-        { name: '탁주' , url: `/alcohol?category=탁주`},
-        { name: '약주' , url: `/alcohol?category=약주`},
-        { name: '과실주' , url: `/alcohol?category=과실주`},
-        { name: '증류식소주' , url: `/alcohol?category=증류식소주`}
-    ]
+    const categoryArr = useMemo(()=> {
+        return [
+            { name: '전체' , url: `/alcohol`},
+            { name: '탁주' , url: `/alcohol?category=탁주`},
+            { name: '약주' , url: `/alcohol?category=약주`},
+            { name: '과실주' , url: `/alcohol?category=과실주`},
+            { name: '증류식소주' , url: `/alcohol?category=증류식소주`}
+        ]
+    }, [])
 
     useEffect(() => {
         /** GET 요청 */
         const getSoolRanking = async () => {
             try {
-                setIsLoading(true)
+                // setIsLoading(true)
                 const response = await getSoolRank()
                 setRecommList(Object.values(response.data))
-                setIsLoading(false)
+                // setIsLoading(false)
             } catch (e){
-                setError(e);
+                // setError(e);
             }
         };
 
@@ -58,24 +60,23 @@ const Home = () => {
     useEffect(() =>{
         const getAlcoholList = async () => {
             try {
-                setIsLoading(true)
+                // setIsLoading(true)
                 const response = await axios.get(categoryArr[category].url)
                 setAlList(Object.values(response.data))
             } catch (e){
-                setError(e);
+                // setError(e);
             }
         }
-
-        setIsLoading(false);
+        // setIsLoading(false);
         getAlcoholList();
-    }, [category])
+    }, [category, categoryArr])
 
     return (
         <div className="Home">
             <Header />
             <div className="container">
                 <section className="product__slide-container col-center">
-                    {isLogin? 
+                    {auth?.userName? 
                         <h2 className="home-title product__slide-title"><span>{auth.userName}</span>님께 추천하는 토큰 랭킹</h2>
                         : <h2 className="home-title product__slide-title">이 술의 토큰 랭킹</h2>}
                     <ProductSwiper products={recommList}/>

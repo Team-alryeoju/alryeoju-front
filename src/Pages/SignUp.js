@@ -17,8 +17,6 @@ function SignUp(props) {
      * 이를 통해 컴포넌트 모두에서 페이지를 이용하는 동안 acces token 받을 수 있다.
     */
     const { isLogin } = useContext(AuthContext);
-    // Ref
-    const errRef = useRef();
 
     /** 사용자 ID state */
     const userRef = useRef();
@@ -40,8 +38,8 @@ function SignUp(props) {
     const [pwdConfirmError, setPwdConfirmError] = useState("");
 
     /** 에러 메시지 state */
-    const [errMsg, setErrMsg] = useState("")
-    const [success, setSuccess] = useState(false)
+    // const [errMsg, setErrMsg] = useState("")
+    // const [success, setSuccess] = useState(false)
 
     const navigate = useNavigate();
     
@@ -189,16 +187,17 @@ function SignUp(props) {
                     headers: { 'Content-Type': 'application/json'},
                     withCredentials: true
                 }  
+                
             );
 
             // 처리 성공
-            alert('회원가입이 성공하였습니다')
+            alert(response.data.msg)
             navigate("/login")
-            setSuccess(true);
+            // setSuccess(true);
 
         } catch(err) {
             // 에러 처리
-            setSuccess(false)
+            // setSuccess(false)
         }
     }
 

@@ -78,6 +78,7 @@ button:disabled{
   /** color **/
   --main-color: #7D6767; /** #7D6767 or var(--main-color) **/
   --emphasize-color: #9999D8;
+  --light-grey-color: #f3f3f4;
 
   /** font-color **/
   --basic-font-color: #2d2d2d;

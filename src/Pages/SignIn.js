@@ -1,7 +1,8 @@
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import axios from '../api/axios.js'
 import AuthContext from '../context/AuthProvider.js';
+
+import { signIn, getUserInfo } from "../api/api.js"
 
 import "./SignIn.css"
 import { InputContainer } from '../Components/InputContainer.js';
@@ -10,7 +11,7 @@ import { SubmitButton } from '../Components/SubmitButton.js';
 // 2. 클라이언트 요청 시에 session_id를 서버 족에서 받는다.
 // 3. 서버 쪽에서 session_id를 검증
 
-function SignIn(props) {
+function SignIn() {
     /** context value 
      * 이를 통해 컴포넌트 모두에서 페이지를 이용하는 동안 acces token 받을 수 있다.
     */
@@ -28,7 +29,7 @@ function SignIn(props) {
     const [pwd, setPwd] = useState("")
     /** 에러 메시지 state */
     const [errMsg, setErrMsg] = useState("")
-    const [success, setSuccess] = useState(false)
+    // const [success, setSuccess] = useState(false)
 
     useEffect(()=> {
         userRef.current.focus();
@@ -40,7 +41,7 @@ function SignIn(props) {
         if(isLogin){
             navigate(-1)
         }
-    }, [isLogin, navigate])
+    }, [navigate, isLogin])
     
     useEffect(() => {
         setErrMsg('');
@@ -52,22 +53,18 @@ function SignIn(props) {
         
         try{
             // 서버에 POST 요청으로 토큰을 발급받는다.
-            const response = await axios.post("/signin",
-                JSON.stringify({id : user, pw : pwd}),
-                {
-                    headers: { 'Content-Type': 'application/json'},
-                    withCredentials: true
-                }
-            );
+            const response = await signIn(user, pwd);
             
             // 응답의 데이터 중 access_token 으로 발급받음
             const accessToken = response.data.access_token;
 
             // 받은 토큰을 도메인의 Session Storage나 Local Storage 로 저장한다.
             sessionStorage.setItem("access_token", JSON.stringify(accessToken))
+
+            const userInfo = await getUserInfo(accessToken);
+            
             setAuth({
-                userName: response.data.user_name,
-                accessToken
+                userName: userInfo.data.user_name
             })
             setIsLogin(true)
             setUser('');

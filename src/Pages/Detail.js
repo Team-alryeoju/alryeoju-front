@@ -3,7 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useState, useEffect, useContext } from "react";
 
 /** api */
-import { getSoolDetail, getSimilarSool, purchase } from "../api/api.js"
+import { getSoolDetail, getSimilarSool, getReviewList, purchase } from "../api/api.js"
 /** Context */
 import AuthContext from "../context/AuthProvider.js";
 
@@ -21,7 +21,7 @@ import { CircularProgress } from '@mui/material';
 
 /** FontAwesome */
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faAngleRight } from "@fortawesome/free-solid-svg-icons"
+import { faAngleRight, faCaretDown, faCaretUp } from "@fortawesome/free-solid-svg-icons"
 
 
 const PurchaseButton = styled.button`
@@ -35,6 +35,49 @@ const PurchaseButton = styled.button`
     font-weight: 500;
 `
 
+const Review = styled.li`
+    list-style: none;
+    /* height: 50px; */
+    flex: 1 0 max-content;
+    margin-bottom: 10px;
+    
+    &:not(:last-child)::after{
+        display: inline-block;
+        content: "";
+        width: 100%;
+        height: 3px;
+        margin-top: 30px;
+        background-color: white;
+    }
+
+    > div{
+        display: flex;
+        flex-direction: column;
+        padding-left: 10px;
+        > span:nth-child(1){
+            font-size: 1rem;
+            font-weight: 500;
+            color: var(--basic-font-color);
+        }
+
+        > div{
+            display: flex;
+            align-items: center;
+            > .review--date{
+                color: var(--grey-font-color);
+                font-size: 0.8rem;
+            }
+        }
+    }
+
+    > p{
+        color: var(--basic-font-color);
+        font-size: 0.9rem;
+        margin-top: 1rem;
+        padding-left: 1rem;
+    }
+`
+
 const Detail = () => {
     // 로그인 정보
     const { auth, isLogin } = useContext(AuthContext)
@@ -43,18 +86,21 @@ const Detail = () => {
     
     /** 에러, 로딩 */
     const [error, setError] = useState('');
-    const [isLoading, setIsLoading] = useState(true)
+    // const [isLoading, setIsLoading] = useState(true)
 
     // 술에 대한 정보
     const [sool, setSool] = useState({});
     const [tokens, setTokens] = useState([]);
+    const [reviews, setReviews] = useState([]);
+    const [showReviews, setShowReviews] = useState(false);
 
     // 비슷한 술 리스트
     const [similarSool, setSimilarSool] = useState([]);
+
     
     // 구매 loading
     const [purchaseLoading, setPurchaseLoading] = useState(false)
-    const [purchaseSuccess, setPurchasSuccess] = useState(false)
+    // const [purchaseSuccess, setPurchasSuccess] = useState(false)
     
     const navigate = useNavigate();
     
@@ -67,26 +113,36 @@ const Detail = () => {
         // 위의 if문에 해당하는 조건이 의도대로 되지 않음 -> 맞지 않는 url을 받아옴
         // 그래서 url 정확히 받아오기 전까지는 요청하지 않도록 수정
 
-        setIsLoading(true)
+        // setIsLoading(true)
+        setShowReviews(false)
 
         // 술 정보 가져오기
         getSoolDetail(soolId)
             .then((res)=>{
                 setSool(res.data.al_data)
                 setTokens(res.data.token_rank)
-                setIsLoading(false)
+                // setIsLoading(false)
 
             }).catch((e)=>{
-                setError(e.response.data);
+                setError(e.response.data.msg);
             })
-        
+
+        // 리뷰 데이터 가져오기
+        getReviewList(soolId)
+        .then((res) => {
+            // 리뷰 설정
+            setReviews(Object.values(res.data))
+        }).catch((e) => setError(e.response.data.msg))
+
         // 비슷한 술 리스트 가져오기
         getSimilarSool(soolId)
             .then((res) => {
                 setSimilarSool(Object.values(res.data))
-            }).catch((e) => setError(e.response.data))
+            }).catch((e) => setError(e.response.data.msg))
+        
+            
 
-    }, [])
+    }, [soolId])
 
     const handlePurchaseBtn = () => {
         // 로그인이 안 된 상태라면
@@ -100,23 +156,27 @@ const Detail = () => {
         const wait = (timeToDelay) => new Promise((resolve) => setTimeout(resolve, timeToDelay))
         const buySool = async () =>{
             setPurchaseLoading(true)
-            setPurchasSuccess(false)
+            // setPurchasSuccess(false)
             // post 작업 실행
             try{
                 const res = await purchase(soolId);
                 console.log(res.msg)
                 await wait(500)
                 alert("구매 완료!")
-                setPurchasSuccess(true);
+                // setPurchasSuccess(true);
                 setPurchaseLoading(false);
             }catch(e){
                 console.log(e)
-                setPurchasSuccess(false)
+                // setPurchasSuccess(false)
             }
         }
 
         buySool()
 
+    }
+
+    const handleReviewShowBtn = () => {
+        setShowReviews(!showReviews)
     }
 
     return (
@@ -134,20 +194,20 @@ const Detail = () => {
                                 <div className="product--detail col">
                                     <div className="product--name">{sool.al_name}</div>
                                     <div className="product--category">
-                                        <lable>주종: </lable>
+                                        <label>주종: </label>
                                         <span>{sool.category}</span>
                                     </div>
                                     <div className="product--degree">
-                                        <lable>도수: </lable>
+                                        <label>도수: </label>
                                         <span>{sool.degree}%</span>    
                                     </div>
                                     <div className="product--star">
-                                        <Rating className="rating" name="read-only" value={Math.round(sool.score * 10) / 10} precision={0.25} readOnly />
+                                        <Rating className="rating" name="read-only" size="large" value={Math.round(sool.score * 10) / 10} precision={0.25} readOnly />
                                         <span className="score">{Math.round(sool.score * 10) / 10}</span>
                                     </div>
                                 </div>
                                 <div className="product--token col">
-                                    {isLogin? 
+                                    {auth.userName? 
                                         <div className="token--title"><span>{auth.userName}</span>님께 추천하는 토큰 랭킹</div>
                                         : <div className="token--title">이 술의 토큰 랭킹</div>}
                                     <ul className="row product--tokenList">
@@ -156,15 +216,8 @@ const Detail = () => {
                                         })}
                                     </ul>
                                 </div>
-                                {/* <div className="product--price">가격</div> */}
                             </div>
                             <div className="product__purchase col">
-                                {/* <div className="product--count row">
-                                    <button>minus</button>
-                                    <p>1</p>
-                                    <button>plus</button>
-                                </div>
-                                <p>총 가격</p> */}
                                 <span className="product--price">{(sool.price)}원</span>
                                 <PurchaseButton disabled={purchaseLoading} onClick={handlePurchaseBtn}>
                                     {purchaseLoading ?
@@ -175,12 +228,39 @@ const Detail = () => {
                             </div>
                         </div>
                     </div>
+                    <div className="reviews__container">
+                        <div onClick={handleReviewShowBtn}>
+                            <h2>리뷰</h2>
+                            <span>({reviews.length})</span>
+                            {showReviews ?
+                                <button className="review__close-button"><FontAwesomeIcon icon={faCaretUp} /></button>
+                                : <button className="review__open-button"><FontAwesomeIcon icon={faCaretDown} /></button>
+                            }
+                        </div>
+                        {showReviews?
+                            (<ul>
+                                { reviews.length === 0 ? <div>작성된 리뷰가 없습니다.</div>
+                                    : (reviews.map((el, idx) => {
+                                            return <Review key={idx}>
+                                                <div className="review--top">
+                                                    <span>{el.u_name}</span>
+                                                    <div>
+                                                        <Rating className="rating" name="read-only" size="small" value={Math.round(el.score * 10) / 10} precision={0.5} readOnly />
+                                                        <span className="review--date">{el.datetime}</span>
+                                                    </div>
+                                                </div>
+                                                <p className="review--bottom">{el.review}</p>
+                                            </Review>
+                                        }))
+                                }
+                            </ul>)
+                            : null}
+                    </div>
                 </main>
-                <div className="col-center detail-bottom">
+                <aside className="col-center detail-bottom">
                     <h2>비슷한 술</h2>
                     <ProductSwiper products={similarSool}/>
-                </div>
-
+                </aside>
             </div>
         </div>
     )

@@ -61,7 +61,7 @@ const TestResult = ({answers}) => {
 
         getResult()
 
-    },[navigate])
+    },[navigate, answers])
 
     return (
         <TestResultContainer>

@@ -11,7 +11,7 @@ import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
 // import required modules
-import { Pagination, Navigation } from "swiper";
+import { Navigation } from "swiper";
 
 /** FontAwesome */
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
@@ -35,13 +35,13 @@ const NavigationButton = styled.button`
     }
 `
 
-function getWindowSize() {
-    const {innerWidth : width, innerHeight: height} = window;
-    return {width, height};
-}
+// function getWindowSize() {
+//     const {innerWidth : width, innerHeight: height} = window;
+//     return {width, height};
+// }
 
 function ProductSwiper({ products }) {
-    const [slide, setSlide] = useState(3);
+    // const [slide, setSlide] = useState(3);
     const [swiperSetting, setSwiperSetting] = useState(null);
 
     const navigationPrevRef = useRef(null);
@@ -73,23 +73,23 @@ function ProductSwiper({ products }) {
             setSwiperSetting(settings)
         }
     },[swiperSetting])
-    useEffect(() => {
-        const handleResize = () => {
-            const windowWidth = getWindowSize().width
+    // useEffect(() => {
+    //     const handleResize = () => {
+    //         const windowWidth = getWindowSize().width
 
-            if(windowWidth <= 500) setSlide(1);
-            else if(windowWidth <= 900) setSlide(2);
-            else setSlide(3);
-        }
+    //         if(windowWidth <= 500) setSlide(1);
+    //         else if(windowWidth <= 900) setSlide(2);
+    //         else setSlide(3);
+    //     }
 
-        handleResize();
-        window.addEventListener("resize", handleResize)
+    //     handleResize();
+    //     window.addEventListener("resize", handleResize)
 
-        return () => { // 언마운트
-            window.removeEventListener("resize", handleResize)
-        }
+    //     return () => { // 언마운트
+    //         window.removeEventListener("resize", handleResize)
+    //     }
 
-    }, [])
+    // }, [])
 
     return (
         <div className="swiper-container row-center">

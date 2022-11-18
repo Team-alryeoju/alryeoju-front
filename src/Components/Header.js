@@ -80,23 +80,12 @@ const Header = () => {
         window.location.replace("/")
     }
 
-    const toMyPage = () => {
-        if(!isLogin){
-            // 로그인 화면으로 전환시킴
-            alert("로그인이 필요합니다.")
-            navigate("/login")
-            return
-        }
-
-        navigate('/mypage')
-    }
-
     return (
         <HeaderContainer>
             <Link to="/" className="home-link"><div><img src="/logo.jpeg" alt="logo"/></div></Link>
             <nav className="user-link row-center">
                 <Link className="test-link" to="/test">취향 테스트</Link>
-                <button className="mypage-link" onClick={toMyPage}>구매내역</button>
+                <Link className="mypage-link" to="/mypage">구매내역</Link>
                 {/* <FontAwesomeIcon className="mypage-icon" icon={faCircleUser} /> */}
                 { isLogin ?
                     (<SignButton onClick={logOut}>로그아웃</SignButton>) 

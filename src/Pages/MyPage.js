@@ -1,5 +1,4 @@
 import React, { useContext, useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 
 /** api */
 import { getPurchasedItems } from "../api/api.js"
@@ -29,7 +28,7 @@ const MyPageContainer = styled.div`
         margin-top: 0.5rem;
     }
 
-    & > main > div{
+    & > div> main {
         margin-top: 40px;
     }
 
@@ -40,19 +39,13 @@ const MyPage = () => {
     const [alList, setAlList] = useState([])
     const [error, setError] = useState('')
 
-    const navigate = useNavigate()
-
     useEffect(() => {
-
+        
         if(!isLogin){
-            // 로그인 화면으로 전환시킴
-            alert("로그인이 필요합니다.")
-            navigate("/login")
             return
         }
 
         const getPurchasedList = async () => {
-
             try {
                 const response = await getPurchasedItems();
                 setAlList(Object.values(response.data))
@@ -69,16 +62,19 @@ const MyPage = () => {
         <>
             <Header></Header>
             <MyPageContainer>
-                <div>
-                    <h1>구매 내역</h1>
-                    <h2>{auth.userName}님 안녕하세요!</h2>
-                </div>
-                <main>
-                    {alList.length === 0 ? 
-                        <div>구매 내역이 없습니다.</div> 
-                        : <PurchasedList products={alList}></PurchasedList>
-                    }
-                </main>
+                <h1>구매 내역</h1>
+                {isLogin? (
+                    <div>
+                        <h2>{auth.userName}님 안녕하세요!</h2>
+                        <main>
+                            {alList.length === 0 ? 
+                                <div>구매 내역이 없습니다.</div> 
+                                : <PurchasedList products={alList}></PurchasedList>
+                            }
+                        </main>
+                    </div>
+                ): <h2>로그인 후 확인 가능합니다!</h2>
+                }
             </MyPageContainer>
             <p>{error}</p>
         </>
