@@ -1,7 +1,5 @@
 import axios from "./axios.js";
 
-const API = window.location.hostname === 'localhost' ? '' : '/api';
-
 const getAccessToken = () =>{
     return JSON.parse(sessionStorage.getItem("access_token"))
 }
@@ -13,7 +11,7 @@ const test = () => {
 /** GET 요청 */
 // User 정보 가져오기
 const getUserInfo = (accessToken) => {
-    return axios.get('/api/user_info',{
+    return axios.get('/user_info',{
         headers: {
             // 헤더에 토큰 추가!
             Authorization: `Bearer ${accessToken}`,
@@ -28,7 +26,7 @@ const getSoolRank = () => {
     // accessToken이 존재한다면
     // user 정보에 맞는 술 추천 랭킹
     if(accessToken){
-        return axios.get('/api/recomm_user',{
+        return axios.get('/recomm_user',{
             headers: {
                 // 헤더에 토큰 추가!
                 Authorization: `Bearer ${accessToken}`,
@@ -36,7 +34,7 @@ const getSoolRank = () => {
         })
     // 아니면 일반 베스트 랭킹 가져오기
     }else{
-        return axios.get(`${API}/recomm`)
+        return axios.get(`/recomm`)
     }
 }
 
@@ -54,7 +52,7 @@ const getSoolDetail = (soolId) => {
     // accessToken이 존재한다면
     // user 정보에 해당하는 술 detail 가져오기
     if(accessToken){
-        return axios.get('/api/detail_user',{
+        return axios.get('/detail_user',{
             params: { al_id: soolId },
             headers: {
                 // 헤더에 토큰 추가!
@@ -63,7 +61,7 @@ const getSoolDetail = (soolId) => {
         })
     // 아니면 일반 정보 가져오기
     }else{
-        return axios.get('/api/detail',{
+        return axios.get('/detail',{
             params: { al_id: soolId }
         })
     }
@@ -71,14 +69,14 @@ const getSoolDetail = (soolId) => {
 
 /** Detail 페이지 - 술의 비슷한 술 정보 */
 const getSimilarSool = (soolId) => {
-    return axios.get('/api/simitems', {
+    return axios.get('/simitems', {
         params: {al_id: soolId}
     })
 }
 
 /** 술의 리뷰 데이터 */
 const getReviewList = (soolId) => {
-    return axios.get('/api/readreviews', {
+    return axios.get('/readreviews', {
         params: {al_id: soolId}
     })
 }
@@ -87,7 +85,7 @@ const getReviewList = (soolId) => {
 const purchase = (soolId) => {
     const accessToken = getAccessToken()
 
-    return axios.post("/api/purchase",
+    return axios.post("/purchase",
         JSON.stringify({al_id : soolId}),
         {
             headers: { 
@@ -102,7 +100,7 @@ const purchase = (soolId) => {
 const getPurchasedItems = () => {
     const accessToken = getAccessToken()
     
-    return axios.get(`/api/purchased_items`, 
+    return axios.get(`/purchased_items`, 
         {
             headers: { 
                 Authorization: `Bearer ${accessToken}`,
@@ -113,7 +111,7 @@ const getPurchasedItems = () => {
 
 /** 로그인 */
 const signIn = (id, pw) => {
-    return axios.post("/api/signin",
+    return axios.post("/signin",
         JSON.stringify({id, pw}),
         {
             headers: { 'Content-Type': 'application/json'},
