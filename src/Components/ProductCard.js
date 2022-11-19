@@ -15,6 +15,7 @@ const ProductCard = ({ sool }) => {
               </div>
               <div className="productCard__content col text-right">
                 <span className="productCard--name">{sool.al_name}</span>
+                {/* <span className="productCard--price">{(sool.price).toLocaleString()}원</span> */}
                 <span className="productCard--price">{(sool.price).toLocaleString()}원</span>
                 <div>
                   <span className="productCard--category">{sool.category}</span>
