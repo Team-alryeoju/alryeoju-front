@@ -1,5 +1,6 @@
 import axios from "./axios.js";
 
+const API = window.location.hostname === 'localhost' ? '' : '/api';
 
 const getAccessToken = () =>{
     return JSON.parse(sessionStorage.getItem("access_token"))
@@ -35,7 +36,7 @@ const getSoolRank = () => {
         })
     // 아니면 일반 베스트 랭킹 가져오기
     }else{
-        return axios.get('/api/recomm')
+        return axios.get(`${API}/recomm`)
     }
 }
 
