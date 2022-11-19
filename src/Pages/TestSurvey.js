@@ -32,15 +32,6 @@ const TestSurvey = ({answers, setAnswers}) => {
     // 전체 답변 저장 배열로 저장 (서버에 보내줄 것)
     // const [answers, setAnswers] = useState([])
 
-    // useEffect(()=>{
-    //     console.log("최종 답변 :")
-    //     console.log(answers)
-    //     console.log("현재 답변 :")
-    //     console.log(curAnswer)
-    //     console.log("현재 문제 :")
-    //     console.log(curQuestion)
-    // },[answers, curAnswer,curQuestion])
-
     useEffect(() => {
         setAnswers([])
     }, [setAnswers])

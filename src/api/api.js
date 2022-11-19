@@ -1,6 +1,5 @@
 import axios from "./axios.js";
 
-
 const getAccessToken = () =>{
     return JSON.parse(sessionStorage.getItem("access_token"))
 }
@@ -35,7 +34,7 @@ const getSoolRank = () => {
         })
     // 아니면 일반 베스트 랭킹 가져오기
     }else{
-        return axios.get('/recomm')
+        return axios.get(`/recomm`)
     }
 }
 
@@ -110,6 +109,21 @@ const getPurchasedItems = () => {
         })
 }
 
+/** 리뷰 남기기 */
+const postReviews = (al_id, al_name, review, score) => {
+    const accessToken = getAccessToken()
+
+    return axios.post("/write_review",
+        JSON.stringify({al_id, al_name, review, score}),
+        {
+            headers: { 
+                Authorization: `Bearer ${accessToken}`,
+                'Content-Type': 'application/json'
+            },
+        }
+    );
+}
+
 /** 로그인 */
 const signIn = (id, pw) => {
     return axios.post("/signin",
@@ -130,5 +144,6 @@ export{
     getSimilarSool, 
     purchase,
     getPurchasedItems,
+    postReviews,
     signIn
 }

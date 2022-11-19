@@ -1,5 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+
+import ReviewModal from "../Components/ReviewModal.js";
 import styled from "styled-components";
 
 const PurchasedListContainer = styled.ul`
@@ -67,28 +69,41 @@ const ReviewButton = styled.button`
 `
 
 const PurchasedList = ({ products }) => {
-
-    const handleReview = () => {
-
-    }
     
     //"c_id": 16,
     // "al_id": 257,
     // "al_name": "토박이 한산 소곡주",
     // "date": "2022.02.18",
     // "review_O": 0
+
+    const [modalOpen , setModalOpen] = useState(false)
+    const [product, setProduct] = useState()
+
+    const openModalHandler = (alcohol) => {
+        setModalOpen(true);
+        setProduct(alcohol);
+    }
+    
+    const closeModalHandler = () => {
+        setModalOpen(false)
+    }
+
     return (
-        <PurchasedListContainer>
-            {products.map((al) => <PurchasedCard>
-                <Link to={`/detail/${al.al_id}`}>{al.al_name}</Link>
-                <div>
-                    <span className='purchased--date'>구매 날짜 : {al.date}</span>
-                    {al.review_O ? <ReviewButton className='purchased--review' onClick={handleReview}>리뷰 남기기</ReviewButton> : <span className='purchased--review'>리뷰 작성 완료</span>}
-                </div>
-            </PurchasedCard>)}
-            {/* <PurchasedCard className='invisble'></PurchasedCard> */}
-            {/* {products.length % 2 === 1 ? <PurchasedCard className='invisble'></PurchasedCard>: null} */}
-        </PurchasedListContainer>
+        <>
+            <PurchasedListContainer>
+                {products.map((al, idx) => <PurchasedCard key={idx}>
+                    <Link to={`/detail/${al.al_id}`}>{al.al_name}</Link>
+                    <div>
+                        <span className='purchased--date'>구매 날짜 : {al.date}</span>
+                        {al.review_O ? <ReviewButton className='purchased--review' onClick={() => openModalHandler(al)}>리뷰 남기기</ReviewButton> : <span className='purchased--review'>리뷰 작성 완료</span>}
+                    </div>
+                </PurchasedCard>)}
+                {/* <PurchasedCard className='invisble'></PurchasedCard> */}
+                {/* {products.length % 2 === 1 ? <PurchasedCard className='invisble'></PurchasedCard>: null} */}
+            </PurchasedListContainer>
+            { modalOpen? <ReviewModal modalClose={closeModalHandler} alcohol={product} /> : null}
+            
+        </>
     );
 };
 

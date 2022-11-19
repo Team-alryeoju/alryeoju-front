@@ -21,7 +21,7 @@ const Home = () => {
     // 화면에 보여줄 알코올 리스트
     const [alList, setAlList] = useState([]);
     const [recommList, setRecommList] = useState([]);
-    const [hi, setHi] = useState('');
+    
     // api에 넘겨줄 데이터 조건 -> 카테고리 누를 때마다 변한다.
     const [category, setCategory] = useState(0);
     // const [isloading, setIsLoading] = useState(true);
@@ -49,21 +49,14 @@ const Home = () => {
                 // setIsLoading(false)
             } catch (e){
                 // setError(e);
+                if(e.response.status === 401){
+                    sessionStorage.removeItem("access_token")
+                    window.location.reload()
+                }
             }
         };
 
-        const getHello = async () =>{
-            try{
-                const res = await axios("http://127.0.0.1:5000/hello")
-                console.log(res.data)
-                setHi(res.data)
-            }catch(e){
-                console.log(e.response.data)
-            }
-        }
-        
-            getHello()
-            getSoolRanking()
+        getSoolRanking()
         
     }, [])
 
@@ -76,6 +69,10 @@ const Home = () => {
                 setAlList(Object.values(response.data))
             } catch (e){
                 // setError(e);
+                if(e.response.status === 401){
+                    sessionStorage.removeItem("access_token")
+                    window.location.replace("/")
+                }
             }
         }
         // setIsLoading(false);
@@ -85,7 +82,6 @@ const Home = () => {
     return (
         <div className="Home">
             <Header />
-            <h1>{hi}</h1>
             <div className="container">
                 <section className="product__slide-container col-center">
                     {authName? 

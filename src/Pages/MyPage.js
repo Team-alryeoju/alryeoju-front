@@ -37,7 +37,6 @@ const MyPageContainer = styled.div`
 const MyPage = () => {
     const { authName, isLogin } = useContext(AuthContext)
     const [alList, setAlList] = useState([])
-    const [error, setError] = useState('')
 
     useEffect(() => {
         
@@ -50,13 +49,18 @@ const MyPage = () => {
                 const response = await getPurchasedItems();
                 setAlList(Object.values(response.data))
             } catch (e){
-                setError(e.response.data);
+                console.log(e)
+                if(e.response.status === 401){
+                    sessionStorage.removeItem("access_token")
+                    window.location.reload()
+                }
             }
         }
 
         getPurchasedList()
         
     }, [isLogin])
+    
 
     return (
         <>
@@ -64,19 +68,18 @@ const MyPage = () => {
             <MyPageContainer>
                 <h1>구매 내역</h1>
                 {isLogin? (
-                    <div>
-                        <h2>{authName}님 안녕하세요!</h2>
-                        <main>
-                            {alList.length === 0 ? 
-                                <div>구매 내역이 없습니다.</div> 
-                                : <PurchasedList products={alList}></PurchasedList>
-                            }
-                        </main>
-                    </div>
-                ): <h2>로그인 후 확인 가능합니다!</h2>
+                        <div>
+                            <h2>{authName}님 안녕하세요!</h2>
+                            <main>
+                                {alList.length === 0 ? 
+                                    <div>구매 내역이 없습니다.</div> 
+                                    : <PurchasedList products={alList}></PurchasedList>
+                                }
+                            </main>
+                        </div>
+                    ): <h2>로그인 후 확인 가능합니다!</h2>
                 }
             </MyPageContainer>
-            <p>{error}</p>
         </>
     )
 }

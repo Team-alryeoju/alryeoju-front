@@ -124,7 +124,10 @@ const Detail = () => {
                 // setIsLoading(false)
 
             }).catch((e)=>{
-                setError(e.response.data.msg);
+                if(e.response.status === 401){
+                    sessionStorage.removeItem("access_token")
+                    window.location.reload()
+                }
             })
 
         // 리뷰 데이터 가져오기
@@ -167,6 +170,10 @@ const Detail = () => {
                 setPurchaseLoading(false);
             }catch(e){
                 console.log(e)
+                if(e.response.status === 401){
+                    sessionStorage.removeItem("access_token")
+                    window.location.reload()
+                }
                 // setPurchasSuccess(false)
             }
         }
