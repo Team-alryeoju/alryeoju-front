@@ -21,8 +21,7 @@ const Home = () => {
     // 화면에 보여줄 알코올 리스트
     const [alList, setAlList] = useState([]);
     const [recommList, setRecommList] = useState([]);
-    const [hi, setHi] = useState("")
-    
+    const [hi, setHi] = useState('');
     // api에 넘겨줄 데이터 조건 -> 카테고리 누를 때마다 변한다.
     const [category, setCategory] = useState(0);
     // const [isloading, setIsLoading] = useState(true);
@@ -53,21 +52,18 @@ const Home = () => {
             }
         };
 
-        useEffect(()=>{
-            const getHello = async () =>{
-              try{
+        const getHello = async () =>{
+            try{
                 const res = await axios("http://127.0.0.1:5000/hello")
                 console.log(res.data)
                 setHi(res.data)
-              }catch(e){
+            }catch(e){
                 console.log(e.response.data)
-              }
             }
+        }
         
             getHello()
-          }, [])
-
-        getSoolRanking()
+            getSoolRanking()
         
     }, [])
 
