@@ -31,11 +31,11 @@ const Home = () => {
 
     const categoryArr = useMemo(()=> {
         return [
-            { name: '전체' , url: `/api/alcohol`},
-            { name: '탁주' , url: `/api/alcohol?category=탁주`},
-            { name: '약주' , url: `/api/alcohol?category=약주`},
-            { name: '과실주' , url: `/api/alcohol?category=과실주`},
-            { name: '증류식소주' , url: `/api/alcohol?category=증류식소주`}
+            { name: '전체' , url: `/alcohol`},
+            { name: '탁주' , url: `/alcohol?category=탁주`},
+            { name: '약주' , url: `/alcohol?category=약주`},
+            { name: '과실주' , url: `/alcohol?category=과실주`},
+            { name: '증류식소주' , url: `/alcohol?category=증류식소주`}
         ]
     }, [])
 
