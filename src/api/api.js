@@ -124,6 +124,13 @@ const postReviews = (al_id, al_name, review, score) => {
     );
 }
 
+/** 테스트 결과 */
+const getSurveyResult = (ans1, ans2, ans3, ans4, ans5) => {
+    return axios.get('/survey_list',{
+        params: { ans1, ans2, ans3, ans4, ans5 },
+    })
+}
+
 /** 로그인 */
 const signIn = (id, pw) => {
     return axios.post("/signin",
@@ -144,6 +151,7 @@ export{
     getSimilarSool, 
     purchase,
     getPurchasedItems,
+    getSurveyResult,
     postReviews,
     signIn
 }

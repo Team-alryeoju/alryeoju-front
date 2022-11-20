@@ -169,7 +169,7 @@ const ReviewForm = styled.form`
 
 
 `
-const wait = (timeToDelay) => new Promise((resolve) => setTimeout(resolve, timeToDelay))
+// const wait = (timeToDelay) => new Promise((resolve) => setTimeout(resolve, timeToDelay))
 
 const ReviewModal = ({ modalClose, alcohol }) => {
     const [alDetail, setAlDetail] = useState({});
@@ -186,6 +186,7 @@ const ReviewModal = ({ modalClose, alcohol }) => {
     useEffect(()=>{
         getSoolDetail(alcohol.al_id)
             .then((res) => {
+                res.data.al_data.price = (res.data.al_data.price).toLocaleString()
                 setAlDetail(res.data.al_data)
 
             }).catch((e)=>{
@@ -223,7 +224,7 @@ const ReviewModal = ({ modalClose, alcohol }) => {
                         <ReviewProduct>
                             <div className='review--img'>
                                 <Link to={`/detail/${alcohol.al_id}`}>
-                                    <img src={alDetail.img_link}></img>
+                                    <img src={alDetail.img_link} alt={alcohol.al_name}></img>
                                 </Link>
                             </div>
                             <div className='review--detail'>

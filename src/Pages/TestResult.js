@@ -3,8 +3,9 @@ import { useNavigate } from 'react-router-dom';
 
 import ProductSwiper from "../Components/ProductSwiper.js"
 
-// 
-import dummySool from '../static/dummyData.js';
+/** api */
+import { getSurveyResult } from "../api/api.js"
+import { questions } from '../static/questions.js';
 
 import styled from 'styled-components';
 
@@ -20,6 +21,8 @@ const TestResultContainer = styled.div`
 
     & h2{
         margin: 0.2rem;
+        color: var(--main-color);
+        font-size: 1.5rem;
     }
 
     & > .loading__container{
@@ -41,6 +44,7 @@ const TestResult = ({answers}) => {
         // -> 이 경우 answers가 빈 배열일 것이다.
 
     const [isLoading, setIsLoading] = useState(true)
+    const [result, setResult] = useState([])
 
     const navigate = useNavigate()
 
@@ -50,13 +54,20 @@ const TestResult = ({answers}) => {
         }
 
         const wait = (timeToDelay) => new Promise((resolve) => setTimeout(resolve, timeToDelay))
-
         const getResult = async () =>{
             setIsLoading(true)
-            // post 작업 실행
-            // post 작업 하고 answers 초기화 해야함!
-            await wait(3000)
-            setIsLoading(false)
+            const paramAnswers = answers.map((ans, idx) => {
+                return `${questions[idx].id}${questions[idx].options[ans[0]].key}`
+            })
+
+            try{
+                const res = await getSurveyResult(...paramAnswers)
+                setResult(Object.values(res.data))
+                await wait(1000)
+                setIsLoading(false)
+            }catch(e){
+                console.log(e)
+            }
         }
 
         getResult()
@@ -67,8 +78,8 @@ const TestResult = ({answers}) => {
         <TestResultContainer>
             {isLoading? <div className='loading__container'><img className="loadingImg" src="/loading.gif" alt='loading'/></div> : 
                 <div className='col-center'>
-                    <h2>당신은 이런 전통주를 좋아할지도 몰라요!</h2>
-                    <ProductSwiper products={dummySool}/>
+                    <h2>당신에게 이 전통주를 추천할게요!</h2>
+                    <ProductSwiper products={result}/>
                 </div>
             }        
         </TestResultContainer>

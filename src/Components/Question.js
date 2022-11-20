@@ -13,6 +13,10 @@ const QuestionContainer = styled.div`
     align-items: center;
     justify-content: space-around;
     margin-top: 20px;
+    & > h2{
+        font-size: 1.2rem;
+        color: var(--basic-font-color);
+    }
 `
 const OptionContainer = styled.div`
     width: 80%;
@@ -32,17 +36,26 @@ const Option = styled.button`
     font-weight: 700;
     color: #737373;
     
-    transition: 0.2s;
     
     &:hover{
         border: 3px solid var(--main-color);
         color: var(--main-color);
+        & > .keyword{
+            color: var(--emphasize-color);
+            font-size: 1.3rem;
+            font-weight: 800;
+        }
     }
     &.selected{
         background-color: var(--main-color);
         border: 3px solid var(--main-color);
         color: white;
         transition: 0.2s;
+        & > .keyword{
+            color: var(--emphasize-color);
+            font-size: 1.3rem;
+            font-weight: 800;
+        }
     }
 `
 
@@ -79,7 +92,13 @@ const Question = ({questions, questionIdx, curAnswer, selectAnswer, handleNextBt
             {/* <span>{`최대 선택 개수 : ${questions[questionIdx].max}`}</span> */}
             <OptionContainer>
                 {questions[questionIdx].options.map((el, idx) => (
-                    <Option key={idx} className={curAnswer.includes(idx)? "selected" : ""} onClick={()=>{selectAnswer(idx)}}>{el}</Option>
+                    <Option key={idx} className={curAnswer.includes(idx)? "selected" : ""} 
+                        onClick={()=>{selectAnswer(idx)}}>
+                            {el.option.map((op,idx)=>{
+                                if(idx === el.keyword) return (<div key={idx} className='keyword'>{op}</div>)
+                                return (<div key={idx}>{op}</div>)
+                            })}
+                    </Option>
                 ))
                 }
             </OptionContainer>

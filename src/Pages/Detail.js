@@ -85,7 +85,7 @@ const Detail = () => {
     const { soolId } = useParams();
     
     /** 에러, 로딩 */
-    const [error, setError] = useState('');
+    // const [error, setError] = useState('');
     // const [isLoading, setIsLoading] = useState(true)
 
     // 술에 대한 정보
@@ -119,10 +119,10 @@ const Detail = () => {
         // 술 정보 가져오기
         getSoolDetail(soolId)
             .then((res)=>{
+                res.data.al_data.price = (res.data.al_data.price).toLocaleString()
                 setSool(res.data.al_data)
                 setTokens(res.data.token_rank)
                 // setIsLoading(false)
-
             }).catch((e)=>{
                 if(e.response.status === 401){
                     sessionStorage.removeItem("access_token")
@@ -135,13 +135,13 @@ const Detail = () => {
         .then((res) => {
             // 리뷰 설정
             setReviews(Object.values(res.data))
-        }).catch((e) => setError(e.response.data.msg))
+        }).catch((e) => console.log(e))
 
         // 비슷한 술 리스트 가져오기
         getSimilarSool(soolId)
             .then((res) => {
                 setSimilarSool(Object.values(res.data))
-            }).catch((e) => setError(e.response.data.msg))
+            }).catch((e) => console.log(e))
         
             
 
@@ -210,7 +210,7 @@ const Detail = () => {
                                     </div>
                                     <div className="product--star">
                                         <Rating className="rating" name="read-only" size="large" value={Math.round(sool.score * 10) / 10} precision={0.25} readOnly />
-                                        <span className="score">{Math.round(sool.score * 10) / 10}</span>
+                                        <span className="score">{String(Math.round(sool.score * 10) / 10)}</span>
                                     </div>
                                 </div>
                                 <div className="product--token col">
@@ -225,13 +225,12 @@ const Detail = () => {
                                 </div>
                             </div>
                             <div className="product__purchase col">
-                                <span className="product--price">{(sool.price)}원</span>
+                                <span className="product--price">{sool.price}원</span>
                                 <PurchaseButton disabled={purchaseLoading} onClick={handlePurchaseBtn}>
                                     {purchaseLoading ?
                                         (<div className="col-center"><CircularProgress size={30} color="inherit"/></div>)
                                         : <div>바로구매 <FontAwesomeIcon icon={faAngleRight} /></div>}
                                 </PurchaseButton>
-                                <p>{error}</p>
                             </div>
                         </div>
                     </div>

@@ -38,7 +38,7 @@ const PurchasedCard = styled.li`
 
         > .purchased--date{
             font-size: 0.9rem;
-            margin-right: 5px;
+            margin-right: 10px;
             color: var(--grey-font-color);
         }
         > .purchased--review{
@@ -60,12 +60,14 @@ const PurchasedCard = styled.li`
 
 const ReviewButton = styled.button`
     background-color: var(--emphasize-color);
-    width: 5rem;
-    height: 25px;
-    border-radius: 25px;
+    width: 5.5rem;
+    height: 30px;
+    padding: 5px;
+    border-radius: 30px;
     border: none;
     color: white;
-    font-weight: 500;
+    font-size: 1rem;
+    font-weight: 600;
 `
 
 const PurchasedList = ({ products }) => {
