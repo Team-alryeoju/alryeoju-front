@@ -10,6 +10,7 @@ import AuthContext from "../context/AuthProvider.js";
 /**Component */
 import Header from "../Components/Header.js"
 import ProductSwiper from "../Components/ProductSwiper.js";
+import TopButton from "../Components/TopButton.js";
 
 /** CSS */
 import styled from "styled-components";
@@ -75,6 +76,18 @@ const Review = styled.li`
         font-size: 0.9rem;
         margin-top: 1rem;
         padding-left: 1rem;
+    }
+`
+
+const ReviewCloseBtn = styled.div`
+
+    > button {
+        border: none;
+        background-color: white;
+        margin-top: 0.5rem;
+        font-size: 1rem;
+        color: var(--main-color);
+        font-weight: 500;
     }
 `
 
@@ -188,6 +201,7 @@ const Detail = () => {
     return (
         <div className="Detail">
             <Header />
+            <TopButton />
             <div className="container">
                 <main className="product__main col">
                     <div className="product__detail row">
@@ -243,23 +257,28 @@ const Detail = () => {
                             }
                         </div>
                         {showReviews?
-                            (<ul>
-                                { reviews.length === 0 ? <div>작성된 리뷰가 없습니다.</div>
-                                    : (reviews.map((el, idx) => {
-                                            return <Review key={idx}>
-                                                <div className="review--top">
-                                                    <span>{el.u_name}</span>
-                                                    <div>
-                                                        <Rating className="rating" name="read-only" size="small" value={Math.round(el.score * 10) / 10} precision={0.5} readOnly />
-                                                        <span className="review--date">{el.datetime}</span>
+                            (
+                                <ul>
+                                    { reviews.length === 0 ? <div>작성된 리뷰가 없습니다.</div>
+                                        : (reviews.map((el, idx) => {
+                                                return <Review key={idx}>
+                                                    <div className="review--top">
+                                                        <span>{el.u_name}</span>
+                                                        <div>
+                                                            <Rating className="rating" name="read-only" size="small" value={Math.round(el.score * 10) / 10} precision={0.5} readOnly />
+                                                            <span className="review--date">{el.datetime}</span>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                <p className="review--bottom">{el.review}</p>
-                                            </Review>
-                                        }))
-                                }
-                            </ul>)
+                                                    <p className="review--bottom">{el.review}</p>
+                                                </Review>
+                                            }))
+                                    }
+                                </ul>
+                            )
                             : null}
+                        <ReviewCloseBtn className="col-center">
+                            { showReviews? <button className="col-center" onClick={handleReviewShowBtn}>닫기</button> : null }
+                        </ReviewCloseBtn>
                     </div>
                 </main>
                 <aside className="col-center detail-bottom">

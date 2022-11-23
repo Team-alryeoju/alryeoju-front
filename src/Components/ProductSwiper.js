@@ -11,7 +11,7 @@ import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
 // import required modules
-import { Navigation } from "swiper";
+import { Pagination, Navigation } from "swiper";
 
 /** FontAwesome */
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
@@ -55,9 +55,9 @@ function ProductSwiper({ products }) {
                 slidesPerGroup: 3,
                 loop: true,
                 loopFillGroupWithBlank: true,
-                // pagination: {
-                //     clickable: true,
-                // },
+                pagination: {
+                    clickable: true,
+                },
                 navigation: {
                     prevEl: navigationPrevRef.current,
                     nextEl: navigationNextRef.current
@@ -66,8 +66,9 @@ function ProductSwiper({ products }) {
                     swiper.params.navigation.prevEl = navigationPrevRef.current;
                     swiper.params.navigation.nextEl = navigationNextRef.current;
                     swiper.navigation.update();
+                    swiper.slideTo(0)
                 },
-                modules: [Navigation],
+                modules: [Navigation, Pagination],
                 className: "mySwiper"
             }
             setSwiperSetting(settings)
