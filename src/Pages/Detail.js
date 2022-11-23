@@ -90,7 +90,6 @@ const ReviewCloseBtn = styled.div`
         font-weight: 500;
     }
 `
-
 const Detail = () => {
     // 로그인 정보
     const { authName, isLogin } = useContext(AuthContext)
