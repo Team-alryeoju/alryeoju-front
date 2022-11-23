@@ -85,8 +85,8 @@ const Home = () => {
             <div className="container">
                 <section className="product__slide-container col-center">
                     {authName? 
-                        <h2 className="home-title product__slide-title"><span>{authName}</span>님께 추천하는 토큰 랭킹</h2>
-                        : <h2 className="home-title product__slide-title">이 술의 토큰 랭킹</h2>}
+                        <h2 className="home-title product__slide-title">'<span>{authName}</span>'님께 추천하는 전통주</h2>
+                        : <h2 className="home-title product__slide-title">Top 15</h2>}
                     <ProductSwiper products={recommList}/>
                 </section>
                 <section className="product__list-container col">

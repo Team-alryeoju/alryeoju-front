@@ -163,9 +163,8 @@ const Detail = () => {
             // post 작업 실행
             try{
                 const res = await purchase(soolId);
-                console.log(res.msg)
                 await wait(500)
-                alert("구매 완료!")
+                alert(res.data.msg)
                 // setPurchasSuccess(true);
                 setPurchaseLoading(false);
             }catch(e){

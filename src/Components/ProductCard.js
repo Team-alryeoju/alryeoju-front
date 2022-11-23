@@ -6,7 +6,6 @@ import './ProductCard.css'
 
 const ProductCard = ({ sool }) => {  
     const url = `/detail/${sool.al_id}`
-    
     return(
       <Link className="productCard row-center" to={url}>
         <div className="productCard__wrapper" id={sool.al_id}>

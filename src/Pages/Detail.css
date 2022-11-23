@@ -18,14 +18,20 @@
 }
 
 .detail_left{
-    flex: 2
+    flex: 2;
+    height: 550px
 }
 
 .detail_left > img{
     width: 100%;
     height: 100%;
+    vertical-align: top;
     object-fit: cover;
-    overflow: hidden;
+
+    width: 100%;
+    height: 100%;
+    /* object-fit: cover;
+    overflow: hidden; */
 }
 
 .detail_right{

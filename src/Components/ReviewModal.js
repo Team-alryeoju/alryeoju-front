@@ -201,16 +201,20 @@ const ReviewModal = ({ modalClose, alcohol }) => {
         setReview(e.target.value)
     }
 
-    const handleSubmit = (e) =>{
+    const handleSubmit = async (e) =>{
         e.preventDefault();
         setReviewLoading(true);
-        postReviews(alcohol.al_id, alcohol.al_name, review, score)
-            .then((res) => {
-                setReviewLoading(false);
-                modalClose();
-            }).catch((e)=>{
-                console.log(e.response.data)
-            })
+        const wait = (timeToDelay) => new Promise((resolve) => setTimeout(resolve, timeToDelay))
+
+        try{
+            await postReviews(alcohol.al_id, alcohol.al_name, review, score)
+            await wait(1000)
+            setReviewLoading(false);
+            alert("리뷰 작성 완료!")
+            modalClose();
+        }catch(e){
+            console.log(e.response.data)
+        }
     }
 
     return (

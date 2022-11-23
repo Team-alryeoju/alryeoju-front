@@ -26,8 +26,12 @@ export const AuthProvider = ({children}) => {
         getUserInfo(accessToken)
             .then((res) => {
                 setAuthName(res.data["user_name"])
-            }).catch((err) =>{
-                console.log(err)
+            }).catch((e) =>{
+                if(e.response.status === 401){
+                    sessionStorage.removeItem("access_token")
+                    window.location.reload()
+                }
+                console.log(e)
             })
 
     },[])

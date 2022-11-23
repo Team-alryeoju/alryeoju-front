@@ -34,7 +34,7 @@ const Option = styled.button`
     margin: 10px;
     font-size: 1.2rem;
     font-weight: 700;
-    color: #737373;
+    color: var(--main-color);
     
     
     &:hover{
