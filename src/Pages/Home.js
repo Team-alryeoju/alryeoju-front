@@ -12,6 +12,7 @@ import AuthContext from "../context/AuthProvider.js";
 import ProductList from "../Components/ProductList.js"
 import ProductSwiper from "../Components/ProductSwiper.js";
 import Header from "../Components/Header.js";
+import TopButton from "../Components/TopButton.js"
 
 import './Home.css'
 
@@ -81,6 +82,7 @@ const Home = () => {
     return (
         <div className="Home">
             <Header />
+            <TopButton />
             <div className="container">
                 <section className="product__slide-container col-center">
                     {authName? 

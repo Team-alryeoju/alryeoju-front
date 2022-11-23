@@ -10,7 +10,7 @@ import AuthContext from "../context/AuthProvider.js";
 /**Component */
 import Header from "../Components/Header.js"
 import ProductSwiper from "../Components/ProductSwiper.js";
-
+import TopButton from "../Components/TopButton.js";
 /** CSS */
 import styled from "styled-components";
 import "./Detail.css"
@@ -77,6 +77,19 @@ const Review = styled.li`
         padding-left: 1rem;
     }
 `
+
+const ReviewCloseBtn = styled.div`
+
+    > button {
+        border: none;
+        background-color: white;
+        margin-top: 0.5rem;
+        font-size: 1rem;
+        color: var(--main-color);
+        font-weight: 500;
+    }
+`
+
 
 const Detail = () => {
     // 로그인 정보
@@ -188,6 +201,7 @@ const Detail = () => {
     return (
         <div className="Detail">
             <Header />
+            <TopButton />
             <div className="container">
                 <main className="product__main col">
                     <div className="product__detail row">
@@ -260,6 +274,9 @@ const Detail = () => {
                                 }
                             </ul>)
                             : null}
+                        <ReviewCloseBtn className="col-center">
+                            { showReviews? <button className="col-center" onClick={handleReviewShowBtn}>닫기</button> : null }
+                        </ReviewCloseBtn>
                     </div>
                 </main>
                 <aside className="col-center detail-bottom">
