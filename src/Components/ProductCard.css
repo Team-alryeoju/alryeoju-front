@@ -20,6 +20,16 @@
     opacity: 80%;
 }
 
+.productCard--img > div{
+    width: 100%;
+    height: 100%;
+    padding-top: 66.66%;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    border-radius: 10px 10px 10px 10px;
+}
+
 .productCard--img > img{
     /* 이미지 배치 */
     /* position: absolute;

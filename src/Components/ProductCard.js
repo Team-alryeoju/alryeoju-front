@@ -10,7 +10,8 @@ const ProductCard = ({ sool }) => {
       <Link className="productCard row-center" to={url}>
         <div className="productCard__wrapper" id={sool.al_id}>
               <div className="productCard--img">
-                <img src={sool.img_link} alt={sool.al_name}></img>  
+                <div style={{ backgroundImage: `url(${sool.img_link})` }}></div>
+                {/* <img src={sool.img_link} alt={sool.al_name}></img>   */}
               </div>
               <div className="productCard__content col text-right">
                 <span className="productCard--name">{sool.al_name}</span>

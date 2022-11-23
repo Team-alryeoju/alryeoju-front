@@ -205,8 +205,8 @@ const Detail = () => {
             <div className="container">
                 <main className="product__main col">
                     <div className="product__detail row">
-                        <div className="detail_left col-center">
-                            <img src={sool.img_link} alt={sool.al_name}></img>
+                        <div className="detail_left">
+                            <div className="product--img" style={{ backgroundImage: `url(${sool.img_link})` }}></div>
                             {/* <img src={sool.img_link} alt={sool.al_name}></img> */}
                         </div>
                         <div className="detail_right col">
