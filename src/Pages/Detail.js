@@ -11,6 +11,7 @@ import AuthContext from "../context/AuthProvider.js";
 import Header from "../Components/Header.js"
 import ProductSwiper from "../Components/ProductSwiper.js";
 import TopButton from "../Components/TopButton.js";
+
 /** CSS */
 import styled from "styled-components";
 import "./Detail.css"
@@ -89,8 +90,6 @@ const ReviewCloseBtn = styled.div`
         font-weight: 500;
     }
 `
-
-
 const Detail = () => {
     // 로그인 정보
     const { authName, isLogin } = useContext(AuthContext)
@@ -205,8 +204,8 @@ const Detail = () => {
             <div className="container">
                 <main className="product__main col">
                     <div className="product__detail row">
-                        <div className="detail_left col-center">
-                            <img src={sool.img_link} alt={sool.al_name}></img>
+                        <div className="detail_left">
+                            <div className="product--img" style={{ backgroundImage: `url(${sool.img_link})` }}></div>
                             {/* <img src={sool.img_link} alt={sool.al_name}></img> */}
                         </div>
                         <div className="detail_right col">
@@ -257,22 +256,24 @@ const Detail = () => {
                             }
                         </div>
                         {showReviews?
-                            (<ul>
-                                { reviews.length === 0 ? <div>작성된 리뷰가 없습니다.</div>
-                                    : (reviews.map((el, idx) => {
-                                            return <Review key={idx}>
-                                                <div className="review--top">
-                                                    <span>{el.u_name}</span>
-                                                    <div>
-                                                        <Rating className="rating" name="read-only" size="small" value={Math.round(el.score * 10) / 10} precision={0.5} readOnly />
-                                                        <span className="review--date">{el.datetime}</span>
+                            (
+                                <ul>
+                                    { reviews.length === 0 ? <div>작성된 리뷰가 없습니다.</div>
+                                        : (reviews.map((el, idx) => {
+                                                return <Review key={idx}>
+                                                    <div className="review--top">
+                                                        <span>{el.u_name}</span>
+                                                        <div>
+                                                            <Rating className="rating" name="read-only" size="small" value={Math.round(el.score * 10) / 10} precision={0.5} readOnly />
+                                                            <span className="review--date">{el.datetime}</span>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                <p className="review--bottom">{el.review}</p>
-                                            </Review>
-                                        }))
-                                }
-                            </ul>)
+                                                    <p className="review--bottom">{el.review}</p>
+                                                </Review>
+                                            }))
+                                    }
+                                </ul>
+                            )
                             : null}
                         <ReviewCloseBtn className="col-center">
                             { showReviews? <button className="col-center" onClick={handleReviewShowBtn}>닫기</button> : null }

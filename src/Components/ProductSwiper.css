@@ -1,13 +1,25 @@
 .swiper-container{
     width: 100%;
 }
+
 .swiper {
-    width: calc(230px * 3);
+    width: calc(230px * 1);
     height: 400px;
     margin-left: 10px;
     margin-right: 10px;
 }
 
+@media only screen and (min-width: 768px) {
+    .swiper {
+        width: calc(230px * 2);
+    }
+}
+
+@media only screen and (min-width: 1024px) {
+    .swiper {
+        width: calc(230px * 3);
+    }
+}
 .swiper-pagination-bullet-active{
     background-color: var(--main-color);
 }

@@ -33,6 +33,11 @@ const NavigationButton = styled.button`
         width: 1rem;
         height: 1rem;
     }
+
+    &.swiper-button-disabled{
+        color: white;
+        border: none;
+    }
 `
 
 // function getWindowSize() {
@@ -43,21 +48,17 @@ const NavigationButton = styled.button`
 function ProductSwiper({ products }) {
     // const [slide, setSlide] = useState(3);
     const [swiperSetting, setSwiperSetting] = useState(null);
-
     const navigationPrevRef = useRef(null);
     const navigationNextRef = useRef(null);
 
     useEffect(() => {
         if(!swiperSetting){
             const settings = {
-                slidesPerView: 3,
+                slidesPerView: 1,
                 spaceBetween: 15,
-                slidesPerGroup: 3,
-                loop: true,
+                slidesPerGroup: 1,
+                loop: false,
                 loopFillGroupWithBlank: true,
-                // pagination: {
-                //     clickable: true,
-                // },
                 navigation: {
                     prevEl: navigationPrevRef.current,
                     nextEl: navigationNextRef.current
@@ -66,6 +67,20 @@ function ProductSwiper({ products }) {
                     swiper.params.navigation.prevEl = navigationPrevRef.current;
                     swiper.params.navigation.nextEl = navigationNextRef.current;
                     swiper.navigation.update();
+                    swiper.slideTo(0);
+                    swiper.update();
+                },
+                breakpoints: {
+                    768: {
+                        slidesPerView: 2,  //브라우저가 768보다 클 때
+                        slidesPerGroup: 2,
+                        spaceBetween: 15,
+                    },
+                    1024: {
+                      slidesPerView: 3,  //브라우저가 1024보다 클 때
+                      slidesPerGroup: 3,
+                      spaceBetween: 15,
+                    },
                 },
                 modules: [Navigation],
                 className: "mySwiper"
@@ -73,13 +88,14 @@ function ProductSwiper({ products }) {
             setSwiperSetting(settings)
         }
     },[swiperSetting])
+
     // useEffect(() => {
     //     const handleResize = () => {
     //         const windowWidth = getWindowSize().width
 
-    //         if(windowWidth <= 500) setSlide(1);
-    //         else if(windowWidth <= 900) setSlide(2);
-    //         else setSlide(3);
+    //         if(windowWidth <= 500) setSlidesPerView(1);
+    //         else if(windowWidth <= 900) setSlidesPerView(2);
+    //         else setSlidesPerView(3);
     //     }
 
     //     handleResize();
@@ -95,7 +111,7 @@ function ProductSwiper({ products }) {
         <div className="swiper-container row-center">
             <NavigationButton ref={navigationPrevRef}><FontAwesomeIcon icon={faAngleLeft} /></NavigationButton>
             { swiperSetting ? (<Swiper {...swiperSetting}>
-                {products.map((sool) => <SwiperSlide key={sool.al_id}><ProductCard sool={sool}/></SwiperSlide>)}
+                {products.map((sool, idx) => <SwiperSlide key={idx}><ProductCard sool={sool}/></SwiperSlide>)}
             </Swiper>) : null}
             <NavigationButton ref={navigationNextRef}><FontAwesomeIcon icon={faAngleRight} /></NavigationButton>
         </div>

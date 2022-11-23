@@ -46,6 +46,7 @@ const Home = () => {
                 // setIsLoading(true)
                 const response = await getSoolRank()
                 setRecommList(Object.values(response.data))
+                console.log(Object.values(response.data))
                 // setIsLoading(false)
             } catch (e){
                 // setError(e);
