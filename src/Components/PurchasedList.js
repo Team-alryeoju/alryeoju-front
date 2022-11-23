@@ -5,8 +5,9 @@ import ReviewModal from "../Components/ReviewModal.js";
 import styled from "styled-components";
 
 const PurchasedListContainer = styled.ul`
-    width: 100%;
-    display: flex;
+    width: 90vw;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
     flex-direction: row;
     justify-content: center;
     flex-wrap: wrap;
@@ -15,7 +16,6 @@ const PurchasedListContainer = styled.ul`
 
 const PurchasedCard = styled.li`
     list-style: none;
-    flex: 0 1 350px;
     height: 100px;
     background-color: white;
     border-radius: 10px;
@@ -97,7 +97,7 @@ const PurchasedList = ({ products }) => {
                     <Link to={`/detail/${al.al_id}`}>{al.al_name}</Link>
                     <div>
                         <span className='purchased--date'>구매 날짜 : {al.date}</span>
-                        {al.review_O ? <ReviewButton className='purchased--review' onClick={() => openModalHandler(al)}>리뷰 남기기</ReviewButton> : <span className='purchased--review'>리뷰 작성 완료</span>}
+                        {al.review_O ? <ReviewButton className='purchased--review' onClick={() => openModalHandler(al)}>리뷰 남기기</ReviewButton> : <span className='purchased--review'>리뷰 기간이 지났습니다.</span>}
                     </div>
                 </PurchasedCard>)}
                 {/* <PurchasedCard className='invisble'></PurchasedCard> */}

@@ -12,7 +12,6 @@ import AuthContext from "../context/AuthProvider.js";
 import ProductList from "../Components/ProductList.js"
 import ProductSwiper from "../Components/ProductSwiper.js";
 import Header from "../Components/Header.js";
-import Footer from '../Components/Footer.js'
 
 import './Home.css'
 
@@ -102,7 +101,6 @@ const Home = () => {
                     {/* {isloading ? <LoadingIndicator /> :<ProductList products={alList}/>} */}
                 </section>
             </div>
-            <Footer />
         </div>
     )
 }

@@ -20,7 +20,7 @@ const TestResultContainer = styled.div`
     }
 
     & h2{
-        margin: 0.2rem;
+        margin: 1rem;
         color: var(--main-color);
         font-size: 1.5rem;
     }
@@ -47,7 +47,7 @@ const TestResult = ({answers}) => {
     const [result, setResult] = useState([])
 
     const navigate = useNavigate()
-
+    
     useEffect(() => {
         if(answers.length === 0) {
             navigate('/test')
@@ -76,7 +76,7 @@ const TestResult = ({answers}) => {
 
     return (
         <TestResultContainer>
-            {isLoading? <div className='loading__container'><img className="loadingImg" src="/loading.gif" alt='loading'/></div> : 
+            {isLoading? <div className='col-center loading__container'><img className="loadingImg" src="/loading.gif" alt='loading'/><h2>결과 분석 중</h2></div> : 
                 <div className='col-center'>
                     <h2>당신에게 이 전통주를 추천할게요!</h2>
                     <ProductSwiper products={result}/>
