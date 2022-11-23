@@ -1,10 +1,13 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+
+import ReviewModal from "../Components/ReviewModal.js";
 import styled from "styled-components";
 
 const PurchasedListContainer = styled.ul`
-    width: 100%;
-    display: flex;
+    width: 90vw;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
     flex-direction: row;
     justify-content: center;
     flex-wrap: wrap;
@@ -13,7 +16,6 @@ const PurchasedListContainer = styled.ul`
 
 const PurchasedCard = styled.li`
     list-style: none;
-    flex: 0 1 350px;
     height: 100px;
     background-color: white;
     border-radius: 10px;
@@ -36,7 +38,7 @@ const PurchasedCard = styled.li`
 
         > .purchased--date{
             font-size: 0.9rem;
-            margin-right: 5px;
+            margin-right: 10px;
             color: var(--grey-font-color);
         }
         > .purchased--review{
@@ -58,37 +60,52 @@ const PurchasedCard = styled.li`
 
 const ReviewButton = styled.button`
     background-color: var(--emphasize-color);
-    width: 5rem;
-    height: 25px;
-    border-radius: 25px;
+    width: 5.5rem;
+    height: 30px;
+    padding: 5px;
+    border-radius: 30px;
     border: none;
     color: white;
-    font-weight: 500;
+    font-size: 1rem;
+    font-weight: 600;
 `
 
 const PurchasedList = ({ products }) => {
-
-    const handleReview = () => {
-
-    }
     
     //"c_id": 16,
     // "al_id": 257,
     // "al_name": "토박이 한산 소곡주",
     // "date": "2022.02.18",
     // "review_O": 0
+
+    const [modalOpen , setModalOpen] = useState(false)
+    const [product, setProduct] = useState()
+
+    const openModalHandler = (alcohol) => {
+        setModalOpen(true);
+        setProduct(alcohol);
+    }
+    
+    const closeModalHandler = () => {
+        setModalOpen(false)
+    }
+
     return (
-        <PurchasedListContainer>
-            {products.map((al) => <PurchasedCard>
-                <Link to={`/detail/${al.al_id}`}>{al.al_name}</Link>
-                <div>
-                    <span className='purchased--date'>구매 날짜 : {al.date}</span>
-                    {al.review_O ? <ReviewButton className='purchased--review' onClick={handleReview}>리뷰 남기기</ReviewButton> : <span className='purchased--review'>리뷰 작성 완료</span>}
-                </div>
-            </PurchasedCard>)}
-            {/* <PurchasedCard className='invisble'></PurchasedCard> */}
-            {/* {products.length % 2 === 1 ? <PurchasedCard className='invisble'></PurchasedCard>: null} */}
-        </PurchasedListContainer>
+        <>
+            <PurchasedListContainer>
+                {products.map((al, idx) => <PurchasedCard key={idx}>
+                    <Link to={`/detail/${al.al_id}`}>{al.al_name}</Link>
+                    <div>
+                        <span className='purchased--date'>구매 날짜 : {al.date}</span>
+                        {al.review_O ? <ReviewButton className='purchased--review' onClick={() => openModalHandler(al)}>리뷰 남기기</ReviewButton> : <span className='purchased--review'>리뷰 기간이 지났습니다.</span>}
+                    </div>
+                </PurchasedCard>)}
+                {/* <PurchasedCard className='invisble'></PurchasedCard> */}
+                {/* {products.length % 2 === 1 ? <PurchasedCard className='invisble'></PurchasedCard>: null} */}
+            </PurchasedListContainer>
+            { modalOpen? <ReviewModal modalClose={closeModalHandler} alcohol={product} /> : null}
+            
+        </>
     );
 };
 

@@ -76,7 +76,7 @@ const Header = () => {
         setAuthName('')
         setIsLogin(false)
         // 새로고침
-        window.location.replace("/")
+        window.location.reload()
     }
 
     return (

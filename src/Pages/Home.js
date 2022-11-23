@@ -12,7 +12,6 @@ import AuthContext from "../context/AuthProvider.js";
 import ProductList from "../Components/ProductList.js"
 import ProductSwiper from "../Components/ProductSwiper.js";
 import Header from "../Components/Header.js";
-import Footer from '../Components/Footer.js'
 
 import './Home.css'
 
@@ -21,6 +20,7 @@ const Home = () => {
     // 화면에 보여줄 알코올 리스트
     const [alList, setAlList] = useState([]);
     const [recommList, setRecommList] = useState([]);
+    
     // api에 넘겨줄 데이터 조건 -> 카테고리 누를 때마다 변한다.
     const [category, setCategory] = useState(0);
     // const [isloading, setIsLoading] = useState(true);
@@ -48,6 +48,10 @@ const Home = () => {
                 // setIsLoading(false)
             } catch (e){
                 // setError(e);
+                if(e.response.status === 401){
+                    sessionStorage.removeItem("access_token")
+                    window.location.reload()
+                }
             }
         };
 
@@ -64,6 +68,10 @@ const Home = () => {
                 setAlList(Object.values(response.data))
             } catch (e){
                 // setError(e);
+                if(e.response.status === 401){
+                    sessionStorage.removeItem("access_token")
+                    window.location.replace("/")
+                }
             }
         }
         // setIsLoading(false);
@@ -76,8 +84,8 @@ const Home = () => {
             <div className="container">
                 <section className="product__slide-container col-center">
                     {authName? 
-                        <h2 className="home-title product__slide-title"><span>{authName}</span>님께 추천하는 토큰 랭킹</h2>
-                        : <h2 className="home-title product__slide-title">이 술의 토큰 랭킹</h2>}
+                        <h2 className="home-title product__slide-title">'<span>{authName}</span>'님께 추천하는 전통주</h2>
+                        : <h2 className="home-title product__slide-title">Top 15</h2>}
                     <ProductSwiper products={recommList}/>
                 </section>
                 <section className="product__list-container col">
@@ -93,7 +101,6 @@ const Home = () => {
                     {/* {isloading ? <LoadingIndicator /> :<ProductList products={alList}/>} */}
                 </section>
             </div>
-            <Footer />
         </div>
     )
 }
