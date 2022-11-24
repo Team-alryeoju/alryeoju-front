@@ -66,6 +66,7 @@ const Home = () => {
             try {
                 // setIsLoading(true)
                 const response = await axios.get(categoryArr[category].url)
+                setAlList(Object.values(response.data))
             } catch (e){
                 // setError(e);
                 if(e.response.status === 401){
