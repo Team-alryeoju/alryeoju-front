@@ -12,6 +12,7 @@ import styled from "styled-components";
 
 const MyPageContainer = styled.div`
     margin-top: 40px;
+    margin-bottom: 40px;
     display: flex;
     flex-direction: column;
     align-items: center;
