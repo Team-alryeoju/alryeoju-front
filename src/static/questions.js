@@ -14,7 +14,7 @@ export const questions = [
         id: 2,
         type: 'radio',
         max: 1,
-        title: '2. 향수를 사기위해서 면제점에 들렀다. 당신이 구매한 향수는?',
+        title: '2. 향수를 사기위해서 면세점에 들렀다. 당신이 구매한 향수는?',
         options : [
             { key: 'a', keyword: 0, option: ['가볍고 산뜻한', '시트러스 계열의 향수']},
             { key: 'b', keyword: 0, option: ['묵직한 바디감이 느껴지는', '우디계열의 향수']},
