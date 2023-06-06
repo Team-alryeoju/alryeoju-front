@@ -68,6 +68,14 @@ https://alryeoju.netlify.app
 - CSS 미디어 쿼리를 이용한 반응형 페이지 구현
     - 다양한 모바일 환경에서의 접근성 향상
 
-|||||||
-|:--------------------:|:--------------------:|:--------------------:|:--------------------:|:--------------------:|:--------------------:|
-|||||||****
+|로그인|회원가입|
+|--------------------|--------------------|
+|<img width="300" alt="로그인" src="https://github.com/Team-alryeoju/alryeoju-front/assets/52372820/0fdaa1e1-d59f-4abd-b3d9-d8074654c2b4">|<img width="300" alt="회원가입" src="https://github.com/Team-alryeoju/alryeoju-front/assets/52372820/d7719130-2496-4133-9d7f-942bfdf9dc28">|<img width="300" alt="메인페이지" src="https://github.com/Team-alryeoju/alryeoju-front/assets/52372820/61ed7fe9-2515-43d3-ab83-0b67fafbaff1">|
+
+|메인페이지|취향 테스트|취향 테스트 결과|
+|--------------------|--------------------|--------------------|
+|<img width="300" alt="메인페이지" src="https://github.com/Team-alryeoju/alryeoju-front/assets/52372820/61ed7fe9-2515-43d3-ab83-0b67fafbaff1">|<img width="300" alt="취향 테스트" src="https://github.com/Team-alryeoju/alryeoju-front/assets/52372820/3c9e6c6f-4c5f-4723-9cc0-dd6e27f966bc">|<img width="300" alt="취향 테스트 결과" src="https://github.com/Team-alryeoju/alryeoju-front/assets/52372820/13437414-554e-44f0-b8de-a5416272a393">
+
+|제품 상세 페이지|리뷰 모달|
+|--------------------|--------------------|
+|<img width="300" alt="상세 페이지" src="https://github.com/Team-alryeoju/alryeoju-front/assets/52372820/9a05f523-ad94-4426-847b-45f3c8a3f8f1">|<img width="300" alt="리뷰" src="https://github.com/Team-alryeoju/alryeoju-front/assets/52372820/370ab38f-300a-4912-b1e6-af61e56e48c9">|
